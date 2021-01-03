@@ -1,0 +1,13 @@
+package com.relations.losecoupling;
+class Metro{
+	public void move(String s, String d) {
+		System.out.println("metro is moving form "+ s +" to "+ d);
+	}
+}
+public class Demo {
+	
+	public static void main(String[] args) {
+		
+	}
+
+}

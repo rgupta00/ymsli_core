@@ -1,0 +1,8 @@
+
+public class DemoAccount {
+
+	public static void main(String[] args) {
+		Account account=new Account();// default ctr
+		account.printAccountDetails();
+	}
+}

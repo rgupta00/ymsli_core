@@ -1,0 +1,20 @@
+
+public class DemoArray2 {
+
+	public static void main(String[] args) 
+	{
+
+	int arr[][] = new int[5][3];
+
+	for (int temp[] : arr) 
+	{
+	for (int val : temp) 
+	{
+
+	System.out.print(val + " ");
+	}
+	System.out.println();
+	}
+
+	}
+}

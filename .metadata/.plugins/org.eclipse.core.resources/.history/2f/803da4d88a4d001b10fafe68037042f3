@@ -1,0 +1,11 @@
+
+public class MySingleton {
+
+	private MySingleton() {
+		System.out.println("dare to call...");
+	}
+	
+	public void businessMethod() {
+		System.out.println("bl of the method....");
+	}
+}

@@ -1,0 +1,9 @@
+package com.relations.losecoupling;
+
+public class Demo {
+	
+	public static void main(String[] args) {
+		
+	}
+
+}

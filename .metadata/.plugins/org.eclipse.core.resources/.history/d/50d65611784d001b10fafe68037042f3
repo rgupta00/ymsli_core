@@ -1,0 +1,17 @@
+
+//Java "Bean", POJO(plane old java object)
+
+public class Account{
+	private int accountId;
+	private String accountHolderName;
+	private double accountBalance;
+	
+	public void setAccountHolderNme(String accountHolderName) {
+		this.accountHolderName=accountHolderName;
+	}
+	
+	public String getAccountHolderName() {
+		return accountHolderName;	
+	}
+	
+}

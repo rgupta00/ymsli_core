@@ -1,0 +1,50 @@
+
+public class Account {
+	private int accountId;
+	private String accountHolderName;
+	private double accountBalance;
+	
+	//default ctr
+	public Account() {}
+	
+	//para ctr
+	public Account(int accountId, String accountHolderName,double accountBalance ) {
+		this.accountId=accountId;
+		this.accountHolderName=accountHolderName;
+		this.accountBalance=accountBalance;
+	}
+	
+	//copy ctr
+	public Account(Account account) {
+		this.accountId=account.getAccountId();
+		this.accountHolderName=account.getAccountHolderName();
+		this.accountBalance=account.getAccountBalance();
+	}
+	
+	//getter :accountId
+	public int getAccountId() {
+		return accountId;
+	}
+	
+	//getter :accountHolderName
+	public String getAccountHolderName() {
+		return accountHolderName;
+	}
+	
+	//getter:accountBalance
+	public double getAccountBalance() {
+		return accountBalance;
+	}
+	
+	//setter: accountBalance
+	public void setAccountBalance(int accountBalance) {
+		this.accountBalance=accountBalance;
+	}
+}
+
+
+
+
+
+
+

@@ -1,0 +1,8 @@
+
+public class DemoSingleton {
+
+	public static void main(String[] args) {
+		MySingleton m=new MySingleton();
+		
+	}
+}

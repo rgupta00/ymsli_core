@@ -1,0 +1,21 @@
+
+public class MyCalculatorApp {
+
+	
+	public static void main(String[] args) {
+		//MyCalculatorApp 10 20 30
+		
+		int sum=sumOfArray(args);
+		
+		System.out.println(sum);
+	}
+	
+	public static int sumOfArray(String array[]) {
+		int sum=0;
+		for(int i=0; i<array.length; i++) {
+			sum=sum+ Integer.parseInt(array[i]);
+		}
+		return sum;
+	}
+	
+}

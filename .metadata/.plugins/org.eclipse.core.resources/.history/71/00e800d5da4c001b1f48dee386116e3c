@@ -1,0 +1,21 @@
+
+public class PrimeChecker {
+
+	public static void main(String[] args) {
+		boolean isPrime = true;
+		int x = 23;
+
+		for (int i = 2; i < x / 2; i++) {
+			if (i % x == 0) {
+				isPrime = false;
+				break;
+
+			}
+		}
+		
+		if(isPrime)
+			System.out.println("it is a prime no");
+		else
+			System.out.println("not a prime no");
+	}
+}

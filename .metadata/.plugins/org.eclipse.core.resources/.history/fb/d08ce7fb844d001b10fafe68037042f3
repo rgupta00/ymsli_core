@@ -1,0 +1,13 @@
+
+public class Player {
+	private int id;
+	private String name;
+	private int rank;
+	
+	private static int counter=0;// only one copy per class : class data : static data
+	
+	
+	
+	
+	
+}

@@ -1,0 +1,63 @@
+
+//Java "Bean", POJO(plane old java object)
+
+public class Account{
+	private int accountId;
+	private String accountHolderName;
+	private double accountBalance;
+	
+	//when to use ctr and when to use setter 
+	//default ctr
+	
+	public Account() {
+	}
+
+	//para ctr
+	public Account(int accountId, String accountHolderName, double accountBalance) {
+		this.accountId = accountId;
+		this.accountHolderName = accountHolderName;
+		this.accountBalance = accountBalance;
+	}
+	
+	//copy ctr vs clonning, what is big 3 in c++
+	public Account(Account account) {
+		this.accountId=account.getAccountId();
+		this.accountHolderName=account.getAccountHolderName();
+		this.accountBalance=account.getAccountBalance();
+	}
+	
+	
+	
+	
+	
+
+	public int getAccountId() {
+		return accountId;
+	}
+
+	public String getAccountHolderName() {
+		return accountHolderName;
+	}
+	
+	public double getAccountBalance() {
+		return accountBalance;
+	}
+	public void setAccountBalance(double accountBalance) {
+		this.accountBalance = accountBalance;
+	}
+	
+	public void printAccountDetails() {
+		System.out.println("id: "+ accountId);
+		System.out.println("name: "+ accountHolderName);
+		System.out.println("balance: "+ accountBalance);
+	}
+}
+
+
+
+
+
+
+
+
+

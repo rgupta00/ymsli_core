@@ -1,0 +1,6 @@
+
+public class Demo {
+	public static void main(String args[]) {
+		//i want to echo what user pass....
+	}
+}

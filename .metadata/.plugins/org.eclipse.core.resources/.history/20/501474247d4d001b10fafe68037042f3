@@ -1,0 +1,19 @@
+
+public class Account {
+	private int accountId;
+	private String accountHolderName;
+	private double accountBalance;
+	
+	//default ctr
+	public Account() {}
+	
+	//para ctr
+	public Account(int accountId, String accountHolderName,double accountBalance ) {
+		this.accountId=accountId;
+		this.accountHolderName=accountHolderName;
+		this.accountBalance=accountBalance;
+	}
+	
+	
+	
+}

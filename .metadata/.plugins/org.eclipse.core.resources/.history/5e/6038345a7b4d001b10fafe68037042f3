@@ -1,0 +1,12 @@
+
+public class DemoAccount {
+
+	public static void main(String[] args) {
+		Account account1=new Account(33, "raja", 5000);
+		account1.printAccountDetails();
+		
+		Account accountCopyOfAccount1=new Account(account1);
+		
+		accountCopyOfAccount1.printAccountDetails();
+	}
+}

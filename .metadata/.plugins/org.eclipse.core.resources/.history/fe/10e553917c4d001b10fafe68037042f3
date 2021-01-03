@@ -1,0 +1,10 @@
+
+public class Account {
+	private int accountId;
+	private String accountHolderName;
+	private double accountBalance;
+	
+	
+	
+	
+}
