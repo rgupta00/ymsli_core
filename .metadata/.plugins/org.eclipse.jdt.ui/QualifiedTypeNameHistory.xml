@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="java.util.Scanner"/>
+<fullyQualifiedTypeName name="java.sql.Date"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="com.aif.face_rec_system.model.Face"/>
+<fullyQualifiedTypeName name="com.aif.face_rec_system.ui.Face"/>
+<fullyQualifiedTypeName name="com.day2.session2.callbyref.Data"/>
+<fullyQualifiedTypeName name="com.relations.usea.Marker"/>
+<fullyQualifiedTypeName name="com.relations.usea.Trainer"/>
+<fullyQualifiedTypeName name="com.relations.losecoupling.Metro"/>
+<fullyQualifiedTypeName name="com.relations.losecoupling.Passanger"/>
+<fullyQualifiedTypeName name="com.relations.losecoupling.Vehical"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
 </qualifiedTypeNameHistroy>
