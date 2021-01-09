@@ -5,7 +5,308 @@
   <link rel="self" href="https://spring.io/blog.atom" />
   <id>http://spring.io/blog.atom</id>
   <icon>https://spring.io/favicon.ico</icon>
-  <updated>2020-12-31T02:45:36Z</updated>
+  <updated>2021-01-08T03:15:00Z</updated>
+  <entry>
+    <title>Spring Data's Migration from Jira to GitHub Issues</title>
+    <link rel="alternate" href="https://spring.io/blog/2021/01/07/spring-data-s-migration-from-jira-to-github-issues" />
+    <category term="engineering" label="Engineering" />
+    <author>
+      <name>Mark Paluch</name>
+    </author>
+    <id>tag:spring.io,2020-12-31:4327</id>
+    <updated>2021-01-08T03:15:00Z</updated>
+    <content type="html">&lt;p&gt;Spring Data has migrated its entire history of issues from Jira to GitHub. The goal of this blog post is to give you context and details about this migration.&lt;/p&gt;&lt;h1&gt;&lt;a href="#migration-details" class="anchor" name="migration-details"&gt;&lt;/a&gt;Migration Details&lt;/h1&gt;
+&lt;p&gt;Spring Data issues have been managed for over ten years in Jira. Today, every issue and every comment has been imported into GitHub. There is a lot to consider in such a move, so let&amp;rsquo;s take a tour and go over some details.&lt;/p&gt;
+&lt;p&gt;Spring Data consists of 19 individual projects, each one of which is associated with its own issue tracker namespace. Four projects (Spring Data Build, BOM, Envers, and R2DBC) have been using GitHub. One project (Spring Data GemFire) was not migrated as it is in maintenance mode and is going end of life soon.&lt;br/&gt;During this migration, we migrated almost 15,000 tickets from 14 Jira projects into 14 GitHub repositories. &lt;/p&gt;&lt;h3&gt;&lt;a href="#jira-details" class="anchor" name="jira-details"&gt;&lt;/a&gt;Jira Details&lt;/h3&gt;
+&lt;p&gt;Every imported issue displays information from Jira in the bottom half of its description. The goal was that all information from Jira is available on GitHub, and you don&amp;rsquo;t have to go back and forth between the two. You may see one or more of the following, when available:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Affected versions&lt;/li&gt;
+  &lt;li&gt;Reference URL&lt;/li&gt;
+  &lt;li&gt;Attachments&lt;/li&gt;
+  &lt;li&gt;Related issues&lt;/li&gt;
+  &lt;li&gt;Pull requests and commit references&lt;/li&gt;
+  &lt;li&gt;Backport versions&lt;/li&gt;
+  &lt;li&gt;Vote and watcher counts&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Note that votes and watch subscriptions could not be carried over to GitHub. Even if &lt;code&gt;spring-issuemaster&lt;/code&gt; has full privileges, it can only vote once, and it cannot vote on someone else&amp;rsquo;s behalf. So please visit GitHub issues to re-apply reactions and subscribe to receive updates for specific issues.&lt;/p&gt;&lt;h3&gt;&lt;a href="#labels" class="anchor" name="labels"&gt;&lt;/a&gt;Labels&lt;/h3&gt;
+&lt;p&gt;Some Jira fields were converted to GitHub issue labels:&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Jira Field &lt;/th&gt;
+      &lt;th&gt;Label&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Issue Type &lt;/td&gt;
+      &lt;td&gt;&lt;code&gt;&amp;quot;type: *&amp;quot;&lt;/code&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Status &lt;/td&gt;
+      &lt;td&gt;&lt;code&gt;&amp;quot;status: *&amp;quot;&lt;/code&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Resolution &lt;/td&gt;
+      &lt;td&gt;&lt;code&gt;&amp;quot;status: *&amp;quot;&lt;/code&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Component &lt;/td&gt;
+      &lt;td&gt;&lt;code&gt;&amp;quot;in: *&amp;quot;&lt;/code&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Two extra labels were also applied to imported issues:&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Label &lt;/th&gt;
+      &lt;th&gt;Description&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code&gt;&amp;quot;has: votes-jira&amp;quot;&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;imported issues with 10+ votes&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code&gt;&amp;quot;has: backports&amp;quot;&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;issues with backport versions&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;We used the opportunity to streamline the Jira field values over all repositories. Components are reflected through &lt;code&gt;&amp;quot;in: *&amp;quot;&lt;/code&gt; labels. The &lt;code&gt;&amp;quot;status: *&amp;quot;&lt;/code&gt; and &lt;code&gt;&amp;quot;type: *&amp;quot;&lt;/code&gt; labels have also been given extra thought and revised. A typical Spring Data project has the following components:&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Label &lt;/th&gt;
+      &lt;th&gt;Description&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code&gt;&amp;quot;in: core&amp;quot;&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;Core support&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code&gt;&amp;quot;in: mapping&amp;quot;&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;Mapping metadata and converter infrastructure&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code&gt;&amp;quot;in: repository&amp;quot;&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;Repository abstraction&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Depending on the actual project, you can find additional components, such as &lt;code&gt;&amp;quot;in: aggegation-framework&amp;quot;&lt;/code&gt; for Spring Data MongoDB. Therefore, you might find components in &lt;a href="https://github.com/spring-projects/spring-data-rest/labels"&gt;Spring Data REST&lt;/a&gt; that do not exist in &lt;a href="https://github.com/spring-projects/spring-data-jpa/labels"&gt;Spring Data JPA&lt;/a&gt;.. &lt;/p&gt;
+&lt;p&gt;Our choice of labels is aligned with the labels used in Spring Boot and Spring Framework. The Boot team has given their process and labels a lot of thought, and we know many people will appreciate the consistency. See the complete &lt;a href="https://github.com/spring-projects/spring-data-commons/labels"&gt;set of labels&lt;/a&gt; for &lt;a href="https://github.com/spring-projects/spring-data-commons"&gt;Spring Data Commons&lt;/a&gt;. &lt;/p&gt;
+&lt;p&gt;In Jira, many fields and labels are modifiable. In GitHub, only contributors can add or remove labels. This makes perfect sense. Reporters simply describe the issue, while contributors categorize it. Both developers and contributors can use the labels to search.&lt;/p&gt;
+&lt;p&gt;Going forward, Spring Data adopts a bit of automation such that each new ticket must be triaged by the project team before a ticket is accepted as a feature request or a bug report.&lt;/p&gt;&lt;h3&gt;&lt;a href="#fix-versions" class="anchor" name="fix-versions"&gt;&lt;/a&gt;Fix Versions&lt;/h3&gt;
+&lt;p&gt;A Jira issue can have multiple fix versions, while a GitHub issue can have only one target milestone. This feels like a drawback, but there is more than is apparent to the eye, and the constraint has forced us to consider some meaningful adjustments.&lt;/p&gt;
+&lt;p&gt;Take &lt;a href="https://jira.spring.io/browse/DATACMNS-715?redirect=false"&gt;DATACMNS-715&lt;/a&gt;, for example, with fix versions &lt;code&gt;1.8.6&lt;/code&gt;, &lt;code&gt;1.9.3&lt;/code&gt;, &lt;code&gt;1.10.1&lt;/code&gt;, and &lt;code&gt;1.11 RC1&lt;/code&gt;. While the issue was fixed in all four versions, there is no way to express these using milestones. We can instead say it was fixed in &lt;code&gt;1.8.6&lt;/code&gt; and forward-ported to all other versions. This is how it shows on the GitHub issue &lt;a href="https://github.com/spring-projects/spring-framework/issues/21759"&gt;#21759&lt;/a&gt;. Could we have made this adjustment in the past? Sure, but the support for multiple fix versions in Jira didn&amp;rsquo;t force us to do so.&lt;/p&gt;&lt;h3&gt;&lt;a href="#markup" class="anchor" name="markup"&gt;&lt;/a&gt;Markup&lt;/h3&gt;
+&lt;p&gt;The markup was, without a doubt the most significant and most painful part of the migration. A ten-year history of issue tracking reflects big shifts in programming styles that in turn determine what shows up in comments. &lt;/p&gt;
+&lt;p&gt;For example, lots of XML was pasted in comments in the beginning, and Markdown treats that as &lt;a href="https://spec.commonmark.org/0.28/#html-blocks"&gt;HTML blocks&lt;/a&gt;, which results in the tags not showing at all. Of course if those were surrounded with &lt;code&gt;{code:xml}...{code}&lt;/code&gt;, it would look fine, but in those days, markup wasn&amp;rsquo;t commonly used and the XML snippets showed up anyway, so it didn&amp;rsquo;t force the issue and, consequently, made it impossible to migrate properly.&lt;/p&gt;
+&lt;p&gt;There are many other intricacies (such as the escaping of curly braces, avoiding the effect of monospacing, or escaping asterisks to prevent them from disappearing as markup for bold). I&amp;rsquo;ll spare you the details. Suffice it to say that we put a lot of effort into making sure the markup conversion quality is reasonably high.&lt;/p&gt;
+&lt;p&gt;One specific issue to highlight is the use of &amp;ldquo;@&amp;rdquo; in plain text (that is, outside of code blocks). Those are user mentions on GitHub that trigger notifications. You might be surprised that &lt;a href="https://github.com/query"&gt;@Query&lt;/a&gt;, &lt;a href="https://github.com/modifying"&gt;@Modifying&lt;/a&gt;, &lt;a href="https://github.com/configuration"&gt;@Configuration&lt;/a&gt; are actual GitHub users. This is why we&amp;rsquo;ve taken care to escape them. Going forward, when creating new issues or comments, please be a good GitHub citizen and use backticks (for example, `@Query`.&lt;/p&gt;&lt;h1&gt;&lt;a href="#background" class="anchor" name="background"&gt;&lt;/a&gt;Background&lt;/h1&gt;
+&lt;p&gt;We&amp;rsquo;ve used and liked Jira for a long time. The idea of migrating to GitHub Issues did not come to our team immediately. Jira seemed too essential. Over time, we&amp;rsquo;ve seen a growth in adoption of GitHub issues. Some of our projects used GitHub already and, for newer projects, such as Envers and R2DBC, we&amp;rsquo;ve used GitHub issues right from the start. We also see an elevated use of Markdown in Jira. Finally, the way we see our projects as a team is pretty fragmented, as there&amp;rsquo;s no single view over all tickets to work on.&lt;/p&gt;
+&lt;p&gt;GitHub is the home of just about every open source project, including &lt;em&gt;every&lt;/em&gt; Spring project, and all users can be reasonably expected to have GitHub credentials. As a result, it has become untenable today to expect developers to maintain a separate login for the issue tracker of every open source project they depend on or want to report an issue against.&lt;/p&gt;
+&lt;p&gt;Then there are the benefits of co-locating source code and issues. I&amp;rsquo;ve mentioned many of those earlier, like the &lt;a href="https://help.github.com/articles/autolinked-references-and-urls/"&gt;autolinked references&lt;/a&gt; across issues, pull requests, source code and commits, within a single project and across all projects on GitHub and the ability to mention and notify any GitHub user. All of those are very powerful benefits that are simply not possible with siloed issue tracking. I doubt anyone wants to go back to the days when open source projects were hosted in different places. The same is true for issue tracking.&lt;/p&gt;
+&lt;p&gt;There are deeper, less obvious benefits for co-located source code and issues. GitHub treats issues and pull requests equally. They are assigned numbers from the same sequence, they look the same (description, comments, labels, and target milestone), they appear in release notes without distinction. A pull request is nothing but an issue with commits attached.&lt;/p&gt;
+&lt;p&gt;Historically, in the Spring Data projects, we required a Jira issue for every pull request. We didn&amp;rsquo;t like the burden either, but we needed a single place of record for all issues. As a consequence of this split situation, it was never too clear what should be discussed under the pull request and how much belongs in the Jira issue. &lt;/p&gt;
+&lt;p&gt;Going forward, this is no longer a problem. We expect either an issue or a pull request, not both. If you need to start with a discussion first, which we &lt;em&gt;do&lt;/em&gt; encourage, create an issue, and later, if you submit a pull request, the PR will supersede the issue. The two are still linked, and nothing is lost. The conversation follows the action.&lt;/p&gt;
+&lt;p&gt;Not to be overlooked is the markup question. There is no doubt that using different markup variants depending on the issue tracker is painful.&lt;br/&gt;There is also no question that Markdown is widely used and easy to use in code-related discussions. It requires less typing compared to Jira&amp;rsquo;s Wiki markup and it just works when it comes to formatting code, because it&amp;rsquo;s simpler and does not clash with symbols that commonly appear in code. This has looked obvious to me from the start, since I&amp;rsquo;ve also used GitHub and Markdown in parallel for years. Jira is about the oldest Atlassian product so there&amp;rsquo;s a bit of history of why there&amp;rsquo;s no out of the box support for Markdown. To be clear, this wasn&amp;rsquo;t a decisive factor. It&amp;rsquo;s just one of those things you learn to live with that can later become extra incentive for change.&lt;/p&gt;
+&lt;p&gt;Last but not least, today, most developers use Spring through Spring Boot, which has always used GitHub Issues. Spring Framework has used GitHub Issues for two years. From that perspective alone, there is enough incentive for Spring Data to migrate and to create a more consistent experience for Spring users.&lt;/p&gt;
+&lt;p&gt;Migrating to GitHub issues gives us, as a team, an opportunity to reconsider or commit message format. Since its inception, Spring Data messages followed the pattern of &lt;a href="https://github.com/spring-projects/spring-data-commons/commit/2b7c5552738763dfec299695c4a17086af9b3b0b"&gt;&lt;code&gt;&amp;lt;ticketnumber&amp;gt; - summary.&lt;/code&gt;&lt;/a&gt;. That format worked well for us in the past. With migrating to GitHub, the ticket number starts with a hash (&lt;code&gt;#&lt;/code&gt;), which is typically used as a comment character. As a consequence, changing commit messages or amending commits becomes a burden, as each committer needs to tune their Git config to not consider &lt;code&gt;#&lt;/code&gt; a comment character. Going forward, GitHub allows &lt;a href="https://docs.github.com/en/free-pro-team@latest/github/managing-your-work-on-github/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword"&gt;closing tickets and pull requests by referencing the ticket in a commit message&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Our future commit messages therefore will look more like:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint"&gt;Summary.&#xD;
+&#xD;
+Body comes here.&#xD;
+&#xD;
+Original pull request #456&#xD;
+Closes #123
+&lt;/code&gt;&lt;/pre&gt;&lt;h1&gt;&lt;a href="#the-actual-migration" class="anchor" name="the-actual-migration"&gt;&lt;/a&gt;The Actual Migration&lt;/h1&gt;
+&lt;hr/&gt;
+&lt;p&gt;Despite a lot of preparation, there is nothing like the day of the actual migration. We used GitHub&amp;rsquo;s unofficial &lt;a href="https://gist.github.com/jonmagic/5282384165e0f86ef105"&gt;import API&lt;/a&gt;, which is documented to not trigger any notifications. Once in a while, the import of individual issues failed because of their body size. Especially pasting raw &lt;code&gt;StackOverflowExceptions&lt;/code&gt; causes large issue bodies that need to be truncated.&lt;/p&gt;
+&lt;p&gt;With that in mind, we migrated all 14 projects over the course of two days. It took another few hours to make a second pass over all issues and comments to replace Jira issue keys with GitHub reference numbers.&lt;/p&gt;
+&lt;p&gt;All of that is now complete, and it is my pleasure to announce we are now open for business on GitHub Issues.&lt;/p&gt;
+&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
+  </entry>
+  <entry>
+    <title>A Bootiful Podcast: Netty and Armeria founder Trustin Lee</title>
+    <link rel="alternate" href="https://spring.io/blog/2021/01/07/a-bootiful-podcast-netty-and-armeria-founder-trustin-lee" />
+    <category term="engineering" label="Engineering" />
+    <author>
+      <name>Josh Long</name>
+    </author>
+    <id>tag:spring.io,2021-01-08:4329</id>
+    <updated>2021-01-08T02:15:00Z</updated>
+    <content type="html">&lt;p&gt;Hi, Spring fans! In this episode &lt;a href="http://twitter.com/starbuxman"&gt;Josh Long (@starbuxman)&lt;/a&gt; talks to Netty and Armeria founder &lt;a href="http://twitter.com/trustin"&gt;Trustin Lee (@trustin)&lt;/a&gt;.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href="http://Armeria.dev"&gt;Armeria&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://netty.io/"&gt;Netty&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://mina.apache.org/"&gt;Apache Mina &lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://twitter.com/trustin"&gt;Trustin&amp;rsquo;s Twitter&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://twitter.com/trustin_ko"&gt;Trustin&amp;rsquo;s Twitter in Korean&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://t.motd.kr/"&gt;Blog&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/playlist?list=PLuWz7MpEAx_fPDwy0yus3SJdzWVtu3mwc"&gt;Trustin&amp;rsquo;s Talks&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://speakerdeck.com/trustin"&gt;Speaker Deck&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Chat with Trustin in the &lt;a href="https://armeria.dev/s/slack"&gt;Armeria Slack workspace&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;iframe title="Netty and Armeria founder Trustin Lee" height="122" width="100%" style="border: none;" scrolling="no" data-name="pb-iframe-player" src="https://www.podbean.com/media/player/4r7nq-f6fcf5?from=pb6admin&amp;download=1&amp;version=1&amp;auto=0&amp;share=1&amp;download=1&amp;rtl=0&amp;fonts=Helvetica&amp;skin=1&amp;pfauth=&amp;btn-skin=107"&gt;&lt;/iframe&gt;
+&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
+  </entry>
+  <entry>
+    <title>YMNNALFT: Reactive Dataflow with Project Reactor</title>
+    <link rel="alternate" href="https://spring.io/blog/2021/01/06/ymnnalft-reactive-dataflow-with-project-reactor" />
+    <category term="engineering" label="Engineering" />
+    <author>
+      <name>Josh Long</name>
+    </author>
+    <id>tag:spring.io,2020-12-30:4317</id>
+    <updated>2021-01-05T23:00:00Z</updated>
+    <content type="html">&lt;p&gt;Welcome to another installment of &lt;em&gt;You May Not Need Another Library For That&lt;/em&gt; (YMNNALFT)! I&amp;rsquo;ve spent a lot of time since 2016 illuminating (or trying to, anyway!) some of the more enormous opportunities in the Spring ecosystem in &lt;a href="http://bit.ly/spring-tips-playlist"&gt;my Spring Tips videos&lt;/a&gt;. Today, however, I come to you in a different spirit, wanting to focus on the little, sometimes hidden, gems that do fantastic things and that might spare you an additional third-party dependency and its implied complexity. &lt;/p&gt;
+&lt;p&gt;And it&amp;rsquo;s a good thing we&amp;rsquo;re covering some of these complexity-reducing gems, too, you see, because the world is a confusing, complex, and dizzying place, and nowhere is that more evident than in the world of reactive data stream composition. Life comes at you fast and data, even more so. Data originates from everything (network services, databases, in-memory computation, threaded code, etc.). Data comes in many different sizes and shapes (one record, ten records, infinite records, etc.). Data comes in different volumes, starving or overwhelming its consumers. Data arrives at different cadences and times: now, later, all at once, periodically, etc. It&amp;rsquo;s much more natural to talk about data that&amp;rsquo;s already in memory, in hand, so to speak, than data that hasn&amp;rsquo;t yet materialized. And it&amp;rsquo;s more natural to talk about data in the single-threaded case than to deal with it in the concurrent case. &lt;/p&gt;
+&lt;img src = "https://media1.tenor.com/images/e6494f3096cf60a3832e0775936bf9cb/tenor.gif" /&gt;
+&lt;p&gt;It&amp;rsquo;s confusing to think about! Historically, it&amp;rsquo;s been even more tedious to address the different data dimensions in code. That is, until reactive programming.&lt;/p&gt;
+&lt;p&gt;Reactive programming offers a unified world view, allowing us to think about the messy world of (potentially asynchronous and potentially concurrent) integration in terms of an easy to use DSL with operators. The operators support the definition and composition of reactive stream data flow pipelines. Reactive programming offers a structured concurrency paradigm, greatly simplifying writing safe, scalable, resource-efficient code. &lt;/p&gt;
+&lt;p&gt;There are some great libraries out there (like &lt;a href="https://github.com/ReactiveX/RxJava"&gt;RxJava&lt;/a&gt; and &lt;a href="https://doc.akka.io/docs/akka/current/stream/index.html"&gt;Akka Streams&lt;/a&gt;) that work in much the same way. If you haven&amp;rsquo;t got a particular one in mind but want a world-class option and are already using Spring, then you might as well use &lt;a href="http://ProjectReactor.io"&gt;Project Reactor&lt;/a&gt;. It&amp;rsquo;s included in the box!&lt;/p&gt;
+&lt;p&gt;The Spring team developed Project Reactor to support the reactive efforts in the Spring ecosystem. You don&amp;rsquo;t need Spring to use Project Reactor, but all the reactive APIs in the Spring ecosystem build on Project Reactor for the dataflow options. Microsoft &lt;a href="https://azure.github.io/azure-sdk/java_introduction.html#async-service-clients"&gt;mandates&lt;/a&gt; that all their SDK clients and APIs be created using &lt;a href="https://devblogs.microsoft.com/azure-sdk/async-programming-with-project-reactor/"&gt;Project Reactor&lt;/a&gt;. &lt;a href="https://github.com/rsocket/rsocket-java"&gt;Facebook&lt;/a&gt; developed the Java client for their RSocket protocol using Project Reactor. Project Reactor is mature - it&amp;rsquo;s been around since 2010! - but growing new features all the time. If you&amp;rsquo;re &lt;em&gt;still&lt;/em&gt; not getting what you need, it works flawlessly with other reactive data flow libraries through the interoperable &lt;a href="http://www.reactive-streams.org/"&gt;Reactive Streams&lt;/a&gt; types. &lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s look at an example of how Project Reactor makes short work of the composition of different data flow sources and sinks and all but eliminates any manual threading code. This is a &lt;em&gt;huge&lt;/em&gt; win. Remember: only one person &lt;em&gt;truly&lt;/em&gt; understands how to write safe, useful, multithreaded Java code&amp;hellip;. and it&amp;rsquo;s &lt;em&gt;not&lt;/em&gt; you! I don&amp;rsquo;t know &lt;em&gt;who&lt;/em&gt; it is. It doesn&amp;rsquo;t matter. Don&amp;rsquo;t tempt fate; let Project Reactor help. &lt;/p&gt;
+&lt;p&gt;You&amp;rsquo;ll need the following dependencies. &lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Reactive Web on &lt;a href="http://start.spring.io"&gt;the Spring Initializr&lt;/a&gt; - &lt;code&gt;org.springframework.boot&lt;/code&gt; : &lt;code&gt;spring-boot-starter-webflux&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Now, let&amp;rsquo;s look at a sample. This example demonstrates how easy it is to normalize processing given disparate kinds of data. In this example, we look at a Java 8 &lt;code&gt;java.util.Stream&amp;lt;T?&amp;gt;&lt;/code&gt; and a &lt;code&gt;CompletableFuture&amp;lt;T&amp;gt;&lt;/code&gt;, but the sky&amp;rsquo;s the limit. In most reactive applications, you won&amp;rsquo;t necessarily be in the business of converting non-reactive types to reactive types (like &lt;code&gt;Flux&amp;lt;T&amp;gt;&lt;/code&gt; or &lt;code&gt;Mono&amp;lt;T&amp;gt;&lt;/code&gt;). Those examples would be even more straightforward. This example assumes that you&amp;rsquo;ve got two data sources and need to compose them. &lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint java"&gt;package bootiful.rx;&#xD;
+&#xD;
+import org.springframework.boot.SpringApplication;&#xD;
+import org.springframework.boot.autoconfigure.SpringBootApplication;&#xD;
+import org.springframework.boot.context.event.ApplicationReadyEvent;&#xD;
+import org.springframework.context.ApplicationListener;&#xD;
+import org.springframework.context.annotation.Bean;&#xD;
+import reactor.core.publisher.Flux;&#xD;
+import reactor.core.publisher.Mono;&#xD;
+&#xD;
+import java.util.concurrent.CompletableFuture;&#xD;
+import java.util.stream.Stream;&#xD;
+&#xD;
+@SpringBootApplication&#xD;
+public class BootifulApplication {&#xD;
+&#xD;
+	CompletableFuture&amp;lt;String&amp;gt; returnCompletableFuture(int counter) {&#xD;
+		return CompletableFuture.supplyAsync(() -&amp;gt; {&#xD;
+			var start = System.currentTimeMillis();&#xD;
+			try {&#xD;
+				Thread.sleep((long) (Math.max((Math.random() * 10), 5) * 1000));&#xD;
+			}&#xD;
+			catch (InterruptedException e) {&#xD;
+				// threads smdh&#xD;
+			}&#xD;
+			var stop = System.currentTimeMillis();&#xD;
+			var delta = stop - start;&#xD;
+			return &amp;quot;(&amp;quot; + Thread.currentThread().getName() + &amp;quot;) Hello, #&amp;quot; + counter + &amp;quot;! (after &amp;quot; + delta + &amp;quot; ms.)&amp;quot;;&#xD;
+		});&#xD;
+	}&#xD;
+&#xD;
+	Stream&amp;lt;Integer&amp;gt; returnStream() {&#xD;
+		return Stream.iterate(0, integer -&amp;gt; integer + 1);&#xD;
+	}&#xD;
+&#xD;
+	@Bean&#xD;
+	ApplicationListener&amp;lt;ApplicationReadyEvent&amp;gt; begin() {&#xD;
+		return event -&amp;gt; {&#xD;
+&#xD;
+			Flux&amp;lt;String&amp;gt; count = Flux//&#xD;
+					.fromStream(this.returnStream()) //&#xD;
+					.take(10) //&#xD;
+					.flatMap(c -&amp;gt; Flux.zip(Mono.just(c), Mono.fromCompletionStage(this.returnCompletableFuture(c)))) //&#xD;
+					.map(tuple -&amp;gt; tuple.getT2() + &amp;quot; #&amp;quot; + tuple.getT1()); //&#xD;
+&#xD;
+			count.subscribe(System.out::println);&#xD;
+		};&#xD;
+	}&#xD;
+&#xD;
+	public static void main(String[] args) {&#xD;
+		SpringApplication.run(BootifulApplication.class, args);&#xD;
+	}&#xD;
+&#xD;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Do you know what else you get with Reactor? Operators supporting retries, error handling, timeouts, etc., all of which you would also farm out to yet another third-party library if they weren&amp;rsquo;t included in Project Reactor. Win-win. &lt;/p&gt;
+&lt;p&gt;I could go on and on about the opportunities that present themselves given something like Project Reactor. Indeed, I &lt;em&gt;did&lt;/em&gt;. Check out my book &lt;a href="http://ReactiveSpring.io"&gt;&lt;em&gt;Reactive Spring&lt;/em&gt;&lt;/a&gt; for (a lot) more. &lt;/p&gt;
+&lt;p&gt;Well? Did you have fun, and maybe learn something? As always, I&amp;rsquo;m keen on hearing from you, so &lt;a href="http://twitter.com/starbuxman"&gt;please sound off on Twitter (@starbuxman) &lt;/a&gt;! I&amp;rsquo;ll be back with another installment of &lt;em&gt;YMNNALFT&lt;/em&gt; later this week, so be sure not to miss that. I&amp;rsquo;ve got installments on, among other things, Easy RPC, The Garden of &lt;code&gt;*Utils&lt;/code&gt; objects, Dimensional Metrics with Micrometer, and many, many more topics. &lt;/p&gt;
+&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
+  </entry>
+  <entry>
+    <title>This Week in Spring, January 5th, 2020 - 10th Anniversary Edition</title>
+    <link rel="alternate" href="https://spring.io/blog/2021/01/05/this-week-in-spring-january-5th-2020-10th-anniversary-edition" />
+    <category term="engineering" label="Engineering" />
+    <author>
+      <name>Josh Long</name>
+    </author>
+    <id>tag:spring.io,2021-01-05:4328</id>
+    <updated>2021-01-05T20:10:37Z</updated>
+    <content type="html">&lt;p&gt;Hi, Spring fans! Happy new year! And welcome to another installment of &lt;em&gt;This Week in Spring&lt;/em&gt;! Today is a significant installment because it marks a decade of &lt;em&gt;This Week in Spring&lt;/em&gt;! &lt;/p&gt;
+&lt;p&gt;I started this roundup after a fun discussion with the legendarily nice guy and SpringSource co-founder Keith Donald in late 2010 over the holiday. Lo, the first &lt;a href="http://web.archive.org/web/20110107071916/http://www.springsource.org/node/2986"&gt;week of January 2011&lt;/a&gt;, the first edition of this roundup went out the door on the old SpringSource.org blog. &lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s been so much fun putting together this roundup, without fail, every Tuesday for the last decade. You wouldn&amp;rsquo;t believe the lengths to which I went to get this out on Tuesday, well, &lt;em&gt;my&lt;/em&gt; Tuesday, no matter where I was. I&amp;rsquo;d be on planes all the time and the original blog software on SpringSource.org didn&amp;rsquo;t support scheduling posts, so I&amp;rsquo;d either publish it a little early or - if I was going to be on a plane for the entirety of the useful day - I&amp;rsquo;d have my then manager &lt;a href="https://twitter.com/devrelchap"&gt;Adam Fitzgerald&lt;/a&gt; post it for me. He reviewed the content for the first few years of the blog, too. What a legend that guy is. I learned a ton (about everything really, but also writing in particular) working with him. Nowadays, most flights longer than an hour or two have wi-fi onboard; but not so back then. Nowadays the software we use to blog - custom, open-source software that we built with Spring back in 2013 that underpins the &lt;a href="https://github.com/spring-io/sagan"&gt;spring.io&lt;/a&gt;) experience - supports scheduled posts, as well, so it&amp;rsquo;s much easier to get this post out on time. &lt;/p&gt;
+&lt;p&gt;This Week in Spring has two other variants: &lt;em&gt;This Month in Spring&lt;/em&gt; is an email digest that goes out once a month; go to the blog page and find the &lt;a href="http://spring.io/blog"&gt;&lt;em&gt;Get the Spring Newsletter&lt;/em&gt;&lt;/a&gt; sign up form to get that digest. &lt;em&gt;This Year in Spring&lt;/em&gt; goes out as the last post of any given year, right here on the blog. &lt;/p&gt;
+&lt;p&gt;I love this roundup because it&amp;rsquo;s a constant, and much appreciated, reminder of just how vibrant this community is. Thank you, as usual, Spring fans, and here&amp;rsquo;s to another decade (at least) of &lt;em&gt;This Week in Spring&lt;/em&gt;!&lt;/p&gt;
+&lt;p&gt;Now, we&amp;rsquo;ve got a ton to get to this week so let&amp;rsquo;s get into it. &lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Before we move forward, I&amp;rsquo;d like to briefly look back. 2020 had its share of struggles, generally, but Spring itself and its ambient communities continued to grow at breakneck speeds. Let&amp;rsquo;s look at the year that was in &lt;a href="https://spring.io/blog/2020/12/31/this-year-in-spring-2020-edition"&gt;&lt;em&gt;This Year in Spring - 2020 Edition&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://twitter.com/prattm/status/1344719453767008257?s=21"&gt;&amp;quot;Thanks for the reminder there was some good in 2020 @starbuxman! We successfully migrated @PedalPalApp to Kubernetes this year, and it was pretty simple with Spring Boot&amp;rsquo;s cloud-native support &#x1f60e; &lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://spring.io/blog/2020/12/31/a-bootiful-podcast-google-cloud-s-daniel-zou-on-spring-cloud-gcp-teaching-the-youths-and-happy-new-year"&gt;A Bootiful Podcast: Google Cloud&amp;rsquo;s Daniel Zou on Spring Cloud GCP, teaching the youths, and Happy New Year!&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://github.com/Cosium/spring-data-jpa-entity-graph"&gt;Spring Data JPA extension allowing full dynamic usage of EntityGraph on repositories&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.infoq.com/presentations/measuring-service-level-objectives/?itm_source=infoq&amp;itm_medium=videos_homepage&amp;itm_campaign=videos_row1"&gt;Cultivating Production Excellence&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://blog.frankel.ch/feedback-log4j2-hack-spring-boot/"&gt;Feedback on the Log4J2 hack in Spring Boot&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://itmodel4dnadamagerepair.blogspot.com/"&gt;IT Model for DNA Damage Repair&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://github.com/arttom/cqs-spring-boot-starter"&gt;Interesting! A third party library to allow people to easily follow CQS principles in Spring Boot.&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://github.com/qaware/openapi-generator-for-spring"&gt;Interesting: Open API v3 Generator for Spring Boot applications&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.mitchellbosecke.com/post/java-proxies-from-dog-to-transactionaldog"&gt;Java Proxies: From &lt;code&gt;Dog&lt;/code&gt; to &lt;code&gt;TransactionalDog&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://sizovs.net/2020/11/24/java-libraries-i-like/"&gt;Java libraries I like – Eduards Sizovs&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.javaadvent.com/2020/12/resilient-applications-spring-resilience4j.html"&gt;Resilient applications with Spring and Resilience4J - JVM Advent&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://piotrminkowski.com/2019/12/06/spring-boot-best-practices-for-microservices/"&gt;Spring Boot Best Practices for Microservices - Piotr&amp;rsquo;s TechBlog&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=8sgi_xs5opw&amp;feature=share"&gt;This is a neat introduction to Spring Data JPA&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;This isn&amp;rsquo;t, strictly speaking, Spring related, but it&amp;rsquo;s interesting. It&amp;rsquo;s an API to fluidly build up regular expressions. &lt;a href="https://github.com/VerbalExpressions/JavaVerbalExpressions"&gt;VerbalExpressions/JavaVerbalExpressions: Java regular expressions made easy.&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.reddit.com/r/java/comments/khflbg/what_courses_both_free_and_paid_on_spring_boot/"&gt;What courses (both free and paid) on Spring Boot would you recommend? : java&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
+  </entry>
+  <entry>
+    <title>YMNNALFT: Easy Docker Image Creation with the Spring Boot Maven Plugin and Buildpacks</title>
+    <link rel="alternate" href="https://spring.io/blog/2021/01/04/ymnnalft-easy-docker-image-creation-with-the-spring-boot-maven-plugin-and-buildpacks" />
+    <category term="engineering" label="Engineering" />
+    <author>
+      <name>Josh Long</name>
+    </author>
+    <id>tag:spring.io,2020-12-30:4315</id>
+    <updated>2021-01-04T11:00:00Z</updated>
+    <content type="html">&lt;p&gt;Welcome to another installment of &lt;em&gt;You May Not Need Another Library For That&lt;/em&gt; (&lt;code&gt;#YMNNALFT&lt;/code&gt;)! I&amp;rsquo;ve spent a lot of time since 2016 illuminating (or trying to, anyway!) some of the more enormous opportunities in the Spring ecosystem in &lt;a href="http://bit.ly/spring-tips-playlist"&gt;my Spring Tips videos&lt;/a&gt;. Today, however, I come to you in a different spirit, wanting to focus on the little, sometimes hidden, gems that do fantastic things and that might spare you an additional third-party dependency and its implied complexity. &lt;/p&gt;
+&lt;p&gt;Have you tried out &lt;a href="https://paketo.io"&gt;Paketo&lt;/a&gt;? It&amp;rsquo;s neat-o! It alleviates one of the biggest pains of cloudy software these days:&lt;a href="https://docs.docker.com/engine/reference/builder/"&gt;Dockerfiles&lt;/a&gt;. &lt;/p&gt;
+&lt;p&gt;As an aside: the &lt;em&gt;biggest&lt;/em&gt; pain point is, of course, YAML. YAML is why people leave IT! YAML: when you want the indentation-sensitive treachery of Python, with the nonexistent design-time validation of Python and &lt;em&gt;none&lt;/em&gt; of the benefits of Python. YAML: because life is, clearly, not hard enough. 9/10 dentists agree: YAML causes production rot!&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;&amp;ldquo;Indeed it has been said that YAML is the best form of configuration except for all those other forms that have been tried from time to time.&amp;rdquo; - Not Winston Churchill &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;blockquote class="twitter-tweet"&gt;&lt;p lang="en" dir="ltr"&gt;No pressure debugging YAML ;) &lt;a href="https://t.co/vwCCYKTZY2"&gt;pic.twitter.com/vwCCYKTZY2&lt;/a&gt;&lt;/p&gt;&amp;mdash; Arun Gupta (@arungupta) &lt;a href="https://twitter.com/arungupta/status/1340676192588890112?ref_src=twsrc%5Etfw"&gt;December 20, 2020&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="https://platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;p&gt;Aaaanyway, YAML is a whole, other, &amp;ldquo;Oprah,&amp;rdquo; and we just don&amp;rsquo;t have a ton of time to get into it, so let&amp;rsquo;s move on: we want to simplify the creation of Dockerfiles. Dockerfiles are tedious and they require us to re-specify the complete environment required to run our applications in production. It&amp;rsquo;s possible to get something working in a fairly minimal number of lines, but as I learned while avoiding the COVID-19 virus, &amp;ldquo;minimal&amp;rdquo; is not &amp;ldquo;none!&amp;rdquo; And besides, something working does not a production environment make. We can do better.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://paketo.io/"&gt;Paketo&lt;/a&gt; is a Cloud Foundry foundation project based on the &lt;a href="https://buildpacks.io/"&gt;buildpacks project&lt;/a&gt; from &lt;a href="https://www.cncf.io/"&gt;CNCF&lt;/a&gt; (which stands for &amp;ldquo;Code Never Comes Finished,&amp;rdquo; or maybe it was &amp;ldquo;Common Network Code Foundation,&amp;rdquo; or was it &amp;ldquo;Cloud Native Computing Foundation&amp;rdquo;?). From the website: &amp;ldquo;buildpacks transform your application source code to images that can run on any cloud. Paketo Buildpacks provide language runtime support for applications. They leverage the Cloud Native Buildpacks framework to make image builds easy, performant, and secure.&amp;rdquo; Basically: application in; container out. See? Neat!&lt;/p&gt;
+&lt;p&gt;Buildpacks come from the Heroku and Cloud Foundry Platform-as-a-service offerings. You give the buildpack an application artifact (like, say, a Java &lt;code&gt;.jar&lt;/code&gt;), and the buildpack gives you back your application in a container. More specifically, it&amp;rsquo;ll create a sensible filesystem containing your application artifact and everything needed to run that application artifact. So, given a &lt;code&gt;.jar&lt;/code&gt;, it might create a filesystem with a JVM configured with reasonable memory bounds and any required Java agents configured. All of &lt;em&gt;that&lt;/em&gt; is what eventually gets turned into a container. You&amp;rsquo;d be &lt;em&gt;shocked&lt;/em&gt; what you can get containerized with virtually no configuration at all! Buildpacks work because, no matter how much we may protest, most applications aren&amp;rsquo;t special. A &lt;code&gt;.jar&lt;/code&gt; is a &lt;code&gt;.jar&lt;/code&gt; for everybody, and a Node.js/NPM project builds the same for everybody. Buildpacks support several different languages and runtime (way too many to name). You can use the Paketo CLI to make short work of containerizing various applications, like this: &lt;code&gt;pack build .&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;Or, anyway, that&amp;rsquo;s what you &lt;em&gt;would&lt;/em&gt; do if you were not using &lt;a href="https://docs.spring.io/spring-boot/docs/2.4.1/maven-plugin/reference/htmlsingle/#build-image"&gt;Spring Boot 2.3 or later&lt;/a&gt;. But, you are, _ aren&amp;rsquo;t you_? Buildpack support is now in the Spring Boot build plugins themselves. &lt;/p&gt;
+&lt;p&gt;If you were using Maven, you could type the following incantation: &lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint"&gt;./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=bootiful/demo
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If you were using Gradle, you could type the following incantation: &lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint"&gt;./gradlew bootBuildImage --imageName=bootiful/demo
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Stand back for a minute while it does all the work. It&amp;rsquo;ll dump out the Docker image at the end of its work. You can then &lt;code&gt;docker tag&lt;/code&gt; and then &lt;code&gt;docker push&lt;/code&gt; that image to your container registry of choice (&lt;a href="https://goharbor.io/"&gt;VMware Harbor&lt;/a&gt;, &lt;a href="https://cloud.google.com/container-registry/"&gt;Google Container Registry&lt;/a&gt;, &lt;a href="https://jfrog.com/container-registry/"&gt;JFrog Container Registry&lt;/a&gt;, &lt;a href="https://hub.docker.com/"&gt;DockerHub&lt;/a&gt;, etc.). &lt;/p&gt;
+&lt;p&gt;Do you want to take that to production? That&amp;rsquo;s pretty trivial, too! Here&amp;rsquo;s the right incantation for Kubernetes, assuming your image is on Google Container Registry, has an artifact ID of &lt;code&gt;demo&lt;/code&gt;. The version specified in &lt;code&gt;pom.xml&lt;/code&gt; becomes a tag for the version of the container, too.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint"&gt;kubectl create deployment demo --image=gcr.io/bootiful/demo
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Hopefully, this is enough to get you to production without so much as even having to configure something like Jib or the Spotify Maven plugin or crafting a long, byzantine shell script to do the &lt;code&gt;docker build&lt;/code&gt; itself. Now, don&amp;rsquo;t get me wrong. You &lt;em&gt;might&lt;/em&gt; still need to create your own `Dockerfile&amp;rsquo;s for whatever reason, as you might have something to say about the ordering or contents of particular layers, and if so, then Spring Boot &lt;a href="https://docs.spring.io/spring-boot/docs/2.4.1/maven-plugin/reference/htmlsingle/#build-image-customization"&gt;has your back here&lt;/a&gt;, too. &lt;/p&gt;
+&lt;p&gt;Alright, that&amp;rsquo;s more than enough to get going. Go to the &lt;a href="http://start.Spring.io"&gt;Spring Initializr&lt;/a&gt; (my second favorite place on the internet, &lt;em&gt;after&lt;/em&gt; production) and generate a new project and take your containerized application to the platform of your choice. &lt;/p&gt;
+&lt;p&gt;Did you like this gem at a glance approach? Did you learn anything? As always, I&amp;rsquo;m keen on hearing from you, so &lt;a href="http://twitter.com/starbuxman"&gt;please sound off on Twitter (@starbuxman) &lt;/a&gt;! I&amp;rsquo;ll be back with another installment of &lt;em&gt;YMNNALFT&lt;/em&gt; later this week, so be sure not to miss that. I&amp;rsquo;ve got installments on, among other things, Easy RPC, The Garden of &lt;code&gt;*Utils&lt;/code&gt; objects, Dimensional Metrics with Micrometer, and many, many more topics. &lt;/p&gt;
+&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
+  </entry>
   <entry>
     <title>A Bootiful Podcast: Google Cloud's Daniel Zou on Spring Cloud GCP, teaching the youths, and Happy New Year!</title>
     <link rel="alternate" href="https://spring.io/blog/2020/12/31/a-bootiful-podcast-google-cloud-s-daniel-zou-on-spring-cloud-gcp-teaching-the-youths-and-happy-new-year" />
@@ -14,7 +315,7 @@
       <name>Josh Long</name>
     </author>
     <id>tag:spring.io,2020-12-31:4326</id>
-    <updated>2020-12-31T02:45:36Z</updated>
+    <updated>2020-12-31T01:45:36Z</updated>
     <content type="html">&lt;p&gt;Hi, Spring fans! Welcome to another installment of A Bootiful Podcast and happy new year! In this episode, &lt;a href="http://twitter.com/starbuxman"&gt;Josh Long (@starbuxman)&lt;/a&gt; talks to Google&amp;rsquo;s &lt;a href="https://github.com/dzou"&gt;Daniel Zou &lt;/a&gt;. &lt;/p&gt;
 &lt;p&gt;Happy New Year! &lt;/p&gt;
 &lt;iframe title="Google's Daniel Zou on Spring Cloud GCP, GraalVM and more" height="122" width="100%" style="border: none;" scrolling="no" data-name="pb-iframe-player" src="https://www.podbean.com/media/player/kkk5w-f64f08?from=pb6admin&amp;download=1&amp;version=1&amp;auto=0&amp;share=1&amp;download=1&amp;rtl=0&amp;fonts=Helvetica&amp;skin=1&amp;pfauth=&amp;btn-skin=107"&gt;&lt;/iframe&gt;
@@ -27,8 +328,8 @@
     <author>
       <name>Josh Long</name>
     </author>
-    <id>tag:spring.io,2020-12-31:4325</id>
-    <updated>2020-12-31T00:23:56Z</updated>
+    <id>tag:spring.io,2020-12-30:4325</id>
+    <updated>2020-12-30T23:23:56Z</updated>
     <content type="html">&lt;p&gt;Hi, Spring fans! &lt;/p&gt;
 &lt;p&gt;You know what I did? I goofed, people. I accidentally &lt;a href="https://spring.io/blog/2020/12/29/this-week-in-spring-december-29th-2020"&gt;released &lt;em&gt;This Week in Spring&lt;/em&gt;&lt;/a&gt; on this the last week of December, the last month of the year! And I shouldn&amp;rsquo;t have. I should &lt;em&gt;not&lt;/em&gt; have done that. Usually, you see, I turn the final installment of &lt;em&gt;This Week in Spring&lt;/em&gt; for a given year into the aptly named &lt;em&gt;This Year in Spring&lt;/em&gt;, a celebration of the big tentpole themes that have defined the year (well, from my perspective, anyway). Then I include the usual &lt;em&gt;This Week in Spring&lt;/em&gt; roundup inline. I forgot to do that first part, so I am publishing this as a separate post. Hey, &lt;em&gt;it&amp;rsquo;s tradition&lt;/em&gt;. &lt;/p&gt;
 &lt;p&gt;Ah, 2020. The year that just keeps on giving. This was the year of Tiger King. If you&amp;rsquo;d told me in 2019 that in 2020 I&amp;rsquo;d be glued to my couch watching the adventures of a Tiger trainer on Netflix, afraid of my delivery groceries, and that I&amp;rsquo;d be eager to get on a plane for the first time in ten months, I would&amp;rsquo;ve laughed off of my chair! &lt;/p&gt;
@@ -75,7 +376,7 @@
       <name>Josh Long</name>
     </author>
     <id>tag:spring.io,2020-12-29:4314</id>
-    <updated>2020-12-29T18:06:20Z</updated>
+    <updated>2020-12-29T17:06:20Z</updated>
     <content type="html">&lt;p&gt;Hi, Spring fans! Welcome to another installment of &lt;em&gt;This Week in Spring&lt;/em&gt;!&lt;/p&gt;
 &lt;p&gt;How are you? How&amp;rsquo;re things? I spent this morning on a fun two-hour panel hosted by the Barcelona JUG (who run the JBCN conference, among other things) talking about all sorts of things including GraalVM native images, new features in the Java language, cloud-native applications, and so much more. Thanks for having me! &lt;/p&gt;
 &lt;p&gt;I am so happy about this week&amp;rsquo;s roundup and we&amp;rsquo;ve got a lot to cover so let&amp;rsquo;s get to it!&lt;/p&gt;
@@ -105,7 +406,7 @@
       <name>Josh Long</name>
     </author>
     <id>tag:spring.io,2020-12-24:4313</id>
-    <updated>2020-12-24T11:18:54Z</updated>
+    <updated>2020-12-24T10:18:54Z</updated>
     <content type="html">&lt;p&gt;Hi, Spring fans! This week &lt;a href="http://twitter.com/starbuxman"&gt;Josh Long (@starbuxman)&lt;/a&gt; talks to Alibaba&amp;rsquo;s &lt;a href="http://twitter.com/SanHong_li"&gt;San-Hong Li (@SanHong_Li)&lt;/a&gt; on tuning OpenJDK for Alibaba-scale. &lt;/p&gt;
 &lt;p&gt;Merry Christmas / Happy Holidays to you! &lt;/p&gt;
 &lt;iframe title="Alibaba's San-Hong Li on tuning OpenJDK for Alibaba Scale" height="122" width="100%" style="border: none;" scrolling="no" data-name="pb-iframe-player" src="https://www.podbean.com/media/player/n9hns-f5d984?from=pb6admin&amp;download=1&amp;version=1&amp;auto=0&amp;share=1&amp;download=1&amp;rtl=0&amp;fonts=Helvetica&amp;skin=1&amp;pfauth=&amp;btn-skin=107"&gt;&lt;/iframe&gt;
@@ -119,7 +420,7 @@
       <name>Oleg Zhurakousky</name>
     </author>
     <id>tag:spring.io,2020-12-09:4289</id>
-    <updated>2020-12-23T16:11:00Z</updated>
+    <updated>2020-12-23T15:11:00Z</updated>
     <content type="html">&lt;h3&gt;&lt;a href="#introduction" class="anchor" name="introduction"&gt;&lt;/a&gt;Introduction&lt;/h3&gt;
 &lt;p&gt;We begin with a quick summary of the &lt;a href="https://spring.io/blog/2020/12/10/cloud-events-and-spring-part-1"&gt;previous post&lt;/a&gt;. &lt;/p&gt;
 &lt;ul&gt;
@@ -292,7 +593,7 @@ rsocketRequesterBuilder.tcp(&amp;quot;localhost&amp;quot;, 55555)&#xD;
       <name>Josh Long</name>
     </author>
     <id>tag:spring.io,2020-12-22:4312</id>
-    <updated>2020-12-22T23:04:17Z</updated>
+    <updated>2020-12-22T22:04:17Z</updated>
     <content type="html">&lt;p&gt;Hi, Spring fans! Welcome to another installment of &lt;em&gt;This Week in Spring!&lt;/em&gt; &lt;/p&gt;
 &lt;p&gt;It&amp;rsquo;s December 22nd, 2020, as I write this and I &lt;em&gt;can not&lt;/em&gt; believe we&amp;rsquo;re smack dab in the middle of the week and only have two shopping days until Christmas! I don&amp;rsquo;t know if it&amp;rsquo;s just that time of year and I&amp;rsquo;m flush with the normal amount of warm-n-fuzzies or if it&amp;rsquo;s just that, after a year like 2020, I&amp;rsquo;m very keen on savoring this precious reprieve. Either way, couldn&amp;rsquo;t be happier. I&amp;rsquo;ve got a cold! I&amp;rsquo;m sick and sneezing and my nose is running, but at least it&amp;rsquo;s not COVID-19, and at least I&amp;rsquo;ve got my family and my job, and - all things considered - I feel very, &lt;em&gt;very&lt;/em&gt;, &lt;em&gt;veery&lt;/em&gt; fortunate. &lt;/p&gt;
 &lt;p&gt;And yes, that&amp;rsquo;s right, I enumerated my health, my family, and my job because - after ten wonderful years (and counting) - I feel like the Spring team are family and I feel like working with you, dear community, is a true and exceptional privilege. I get so many wonderful messages from folks whenever I publish this weekly roundup or a blog or a video, and I appreciate that folks. I have always appreciated it, but especially this year when I, like so many in the world, am otherwise completely isolated from people. Thank you, and please let me wish you the warmest of greetings (if you don&amp;rsquo;t celebrate Christmas) and the happiest of holidays (if you do celebrate Christmas). &lt;/p&gt;
@@ -331,7 +632,7 @@ rsocketRequesterBuilder.tcp(&amp;quot;localhost&amp;quot;, 55555)&#xD;
       <name>Ryan Baxter</name>
     </author>
     <id>tag:spring.io,2020-12-22:4311</id>
-    <updated>2020-12-22T19:08:00Z</updated>
+    <updated>2020-12-22T18:08:00Z</updated>
     <content type="html">&lt;p&gt;On behalf of the community, I am pleased to announce that the GA release of the &lt;a href="https://cloud.spring.io"&gt;Spring Cloud 2020.0&lt;/a&gt; Release Train is available today. The release can be found in &lt;a href="https://repo1.maven.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.0/"&gt;Maven Central&lt;/a&gt;. You can check out the 2020.0 &lt;a href="https://github.com/spring-projects/spring-cloud/wiki/Spring-Cloud-2020.0-Release-Notes"&gt;release notes for more information&lt;/a&gt;.&lt;/p&gt;&lt;h2&gt;&lt;a href="#notable-changes-in-the-2020-0-release-train" class="anchor" name="notable-changes-in-the-2020-0-release-train"&gt;&lt;/a&gt;Notable Changes in the 2020.0 Release Train&lt;/h2&gt;
 &lt;p&gt;This release requires Spring Boot 2.4.1. In general, this release was to fix bugs prior to release.&lt;/p&gt;
 &lt;p&gt;See &lt;a href="https://github.com/spring-cloud/spring-cloud-release/wiki/Spring-Cloud-2020.0-Release-Notes#known-issues"&gt;this page&lt;/a&gt; for a list of Known Issues.&lt;/p&gt;
@@ -529,7 +830,7 @@ dependencies {&#xD;
       <name>Soby Chacko</name>
     </author>
     <id>tag:spring.io,2020-12-21:4309</id>
-    <updated>2020-12-21T18:53:59Z</updated>
+    <updated>2020-12-21T17:53:59Z</updated>
     <content type="html">&lt;div class="paragraph"&gt;
 &lt;p&gt;We are glad to announce the GA release of the newly redesigned Spring Cloud Stream applications - &lt;a href="https://github.com/spring-cloud/stream-applications/releases/tag/v2020.0.0"&gt;2020.0.0&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
@@ -737,8 +1038,8 @@ dependencies {&#xD;
     <author>
       <name>Josh Long</name>
     </author>
-    <id>tag:spring.io,2020-12-18:4308</id>
-    <updated>2020-12-18T00:52:25Z</updated>
+    <id>tag:spring.io,2020-12-17:4308</id>
+    <updated>2020-12-17T23:52:25Z</updated>
     <content type="html">&lt;p&gt;Hi, Spring fans! In this episode, &lt;a href="http://twitter.com/starbuxman"&gt;Josh Long (@starbuxman)&lt;/a&gt; talks to Cloud Foundry Developer Advocate &lt;a href="https://twitter.com/coder_blvck"&gt;Shedrack Akintayo (@coder_blvck) &lt;/a&gt;. &lt;/p&gt;
 &lt;p&gt;Also: Happy Holidays! &lt;/p&gt;
 &lt;iframe title="Cloud Foundry Developer Advocate Shedrack Akintayo" height="122" width="100%" style="border: none;" scrolling="no" data-name="pb-iframe-player" src="https://www.podbean.com/media/player/apa96-f5559d?from=pb6admin&amp;download=1&amp;version=1&amp;auto=0&amp;share=1&amp;download=1&amp;rtl=0&amp;fonts=Helvetica&amp;skin=1&amp;pfauth=&amp;btn-skin=107"&gt;&lt;/iframe&gt;
@@ -752,7 +1053,7 @@ dependencies {&#xD;
       <name>Martin Lippert</name>
     </author>
     <id>tag:spring.io,2020-12-16:4307</id>
-    <updated>2020-12-16T16:02:01Z</updated>
+    <updated>2020-12-16T15:02:01Z</updated>
     <content type="html">&lt;p&gt;Dear Spring Community,&lt;/p&gt;
 &lt;p&gt;I am happy to announce the 4.9.0 release of the Spring Tools 4 for Eclipse, Visual Studio Code, and Theia.&lt;/p&gt;&lt;h4&gt;&lt;a href="#major-changes-to-the-spring-tools-4-for-eclipse-distribution" class="anchor" name="major-changes-to-the-spring-tools-4-for-eclipse-distribution"&gt;&lt;/a&gt;major changes to the Spring Tools 4 for Eclipse distribution&lt;/h4&gt;
 &lt;ul&gt;
@@ -788,7 +1089,7 @@ dependencies {&#xD;
       <name>Josh Long</name>
     </author>
     <id>tag:spring.io,2020-12-16:4306</id>
-    <updated>2020-12-16T03:21:19Z</updated>
+    <updated>2020-12-16T02:21:19Z</updated>
     <content type="html">&lt;p&gt;Hi, Spring fans! Welcome to another installment of &lt;em&gt;This Week in Spring&lt;/em&gt;! Can you believe it&amp;rsquo;s already December 15th? Me either! Another few weeks and this soul annhilating year will be over with and we&amp;rsquo;ll be staring down 2021 filled with new hopes and possibilities! How are you? (Have you dipped into the eggnog yet?) I&amp;rsquo;m doing alright, thanks! I&amp;rsquo;ve been busy, as usual. &lt;/p&gt;
 &lt;p&gt;Most of that was fun stuff. But, some of that, I confess, was a mess of my own making. I spent Monday cleaning up a fire I&amp;rsquo;d set for myself. You see, I got a little sloppy with last week&amp;rsquo;s podcast episode. Last week, I was editing the audio for an episode with Spring Batch colead Mahmoud Ben Hassine and - in the middle of that - was pushing an interview I&amp;rsquo;d done with Dion Almaer out the door for publication that week. So, two episodes: one with Dion, one with Mahmoud. Dion was slated for last week. Mahmoud&amp;rsquo;s was slated for a future week. On top of that I&amp;rsquo;ve been toiling night and day it feels like on &lt;a href="http://github.com/bootiful-podcast"&gt;the production pipeline for my podcasts&lt;/a&gt;, living that &lt;code&gt;kubectl apply -k $WORKING_DIR&lt;/code&gt; life, and I was tired of some of the issues still lingering but figured I could, basically trust the system. So I published the episode with Dion. I got everything right, &lt;em&gt;except&lt;/em&gt; the interview was with Mahmoud. Not Dion. So it said Dion. But I&amp;rsquo;d accidentally sent out the wrong episode. Awkward. Worse, after I published that episode, figuring I had a week to make a mess before I&amp;rsquo;d next have to publish an episode, I started making a mess of the codebase. I broke stuff. Would&amp;rsquo;ve been no big deal. I would&amp;rsquo;ve sorted it out! But yesterday, Monday, I realize people are complaining that I&amp;rsquo;d bungled the audio: published the preface and description for Dion but published the audio interview with Mahmoud. So I raced to fix it, except production was down! So I spent Monday dodging between meetings and calls and trying to get the system restored. I finally got the system on its feet again late last night - both episodes with the correct titling and audio and links and photos went out and it was good. Thank you so much for your patience, community. I have egg on my face. &lt;/p&gt;
 &lt;p&gt;Anyway, everything&amp;rsquo;s fine now. I&amp;rsquo;m not gonna touch a thing until the new episode, due later this week, rolls out! And, bonus, you get not one, but &lt;em&gt;two&lt;/em&gt; episodes this week: I published both episodes last night. So, in total, you&amp;rsquo;ll get three episodes in a seven-day period, not one. Huzzah. &lt;/p&gt;
@@ -835,7 +1136,7 @@ dependencies {&#xD;
       <name>David Turanski</name>
     </author>
     <id>tag:spring.io,2020-12-11:4301</id>
-    <updated>2020-12-15T19:05:52Z</updated>
+    <updated>2020-12-15T18:05:52Z</updated>
     <content type="html">&lt;div class="paragraph"&gt;
 &lt;p&gt;This is Part 2 of Testing Stream Applications. In &lt;a href="https://spring.io/blog/2020/12/15/testing-spring-cloud-stream-applications-part-1"&gt;Part 1&lt;/a&gt; we implemented and tested the core function needed for our sample &lt;a href="https://github.com/spring-cloud/spring-cloud-stream-samples/tree/master/function-based-stream-app-samples/couchbase-stream-applications"&gt;couchbase-sink&lt;/a&gt; application. The tests at the function level covered expected success and error scenarios and relied on &lt;a href="https://www.testcontainers.org/"&gt;Testcontainers&lt;/a&gt; to provision a Couchbase cluster. This post assumes you have read Part 1 and continues where it left off.&lt;/p&gt;
 &lt;/div&gt;
@@ -1156,7 +1457,7 @@ The complete source code is &lt;a href="https://github.com/spring-cloud/spring-c
       <name>David Turanski</name>
     </author>
     <id>tag:spring.io,2020-12-09:4292</id>
-    <updated>2020-12-15T19:04:00Z</updated>
+    <updated>2020-12-15T18:04:00Z</updated>
     <content type="html">&lt;div class="paragraph"&gt;
 &lt;p&gt;This post is part  of a blog series that explores the newly redesigned Spring Cloud Stream applications based on Java Functions.
 This episode, presented in two parts, explores strategies for testing functions used to implement stream applications.
@@ -1711,7 +2012,7 @@ void keyExpressionRequired() {
       <name>Ryan Baxter</name>
     </author>
     <id>tag:spring.io,2020-12-14:4302</id>
-    <updated>2020-12-15T14:22:35Z</updated>
+    <updated>2020-12-15T13:22:35Z</updated>
     <content type="html">&lt;p&gt;On behalf of the community, I am pleased to announce that Release Candidate 1 (RC1) of the &lt;a href="https://cloud.spring.io"&gt;Spring Cloud 2020&lt;/a&gt; Release Train is available today. You can find the release in the &lt;a href="https://repo.spring.io/milestone/"&gt;Spring Milestone&lt;/a&gt; repository. See the 2020 &lt;a href="https://github.com/spring-cloud/spring-cloud-release/wiki/Spring-Cloud-2020.0-Release-Notes"&gt;release notes for more information&lt;/a&gt;.&lt;/p&gt;&lt;h2&gt;&lt;a href="#notable-changes-in-the-2020-release-train" class="anchor" name="notable-changes-in-the-2020-release-train"&gt;&lt;/a&gt;Notable Changes in the 2020 Release Train&lt;/h2&gt;
 &lt;p&gt;This release requires Spring Boot 2.4.0.&lt;/p&gt;
 &lt;p&gt;See the &lt;a href="https://github.com/spring-cloud/spring-cloud-release/wiki/Spring-Cloud-2020.0-Release-Notes#breaking-changes"&gt;wiki&lt;/a&gt; for a list of all breaking changes in this release train.&lt;/p&gt;
@@ -2004,674 +2305,9 @@ compile &amp;#39;org.springframework.cloud:spring-cloud-starter-netflix-eureka-c
       <name>Josh Long</name>
     </author>
     <id>tag:spring.io,2020-12-15:4305</id>
-    <updated>2020-12-15T04:43:30Z</updated>
+    <updated>2020-12-15T03:43:30Z</updated>
     <content type="html">&lt;p&gt;Hi, Spring fans! In this special midweek installment I correct a mistake I made last week when I inadvertently released the episode featuring Dion Almaer, with the interview I conducted with Spring Batch co-lead Mahmoud Ben Hassine. This is the actual episode with Mahmoud Ben Hassine, with the correct title and everything! Enjoy!&lt;/p&gt;
 &lt;iframe title="Spring Batch co-lead Mahmoud Ben Hassine" height="122" width="100%" style="border: none;" scrolling="no" data-name="pb-iframe-player" src="https://www.podbean.com/media/player/rpgt4-f50e00?from=pb6admin&amp;download=1&amp;version=1&amp;auto=0&amp;share=1&amp;download=1&amp;rtl=0&amp;fonts=Helvetica&amp;skin=1&amp;pfauth=&amp;btn-skin=107"&gt;&lt;/iframe&gt;
-&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
-  </entry>
-  <entry>
-    <title>A Bootiful Podcast: open-web legend Dion Almaer</title>
-    <link rel="alternate" href="https://spring.io/blog/2020/12/14/a-bootiful-podcast-open-web-legend-dion-almaer" />
-    <category term="engineering" label="Engineering" />
-    <author>
-      <name>Josh Long</name>
-    </author>
-    <id>tag:spring.io,2020-12-11:4297</id>
-    <updated>2020-12-14T23:00:00Z</updated>
-    <content type="html">&lt;p&gt;Hi, Spring fans! In this special midweek installment I (Josh Long) correct a mistake I made last week when I inadvertently released the episode featuring open-web legend Dion Almaer with the interview I conducted with the inspirational and oh-so-amazing Spring Batch co-lead Mahmoud Ben Hassine. This is the actual episode with &lt;a href="http://twitter.com/dalmaer"&gt;Dion Almaer (@dalmaer)&lt;/a&gt; who is known for so many contributions to the Java ecosystem and beyond. I know him as a former editor in chief of TheServerSide.com, but you may know him for his work championing the open web at Palm, Walmart, and Google, and many more. &lt;/p&gt;
-&lt;iframe title="Open web legend Dion Almaer" height="122" width="100%" style="border: none;" scrolling="no" data-name="pb-iframe-player" src="https://www.podbean.com/media/player/awqpe-f50e26?from=pb6admin&amp;download=1&amp;version=1&amp;auto=0&amp;share=1&amp;download=1&amp;rtl=0&amp;fonts=Helvetica&amp;skin=1&amp;pfauth=&amp;btn-skin=107"&gt;&lt;/iframe&gt;
-&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
-  </entry>
-  <entry>
-    <title>Case Study: Change Data Capture (CDC) Analysis with CDC Debezium source and Analytics sink in Real-Time</title>
-    <link rel="alternate" href="https://spring.io/blog/2020/12/14/case-study-change-data-capture-cdc-analysis-with-cdc-debezium-source-and-analytics-sink-in-real-time" />
-    <category term="engineering" label="Engineering" />
-    <author>
-      <name>Christian Tzolov</name>
-    </author>
-    <id>tag:spring.io,2020-12-10:4295</id>
-    <updated>2020-12-14T16:30:00Z</updated>
-    <content type="html">&lt;div class="paragraph"&gt;
-&lt;p&gt;This article is part of a blog series that explores the newly redesigned Spring Cloud Stream applications based on Java Functions.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Here are all the previous parts of this blog series.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="ulist"&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href="https://spring.io/blog/2020/07/13/introducing-java-functions-for-spring-cloud-stream-applications-part-0"&gt;Introducing Function Based Streaming Applications&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href="https://spring.io/blog/2020/07/20/introducing-java-functions-for-spring-cloud-stream-applications-part-1"&gt;Function Composition with Streaming Applications&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href="https://spring.io/blog/2020/07/27/creating-a-supplier-function-and-generating-spring-cloud-stream-source"&gt;How to Build a Supplier and Source Application&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href="https://spring.io/blog/2020/08/03/creating-a-function-for-consuming-data-and-generating-spring-cloud-stream-sink-applications"&gt;How to Build a Consumer and Sink Application&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href="https://spring.io/blog/2020/08/10/case-study-build-and-run-a-streaming-application-using-an-http-source-and-a-jdbc-sink"&gt;Build and Run a Simple Stream Application&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href="https://spring.io/blog/2020/08/17/case-study-http-request-function-and-processor"&gt;Case Study: HTTP Request Function and Processor&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href="https://spring.io/blog/2020/08/25/case-study-reading-from-a-file-and-writing-to-mongodb"&gt;Case Study: File Source and MongoDB Sink&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href="https://spring.io/blog/2020/09/10/case-study-relational-database-source-and-file-sink"&gt;Case Study: Relational Database Source and File Sink&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href="https://spring.io/blog/2020/09/29/case-study-remote-file-ingest-with-spring-cloud-data-flow"&gt;Case Study: Remote File Ingest with Spring Cloud Data Flow&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href="https://spring.io/blog/2020/10/26/case-study-aggregator-function-and-processor"&gt;Case Study: Aggregator Function and Processor&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href="https://spring.io/blog/2020/11/16/case-study-elasticsearch-sink"&gt;Case Study: Elasticsearch sink&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;In this post, we will look at the &lt;a href="https://github.com/spring-cloud/stream-applications/blob/master/applications/source/cdc-debezium-source/README.adoc"&gt;Debezium CDC source&lt;/a&gt; that allows us to capture database changes from databases such as MySQL, PostgreSQL, MongoDB, Oracle, DB2 and SQL Server and process those changes, in real-time, over various message binders, such as RabbitMQ, Apache Kafka, Azure Event Hubs, Google PubSub and Solace PubSub+ to name a few.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Also we will reveal how to use the &lt;a href="https://github.com/spring-cloud/stream-applications/tree/master/applications/sink/analytics-sink"&gt;Analytics sink&lt;/a&gt; to convert the captured database changes into metrics and publish them to various monitoring systems for further analysis.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;This article starts by explaining the &lt;code&gt;CDC supplier&lt;/code&gt; and the &lt;code&gt;Analytics consumer&lt;/code&gt; components, showing how to customize and use them programmatically in your own Spring applications. Next we explain how the &lt;a href="https://github.com/spring-cloud/stream-applications/tree/master/applications/source/cdc-debezium-source"&gt;CDC source&lt;/a&gt; and the &lt;a href="https://github.com/spring-cloud/stream-applications/tree/master/applications/sink/analytics-sink"&gt;Analytics sink&lt;/a&gt;, build upon the supplier and the consumer,  to provide  out of the box, ready to use streaming applications.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Finally we will demo how easy is it to use &lt;a href="https://dataflow.spring.io"&gt;Spring Cloud Data Flow (SCDF)&lt;/a&gt; for deploying streaming pipelines that react, in real-time, to database updates, convert the change events into analytics metrics and publish them to Prometheus for analysis and visualization with Grafana:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="videoblock"&gt;
-&lt;div class="content"&gt;
-&lt;iframe width="100%" height="480" src="https://www.youtube.com/embed/nNHAw8Cj7pM?rel=0" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="sect1"&gt;
-&lt;h2 id="change-data-capture"&gt;&lt;a class="anchor" href="#change-data-capture"&gt;&lt;/a&gt;Change Data Capture&lt;/h2&gt;
-&lt;div class="sectionbody"&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Change Data Capture (CDC) is a technique for observing all data changes written to a database and publishing them as events that can be processed in a streamed fashion.
-As your application database is always changing, the CDC allows you to react to those  changes and lets your applications stream every row-level change in the same order as they were committed to the database.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;CDC enables a multitude of use-cases such as: cache invalidation, in-memory data views,  update search indexes, data replication by  keeping different data sources in sync, real-time fraud detection, storing audit trails, data provenance and much more.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;The Spring Cloud Data Flow &lt;a href="https://github.com/spring-cloud/stream-applications/tree/master/applications/source/cdc-debezium-source"&gt;CDC Source&lt;/a&gt; application is built around &lt;a href="https://debezium.io/"&gt;Debezium&lt;/a&gt;, a popular, open source, log-based CDC implementation that supports various databases.
-The CDC Source supports a variety of message binders, including Apache Kafka, Rabbit MQ, Azure Event Hubs, Google PubSub, Solace PubSub+.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="admonitionblock note"&gt;
-&lt;table&gt;
-&lt;tr&gt;
-&lt;td class="icon"&gt;
-&lt;div class="title"&gt;Note&lt;/div&gt;
-&lt;/td&gt;
-&lt;td class="content"&gt;
-The &lt;code&gt;CDC source&lt;/code&gt; implementation embeds the &lt;a href="https://debezium.io/documentation/reference/development/engine.html"&gt;Debezium Engine&lt;/a&gt; and it does not depend on Apache Kafka nor ZooKeeper!
-You can use the &lt;code&gt;CDC source&lt;/code&gt; along with any of the supported message binders!
-The the &lt;code&gt;Debezium Engine&lt;/code&gt; though comes with some &lt;a href="https://debezium.io/documentation/reference/development/engine.html#_handling_failures"&gt;limitations&lt;/a&gt; to be considered.
-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="sect1"&gt;
-&lt;h2 id="cdc-debezium-supplier"&gt;&lt;a class="anchor" href="#cdc-debezium-supplier"&gt;&lt;/a&gt;CDC Debezium Supplier&lt;/h2&gt;
-&lt;div class="sectionbody"&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;The &lt;a href="https://github.com/spring-cloud/stream-applications/tree/master/functions/supplier/cdc-debezium-supplier"&gt;CDC Debezium Supplier&lt;/a&gt; is implemented as &lt;code&gt;java.util.function.Supplier&lt;/code&gt; bean which when invoked will deliver the contents of the files in a given directory. The file supplier has the following signature:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code data-lang="java"&gt;Supplier&amp;lt;Flux&amp;lt;Message&amp;lt;?&amp;gt;&amp;gt;&amp;gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;The users of the supplier can subscribe to the returned &lt;code&gt;Flux&amp;lt;Message&amp;lt;?&amp;gt;&lt;/code&gt;, which is a stream of messages or &lt;a href="https://debezium.io/documentation/reference/configuration/event-flattening.html#_change_event_structure"&gt;CDC Change Events&lt;/a&gt;, that have a complex structure. Each event consists of three parts (e.g. &lt;code&gt;metadata&lt;/code&gt;, &lt;code&gt;before&lt;/code&gt; and &lt;code&gt;after&lt;/code&gt;) as shown in the following payload sample:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code data-lang="json"&gt;{
-  "before": { ... },  // row data before the change.
-  "after": { ... },  // row data after the change.
-  "source": {  //  the names of the database and table where the change was made.
-    "connector": "mysql", "server_id": 223344,"snapshot": "false",
-    "name": "my-app-connector", "file": "mysql-bin.000003", "pos": 355, "row": 0,
-    "db": "inventory",  // source database name.
-    "table": "customers", // source table name.
-  },
-  "op": "u",  // operation that made the change.
-  "ts_ms": 1607440256301, // timestamp - when the change was made.
-  "transaction": null  // transaction information (optional).
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;If the &lt;code&gt;cdc.flattening.enabled&lt;/code&gt; property is set to &lt;code&gt;true&lt;/code&gt;, then only the &lt;code&gt;after&lt;/code&gt; section is passed as a standalone message.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;In order to invoke the CDC supplier, we need to specify a source database to receive the CDC events from. The &lt;code&gt;cdc.connector&lt;/code&gt; property is used to choose between the supported &lt;code&gt;mysql&lt;/code&gt;, &lt;code&gt;postgres&lt;/code&gt;, &lt;code&gt;sql server&lt;/code&gt;, &lt;code&gt;db2&lt;/code&gt;, &lt;code&gt;oracle&lt;/code&gt;, &lt;code&gt;cassandra&lt;/code&gt; and &lt;code&gt;mongo&lt;/code&gt; source database types..
-The &lt;code&gt;cdc.config.database.*&lt;/code&gt; properties help to configure the the source access. Here is a sample configuration for connecting to a MySQL databases:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code&gt;# DB type
-cdc.connector=mysql
-
-# DB access
-cdc.config.database.user=debezium
-cdc.config.database.password=dbz
-cdc.config.database.hostname=localhost
-cdc.config.database.port=3306
-
-# DB source metadata
-cdc.name=my-sql-connector
-cdc.config.database.server.id=85744
-cdc.config.database.server.name=my-app-connector&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;The &lt;code&gt;cdc.name, cdc.config.database.server.id&lt;/code&gt; and &lt;code&gt;cdc.config.database.server.name&lt;/code&gt; properties are used to identify and dispatch the incoming events.
-Optionally you can set the &lt;code&gt;cdc.flattening.enabled=true&lt;/code&gt; to flatten the CDC events to replace the original change event with only its after field to create a simple Kafka record.
-Optionally use the &lt;code&gt;cdc.schema=true&lt;/code&gt; to include the DB schema to the CDC events.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="admonitionblock note"&gt;
-&lt;table&gt;
-&lt;tr&gt;
-&lt;td class="icon"&gt;
-&lt;div class="title"&gt;Note&lt;/div&gt;
-&lt;/td&gt;
-&lt;td class="content"&gt;
-The source database must be configured to expose its &lt;code&gt;Write-Ahead Log API&lt;/code&gt; for the Debezium to be able to connect and consume CDC events. The &lt;a href="https://debezium.io/documentation/reference/connectors/index.html"&gt;Debezium Connector Documentation&lt;/a&gt; provides fine description of how to enable the CDC for any of the supported databases.
-For the purpose of our demos here we will use a preconfigured &lt;a href="https://hub.docker.com/r/debezium/example-mysql"&gt;MySQL docker image&lt;/a&gt;.
-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;div class="sect2"&gt;
-&lt;h3 id="reusing-cdc-supplier-in-custom-applications"&gt;&lt;a class="anchor" href="#reusing-cdc-supplier-in-custom-applications"&gt;&lt;/a&gt;Reusing CDC Supplier in custom applications&lt;/h3&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;The CDC supplier is a reusable Spring bean that we can inject in end-user custom applications. Once injected, this can be directly invoked and combined with custom processing of the data. Here is an example.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code data-lang="java"&gt;@Autowired
-Supplier&amp;lt;Flux&amp;lt;Message&amp;lt;?&amp;gt;&amp;gt;&amp;gt; cdcSupplier;
-
-public void consumeDataAndSendEmail() {
-  Flux&amp;lt;Message&amp;lt;?&amp;gt; cdcData = cdcSupplier.get();
-  messageFlux.subscribe(t -&amp;gt; {
-      if (t == something)
-         //send the email here.
-      }
-  }
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;In the above pseudo-code, we inject the CDC supplier bean and then use it to invoke its &lt;code&gt;get()&lt;/code&gt; method to get a Flux. We then subscribe to that &lt;a href="https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Flux.html"&gt;Flux&lt;/a&gt; and each time we receive any data through the Flux, apply some filtering, and take actions based on that. This is just a simple illustration to show how we can reuse the CDC supplier. When you try this in a real application, you probably need to make more adjustments in your implementation, such as converting the default data type of the received data from &lt;code&gt;byte[]&lt;/code&gt; into something else before doing the conditional check.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="admonitionblock tip"&gt;
-&lt;table&gt;
-&lt;tr&gt;
-&lt;td class="icon"&gt;
-&lt;div class="title"&gt;Tip&lt;/div&gt;
-&lt;/td&gt;
-&lt;td class="content"&gt;
-For building a standalone, non-streaming, application you can leverage the &lt;a href="https://github.com/spring-cloud/stream-applications/tree/master/functions/common/cdc-debezium-boot-starter"&gt;cdc-debezium-boot-starter&lt;/a&gt;. Just add the &lt;code&gt;cdc-debezium-boot-starter&lt;/code&gt; dependency and implement your custom &lt;code&gt;Consumer&amp;lt;SourceRecord&amp;gt;&lt;/code&gt; handler to process the incoming database change events.
-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="sect2"&gt;
-&lt;h3 id="cdc-debezium-source"&gt;&lt;a class="anchor" href="#cdc-debezium-source"&gt;&lt;/a&gt;CDC Debezium Source&lt;/h3&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;As we have seen in this blog series, all the out of the box Spring Cloud Stream source applications are already autoconfigured with several out of the box general-purpose processors. You can activate these processors as part of the &lt;a href="https://github.com/spring-cloud/stream-applications/tree/master/applications/source/cdc-debezium-source"&gt;CDC source&lt;/a&gt;. Here is an example, where we run the CDC source and receive the data and then transforms the consumed data before sending it out to the destination on middleware.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code data-lang="bash"&gt;java -jar cdc-debezium-source.jar
- --cdc.connector=mysql --cdc.name=my-sql-connector
- --cdc.config.database.server.name=my-app-connector
- --cdc.config.database.user=debezium --cdc.config.database.password=dbz
- --cdc.config.database.hostname=localhost --cdc.config.database.port=3306
- --cdc.schema=true
- --cdc.flattening.enabled=true
- --spring.cloud.function.definition=cdcSupplier|spelFunction
- --spel.function.expression=payload.toUpperCase()&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;By providing the value, &lt;code&gt;cdcSupplier|spelFunction&lt;/code&gt; for the &lt;code&gt;spring.cloud.function.definition&lt;/code&gt; property, we are activating the spel function composed with the CDC supplier. Then we provide a SpEL expression that we want to use to transform the data using &lt;code&gt;spel.function.expression&lt;/code&gt;. There are several other functions available to compose this way. Take a look &lt;a href="https://github.com/spring-cloud/stream-applications/blob/master/docs/FunctionComposition.adoc"&gt;here&lt;/a&gt; for more details.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="sect1"&gt;
-&lt;h2 id="analytics-consumer"&gt;&lt;a class="anchor" href="#analytics-consumer"&gt;&lt;/a&gt;Analytics Consumer&lt;/h2&gt;
-&lt;div class="sectionbody"&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;The &lt;a href="https://github.com/spring-cloud/stream-applications/tree/master/functions/consumer/analytics-consumer"&gt;Analytics consumer&lt;/a&gt; provides a function that computes analytics from the input data messages and publishes them as metrics to various monitoring systems. It leverages the &lt;a href="https://micrometer.io/"&gt;micrometer library&lt;/a&gt; for providing a uniform programming experience across the most popular &lt;a href="https://micrometer.io/docs"&gt;monitoring systems&lt;/a&gt; and uses &lt;a href="https://docs.spring.io/spring-integration/reference/html/spel.html#spel"&gt;Spring Expression Language (SpEL)&lt;/a&gt; for defining how the metric names, values and tags are computed from the input data.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;We can use the consumer bean directly in our custom applications to compute analytics from the passing messages. Here is the type signature of the Analytics consumer bean:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code data-lang="java"&gt;Consumer&amp;lt;Message&amp;lt;?&amp;gt;&amp;gt; analyticsConsumer&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Once injected into a custom application, users can directly invoke the &lt;code&gt;accept()&lt;/code&gt; method of the consumer and provide a &lt;code&gt;Message&amp;lt;?&amp;gt;&lt;/code&gt; object to compute and publish the analytics to the backend monitoring system.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;The &lt;a href="https://docs.spring.io/spring-integration/reference/html/message.html"&gt;Message&lt;/a&gt; is a generic container for data. Each Message instance includes a &lt;code&gt;payload&lt;/code&gt; and &lt;code&gt;headers&lt;/code&gt; containing user-extensible properties as key-value pairs.
-The SpEL expressions are used to access message’s headers and payload to compute metrics amounts and tags.
-For example a counter metrics can have a value &lt;code&gt;amount&lt;/code&gt; computed from the size of the input message payload add a &lt;code&gt;my_tag&lt;/code&gt; tag, extracted from the &lt;code&gt;kind&lt;/code&gt; header value:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code&gt;analytics.amount-expression=payload.lenght()
-analytics.tag.expression.my_tag=headers['kind']&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;The Analytics consumer configuration properties start with the &lt;code&gt;analytics.*&lt;/code&gt; prefix. Consult the &lt;a href="https://github.com/spring-cloud/stream-applications/blob/master/functions/consumer/analytics-consumer/src/main/java/org/springframework/cloud/fn/consumer/analytics/AnalyticsConsumerProperties.java"&gt;AnalyticsConsumerProperties&lt;/a&gt; for the available analytics properties.
-The monitoring configuration properties start with a &lt;code&gt;management.metrics.export&lt;/code&gt; prefix. For configuring a particular monitoring system follow the provided &lt;a href="https://docs.spring.io/spring-boot/docs/2.3.1.RELEASE/reference/html/production-ready-features.html#production-ready-metrics-export"&gt;configuration instructions&lt;/a&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="sect2"&gt;
-&lt;h3 id="analytics-sink"&gt;&lt;a class="anchor" href="#analytics-sink"&gt;&lt;/a&gt;Analytics Sink&lt;/h3&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;As in the case of &lt;code&gt;CDC Source&lt;/code&gt;, the Spring Cloud Stream out of the box applications already provide an &lt;a href="https://github.com/spring-cloud/stream-applications/tree/master/applications/sink/analytics-sink"&gt;Analytics sink&lt;/a&gt; based on the &lt;code&gt;Analytics consumer&lt;/code&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;The sink is available for both &lt;a href="https://repo.spring.io/libs-snapshot-local/org/springframework/cloud/stream/app/mongodb-sink-kafka/3.0.0-SNAPSHOT"&gt;Apache Kafka&lt;/a&gt; and &lt;a href="https://repo.spring.io/libs-snapshot-local/org/springframework/cloud/stream/app/mongodb-sink-rabbit/3.0.0-SNAPSHOT"&gt;RabbitMQ&lt;/a&gt; binder variants.
-When used as a Spring Cloud Stream sink, the Analytics consumer is automatically configured to accept data from the respective middleware system, for example, from a Kafka topic or RabbitMQ exchange.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="sect1"&gt;
-&lt;h2 id="running-on-spring-cloud-data-flow"&gt;&lt;a class="anchor" href="#running-on-spring-cloud-data-flow"&gt;&lt;/a&gt;Running on Spring Cloud Data Flow&lt;/h2&gt;
-&lt;div class="sectionbody"&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Running both &lt;code&gt;CDC source&lt;/code&gt; and &lt;code&gt;Analytics sink&lt;/code&gt; standalone was fine, but Spring Cloud Data Flow makes it really easy to run them as a pipeline. Basically we want to orchestrate data flows that looks like this:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="imageblock"&gt;
-&lt;div class="content"&gt;
-&lt;img src="https://github.com/spring-cloud/stream-applications/blob/gh-pages/img/cdc-analytics/scdf-pipelines.png?raw=true" alt="scdf pipelines" width="30%"&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;The &lt;code&gt;cdc-log&lt;/code&gt; pipeline deploys a &lt;code&gt;cdc-source&lt;/code&gt; that streams all database changes into a &lt;code&gt;log-sink&lt;/code&gt; using  JSON message format. In parallel the &lt;code&gt;cdc-analytics-tap&lt;/code&gt;  pipeline &lt;a href="https://dataflow.spring.io/docs/feature-guides/streams/fanin-fanout/"&gt;taps&lt;/a&gt; the &lt;code&gt;cdc-source&lt;/code&gt; output into an &lt;code&gt;analytics-sink&lt;/code&gt; to compute DB statistics from the CDC events and publish them to time-series database (TSDB) such as Prometheus or Wavefront. The Grafana dashboard is used to visualize those changes.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;The Spring Cloud Data Flow &lt;a href="https://dataflow.spring.io/docs/installation/"&gt;installation instructions&lt;/a&gt; explains how to install Spring Cloud Data Flow fore any of the supported cloud platforms.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Below, we will briefly provide the steps to set up Spring Cloud Data Flow.
-First, we need to get the docker-compose files for running Spring Cloud Data Flow, &lt;a href="https://dataflow.spring.io/docs/installation/local/docker-customize/#prometheus&amp;#8212;&amp;#8203;grafana"&gt;Prometheus and Grafana&lt;/a&gt;:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code&gt;wget -O docker-compose.yml https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/v2.7.0/spring-cloud-dataflow-server/docker-compose.yml&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code&gt;wget -O docker-compose-prometheus.yml https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/v2.7.0/spring-cloud-dataflow-server/docker-compose-prometheus.yml&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Also, get this additional docker-compose file to install a source MySQL database configured to expose its write-ahead log that the cdc-debezium connects to.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code&gt;wget -O mysql-cdc.yml https://gist.githubusercontent.com/tzolov/48dec8c0db44e8086916129201cc2c8c/raw/26e1bf435d58e25ff836e415dae308edeeef2784/mysql-cdc.yml&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;The mysql-cdc uses the &lt;a href="https://hub.docker.com/r/debezium/example-mysql"&gt;debezium/example-mysql&lt;/a&gt; image and comes with an inventory, sample database:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="imageblock"&gt;
-&lt;div class="content"&gt;
-&lt;img src="https://github.com/spring-cloud/stream-applications/blob/gh-pages/img/cdc-analytics/invetory-db.png?raw=true" alt="invetory db" width="50%"&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;We need to set up a few environment variables in order to run Spring Cloud Data Flow properly.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code data-lang="shell"&gt;export DATAFLOW_VERSION=2.7.0
-export SKIPPER_VERSION=2.6.0
-export STREAM_APPS_URI=https://dataflow.spring.io/kafka-maven-latest-v2&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Now that we have everything ready to go, it is time to start running Spring Cloud Data Flow and all the other ancillary components.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code data-lang="shell"&gt;docker-compose -f docker-compose.yml -f docker-compose-prometheus.yml -f mysql-cdc.yml up&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="admonitionblock tip"&gt;
-&lt;table&gt;
-&lt;tr&gt;
-&lt;td class="icon"&gt;
-&lt;div class="title"&gt;Tip&lt;/div&gt;
-&lt;/td&gt;
-&lt;td class="content"&gt;
-To use &lt;code&gt;RabbitMQ&lt;/code&gt; instead of &lt;code&gt;Apache Kafka&lt;/code&gt; you can download an additional docker-compose file as explained in the  &lt;a href="https://dataflow.spring.io/docs/installation/local/docker-customize/#rabbitmq-instead-of-kafka"&gt;RabbitMQ Instead of Kafka
-&lt;/a&gt; instructions, and set the &lt;code&gt;STREAM_APPS_URI&lt;/code&gt; variable to &lt;a href="https://repo.spring.io/libs-snapshot-local/org/springframework/cloud/stream/app/stream-applications-descriptor/2020.0.0-SNAPSHOT/stream-applications-descriptor-2020.0.0-SNAPSHOT.stream-apps-rabbit-maven" class="bare"&gt;https://repo.spring.io/libs-snapshot-local/org/springframework/cloud/stream/app/stream-applications-descriptor/2020.0.0-SNAPSHOT/stream-applications-descriptor-2020.0.0-SNAPSHOT.stream-apps-rabbit-maven&lt;/a&gt; instead.
-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;div class="admonitionblock tip"&gt;
-&lt;table&gt;
-&lt;tr&gt;
-&lt;td class="icon"&gt;
-&lt;div class="title"&gt;Tip&lt;/div&gt;
-&lt;/td&gt;
-&lt;td class="content"&gt;
-To use Wavefront instead of Prometheus &amp;amp; Grafana, follow the &lt;a href="https://dataflow.spring.io/docs/installation/local/docker-customize/#wavefront"&gt;Wavefront&lt;/a&gt; instructions.
-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Once SCDF is up and running, go to &lt;a href="http://localhost:9393/dashboard"&gt;http://localhost:9393/dashboard&lt;/a&gt;. Then go to &lt;code&gt;Streams&lt;/code&gt; on the left-hand side and select &lt;code&gt;Create Stream&lt;/code&gt;. Select &lt;code&gt;cdc-debezium&lt;/code&gt; from the source applications and &lt;code&gt;log&lt;/code&gt; and &lt;code&gt;analytics&lt;/code&gt; from the sink applications to define the &lt;code&gt;cdc-log = cdc-debezium | log&lt;/code&gt; and the &lt;code&gt;cdc-analytic-tap = :cdc-log.cdc-debezium &amp;gt; analytics&lt;/code&gt; pipelines. You can click on the application&amp;#8217;s options to select the desired properties.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;For a quicker bootstrap,  you can copy/paste the following ready to use pipeline definition snippets:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code&gt;cdc-log = cdc-debezium --cdc.name=mycdc --cdc.flattening.enabled=false --cdc.connector=mysql --cdc.config.database.user=debezium --cdc.config.database.password=dbz --cdc.config.database.dbname=inventory --cdc.config.database.hostname=mysql-cdc --cdc.config.database.port=3307 --cdc.stream.header.offset=true --cdc.config.database.server.name=my-app-connector --cdc.config.tombstones.on.delete=false | log&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code&gt;cdc-analytic-tap = :cdc-log.cdc-debezium &amp;gt; analytics --analytics.name=cdc --analytics.tag.expression.table=#jsonPath(payload,'$..table') --analytics.tag.expression.operation=#jsonPath(payload,'$..op') --analytics.tag.expression.db=#jsonPath(payload,'$..db')&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;The &lt;code&gt;cdc-log&lt;/code&gt; pipeline deploys a &lt;code&gt;cdc-debezium source&lt;/code&gt; that connects to an MySQL database at &lt;code&gt;mysql-cdc:3307&lt;/code&gt; and streams the  DB change events to the &lt;code&gt;log sink&lt;/code&gt;. Consult the &lt;a href="https://github.com/spring-cloud/stream-applications/blob/master/applications/source/cdc-debezium-source/README.adoc"&gt;cdc-debezium docs&lt;/a&gt; for the available configuration options.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;The &lt;code&gt;cdc-analytic-tap&lt;/code&gt; pipeline taps into the output of the &lt;code&gt;cdc-debezium source&lt;/code&gt; and streams the cdc events to an &lt;code&gt;analytics sink&lt;/code&gt;. The analytics creates a &lt;a href="https://micrometer.io/docs/concepts#_counters"&gt;metrics counter&lt;/a&gt; (called cdc) and uses &lt;a href="https://docs.spring.io/spring-integration/reference/html/spel.html#built-in-spel-functions"&gt;SpEL expressions&lt;/a&gt; to compute metrics tags (e.g. db, table and operations) from the streamed message payloads.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;For example, let’s modify the &lt;code&gt;customers&lt;/code&gt; table in the MySQL &lt;code&gt;inventory&lt;/code&gt; database. The update transaction is sent as a change event to the &lt;code&gt;cdc-debezium source&lt;/code&gt;, that converts the native DB event into an uniform message payload like this:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code data-lang="json"&gt;{
-  "before": {
-    "id": 1004, "first_name": "Anne", "last_name": "Kretchmar", "email": "annek@noanswer.org"
-  },
-  "after": {
-    "id": 1004, "first_name": "Anne2", "last_name": "Kretchmar", "email": "annek@noanswer.org"
-  },
-  "source": {
-    "version": "1.3.1.Final", "connector": "mysql", "server_id": 223344, "thread": 5,
-    "name": "my-app-connector", "file": "mysql-bin.000003", "pos": 355, "row": 0,
-    "db": "inventory",
-    "table": "customers",
-  },
-  "op": "u",
-  "ts_ms": 1607440256301,
-  "transaction": null
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;The following SpEL expressions are used to compute 3 tags (&lt;code&gt;db&lt;/code&gt;, &lt;code&gt;table&lt;/code&gt;, &lt;code&gt;operation&lt;/code&gt;) from the CDC message payload. Those tags are assigned to every cdc metrics published to Prometheus.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code&gt;--analytics.tag.expression.db=#jsonPath(payload,'$..db')
---analytics.tag.expression.table=#jsonPath(payload,'$..table')
---analytics.tag.expression.operation=#jsonPath(payload,'$..op')&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Here is a screenshot of how it should look after all the properties are selected:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="imageblock"&gt;
-&lt;div class="content"&gt;
-&lt;img src="https://github.com/spring-cloud/stream-applications/blob/gh-pages/img/cdc-analytics/scdf-create-streams.png?raw=true" alt="scdf create streams" width="100%"&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;&lt;a href="https://dataflow.spring.io/docs/stream-developer-guides/getting-started/stream/#creating-the-stream"&gt;Create&lt;/a&gt; and  &lt;a href="https://dataflow.spring.io/docs/stream-developer-guides/getting-started/stream/#deploying-a-stream"&gt;deploy&lt;/a&gt; the &lt;code&gt;cdc-log&lt;/code&gt; and the &lt;code&gt;cdc-analytics-tap&lt;/code&gt; pipelines, accepting all the default options. Optionally you can use the &lt;code&gt;Group Actions&lt;/code&gt; to deploy both streams simultaneously.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Once the streams are deployed you can check the logs of the deployed applications via the SCDF UI or using the Skipper docker container as &lt;a href="https://dataflow.spring.io/docs/stream-developer-guides/getting-started/stream/#results"&gt;explained&lt;/a&gt; in the documentation.
-If you check the logs of the Log sink application you should see the CDC JSON messages similar to those:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="imageblock"&gt;
-&lt;div class="content"&gt;
-&lt;img src="https://github.com/spring-cloud/stream-applications/blob/gh-pages/img/cdc-analytics/cdc-event-log.png?raw=true" alt="cdc event log" width="100%"&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Next go to the Grafana Dashboard using the &lt;a href="https://dataflow.spring.io/docs/feature-guides/streams/monitoring/#data-flow-metric-buttons"&gt;buttons&lt;/a&gt; (or just open &lt;a href="http://localhost:3000"&gt;localhost:3000&lt;/a&gt;) and login as user:`admin` and password:`admin`. You can explore the &lt;code&gt;Applications&lt;/code&gt; dashboard to check the performance of the deployed pipelines.
-Now you can import the &lt;a href="https://gist.github.com/tzolov/d2a71fc58616278fb8852f5fc43d242f#file-cdc-grafana-dashboard-prometheus-json"&gt;CDC Grafana Dashboard-Prometheus.json&lt;/a&gt; dashboard and see a dashboard similar to this:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="imageblock"&gt;
-&lt;div class="content"&gt;
-&lt;img src="https://github.com/spring-cloud/stream-applications/blob/gh-pages/img/cdc-analytics/grafana-dashboard.png?raw=true" alt="grafana dashboard" width="100%"&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;The following queries have been used to aggregate the &lt;code&gt;cdc_total&lt;/code&gt; metrics inside Prometheus:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code&gt;sort_desc(topk(10, sum(cdc_total) by (db, table)))
-sort_desc(topk(100, sum(cdc_total) by (op)))&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="admonitionblock tip"&gt;
-&lt;table&gt;
-&lt;tr&gt;
-&lt;td class="icon"&gt;
-&lt;div class="title"&gt;Tip&lt;/div&gt;
-&lt;/td&gt;
-&lt;td class="content"&gt;
-You can open the Prometheus UI at &lt;a href="http://localhost:9090"&gt;http://localhost:9090&lt;/a&gt; to check the configuration as well as run some ad hoc PQL queries.
-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;div class="sect3"&gt;
-&lt;h4 id="generate-db-activity"&gt;&lt;a class="anchor" href="#generate-db-activity"&gt;&lt;/a&gt;Generate DB activity&lt;/h4&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;You can connect to the inventory CDC MySQL databases at &lt;code&gt;localhost:3307&lt;/code&gt; (user: &lt;code&gt;root&lt;/code&gt; and password: &lt;code&gt;debezium&lt;/code&gt;) and start modifying the data.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;The following docker command shows how to connect to the mysql-cdc:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code data-lang="bash"&gt;docker exec -it mysql-cdc  mysql -uroot -pdebezium --database=inventory&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;The following  script helps to generate multiple insert, update and delete DB transactions:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code data-lang="bash"&gt;for i in {1..100}; do docker exec -it mysql-cdc  mysql -uroot -pdebezium --database=inventory -e'INSERT INTO customers (first_name, last_name, email) VALUES ("value1", "value2", "val@bla"); UPDATE customers SET first_name="value2" WHERE first_name="value1"; DELETE FROM customers where first_name="value2";'; done&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;You will see the &lt;code&gt;log-sink&lt;/code&gt; logs reflecting those changes as well as the CDC dashboard charts updates.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="sect1"&gt;
-&lt;h2 id="conclusions-and-future-work"&gt;&lt;a class="anchor" href="#conclusions-and-future-work"&gt;&lt;/a&gt;Conclusions and future work&lt;/h2&gt;
-&lt;div class="sectionbody"&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;In this blog, we saw how the CDC-debezium supplier and the Analytics consumer functions and their corresponding Spring Cloud Stream source and sink work. The supplier and consumer functions can be injected into custom applications for combining with other business logic.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;The source and the sink applications are provided out of the box for use with Kafka and RabbitMQ middleware variants.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;You can easily build standalone applications combining the Cdc-debezium supplier with Geode consumer to create and maintain an in-memory view of your database data. Similarly you can combine the Cdc-debezium supplier with the Elasticsearch consumer for maintaining in real-time a searchable index for your database data.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;What is more exciting is that you can realize the above scenarios using the OOTB &lt;a href="https://github.com/spring-cloud/stream-applications/tree/master/applications/source/cdc-debezium-source"&gt;cdc-debezium source&lt;/a&gt; , &lt;a href="https://github.com/spring-cloud/stream-applications/tree/master/applications/sink/geode-sink"&gt;geode sink&lt;/a&gt; and &lt;a href="https://github.com/spring-cloud/stream-applications/tree/master/applications/sink/elasticsearch-sink"&gt;elasticsearch sink&lt;/a&gt; applications. You can build those pipelines over different message binders and source databases.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;This &lt;a href="https://www.infoq.com/presentations/spring-pipeline-prometheus-grafana/?utm_campaign=infoq_content&amp;amp;utm_source=twitter&amp;amp;utm_medium=feed&amp;amp;utm_term=Devops"&gt;Spring One presentation&lt;/a&gt; demonstrates an advanced use-case,  using CDC-debezium and Machine Learning to build a streaming data pipeline for credit card fraud detection.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="imageblock"&gt;
-&lt;div class="content"&gt;
-&lt;img src="https://github.com/spring-cloud/stream-applications/blob/gh-pages/img/cdc-analytics/cdc-fraud-detection.png?raw=true" alt="cdc fraud detection" width="50%"&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;We still have a few more episodes coming up in this blog series. Please stay tuned.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
-  </entry>
-  <entry>
-    <title>Spring Statemachine 3.0.0-RC1 Released</title>
-    <link rel="alternate" href="https://spring.io/blog/2020/12/11/spring-statemachine-3-0-0-rc1-released" />
-    <category term="releases" label="Releases" />
-    <author>
-      <name>Janne Valkealahti</name>
-    </author>
-    <id>tag:spring.io,2020-12-05:4286</id>
-    <updated>2020-12-11T12:25:46Z</updated>
-    <content type="html">&lt;p&gt;Yes, we&amp;rsquo;re going reactive!&lt;/p&gt;
-&lt;p&gt;On behalf of the team and everyone that contributed, I am pleased to announce that the first release candidate of Spring Statemachine 3.0.0 has been released and is available from &lt;a href="https://repo.spring.io/milestone/"&gt;our milestone repository&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Highlights of this release include:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Relevant api&amp;rsquo;s working with statemachine now have reactive methods.&lt;/li&gt;
-  &lt;li&gt;From a functional point of view this release is equivalent what&amp;rsquo;s in&lt;br/&gt; &lt;code&gt;2.2.x&lt;/code&gt;, &lt;code&gt;2.3.x&lt;/code&gt; and &lt;code&gt;2.4.x&lt;/code&gt; branches apart from reactive changes.&lt;/li&gt;
-  &lt;li&gt;We&amp;rsquo;ve chosen to align with recently released Spring Boot 2.4.1.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Internally everything is basically working atop of reactive concepts while we still keep old style methods around for blocking world. Plan is to see if and when it&amp;rsquo;s possible to phase out from a blocking world. Now few words about new api&amp;rsquo;s.&lt;/p&gt;
-&lt;p&gt;With good ol&amp;rsquo; blocking world you simple send an event and statemachine returns a boolean flag if event is accepted.&lt;/p&gt;
-&lt;pre&gt;&lt;code class="prettyprint java"&gt;StateMachine&amp;lt;String, String&amp;gt; stateMachine;&#xD;
-&#xD;
-boolean accepted = stateMachine.sendEvent(&amp;quot;event1&amp;quot;);
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;One slightly annoying thing were that you couldn&amp;rsquo;t differentiate between cases where event were accepted(event caused a transition), denied(interceptor error or no possible transition) or deferred(in case machine config used deferred events). We chose to enrich what gets returned from event handling methods.&lt;/p&gt;
-&lt;pre&gt;&lt;code class="prettyprint java"&gt;StateMachine&amp;lt;String, String&amp;gt; stateMachine;&#xD;
-&#xD;
-Mono&amp;lt;StateMachineEventResult&amp;lt;String, String&amp;gt;&amp;gt; result = stateMachine&#xD;
-  .sendEvent(Mono.just(MessageBuilder.withPayload(&amp;quot;event1&amp;quot;).build()));&#xD;
-&#xD;
-result.subscribe();
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Firstly, one obvious thing as you probably guessed if being familiar with Reactor is that nothing happens until you subscribe to a returned &lt;code&gt;Mono&lt;/code&gt;, secondly returned type within &lt;code&gt;Mono&lt;/code&gt; is a &lt;code&gt;StateMachineEventResult&lt;/code&gt; which contains more info about what happened with an event handling.&lt;/p&gt;
-&lt;p&gt;What about &lt;code&gt;Flux&lt;/code&gt;, well simply pass in a flux and get a flux and handle it whatever you can do in a Reactor!&lt;/p&gt;
-&lt;pre&gt;&lt;code class="prettyprint java"&gt;StateMachine&amp;lt;String, String&amp;gt; stateMachine;&#xD;
-&#xD;
-Message&amp;lt;String&amp;gt; message1 = MessageBuilder.withPayload(&amp;quot;event1&amp;quot;).build();&#xD;
-Message&amp;lt;String&amp;gt; message2 = MessageBuilder.withPayload(&amp;quot;event2&amp;quot;).build();&#xD;
-&#xD;
-Flux&amp;lt;StateMachineEventResult&amp;lt;String, String&amp;gt;&amp;gt; results = stateMachine&#xD;
-  .sendEvents(Flux.just(message1, message2));&#xD;
-&#xD;
-results.subscribe();
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;What about actions as your main work with a statemachine happens there? Original blocking signature is:&lt;/p&gt;
-&lt;pre&gt;&lt;code class="prettyprint java"&gt;public interface Action&amp;lt;S, E&amp;gt; {&#xD;
-  void execute(StateContext&amp;lt;S, E&amp;gt; context);&#xD;
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;New &lt;code&gt;ReactiveAction&lt;/code&gt; is simply a java&amp;rsquo;s &lt;code&gt;Function&lt;/code&gt; with types &lt;code&gt;StateContext&amp;lt;S, E&amp;gt;&lt;/code&gt; and &lt;code&gt;Mono&amp;lt;Void&amp;gt;&lt;/code&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code class="prettyprint java"&gt;public interface ReactiveAction&amp;lt;S, E&amp;gt;&#xD;
-  extends Function&amp;lt;StateContext&amp;lt;S, E&amp;gt;, Mono&amp;lt;Void&amp;gt;&amp;gt; {}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Which translates to&lt;/p&gt;
-&lt;pre&gt;&lt;code class="prettyprint java"&gt;class MyAction implements ReactiveAction&amp;lt;String, String&amp;gt; {&#xD;
-  @Override&#xD;
-  public Mono&amp;lt;Void&amp;gt; apply(StateContext&amp;lt;String, String&amp;gt; context) {&#xD;
-      return Mono.empty();&#xD;
-  }&#xD;
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;With configuration:&lt;/p&gt;
-&lt;pre&gt;&lt;code class="prettyprint java"&gt;@Configuration&#xD;
-@EnableStateMachine&#xD;
-public class StateMachineConfig extends StateMachineConfigurerAdapter&amp;lt;String, String&amp;gt; {&#xD;
-&#xD;
-  @Override&#xD;
-  public void configure(StateMachineStateConfigurer&amp;lt;String, String&amp;gt; states)&#xD;
-      throws Exception {&#xD;
-    states&#xD;
-      .withStates()&#xD;
-      .initial(&amp;quot;state1&amp;quot;)&#xD;
-      .state(&amp;quot;state2&amp;quot;);&#xD;
-  }&#xD;
-&#xD;
-  @Override&#xD;
-  public void configure(StateMachineTransitionConfigurer&amp;lt;String, String&amp;gt; transitions)&#xD;
-      throws Exception {&#xD;
-    transitions&#xD;
-      .withExternal()&#xD;
-        .source(&amp;quot;state1&amp;quot;).target(&amp;quot;state2&amp;quot;)&#xD;
-        .actionFunction(context -&amp;gt; Mono.fromRunnable(() -&amp;gt; {&#xD;
-          System.out.println(&amp;quot;HI&amp;quot;);&#xD;
-        }));&#xD;
-  }&#xD;
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Or &lt;em&gt;action&lt;/em&gt; as &lt;code&gt;Function&lt;/code&gt; definition in a normal way:&lt;/p&gt;
-&lt;pre&gt;&lt;code class="prettyprint java"&gt;Function&amp;lt;StateContext&amp;lt;String, String&amp;gt;, Mono&amp;lt;Void&amp;gt;&amp;gt; action =&#xD;
-  context -&amp;gt; Mono.empty();
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;a href="https://spring.io/projects/spring-statemachine"&gt;Project Page&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-statemachine"&gt;GitHub&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-statemachine/issues"&gt;Issues&lt;/a&gt; | &lt;a href="https://docs.spring.io/spring-statemachine/docs/3.0.0-RC1/reference/"&gt;Documentation&lt;/a&gt;&lt;/p&gt;
-&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
-  </entry>
-  <entry>
-    <title>Spring Boot 2.4.1 available now</title>
-    <link rel="alternate" href="https://spring.io/blog/2020/12/11/spring-boot-2-4-1-available-now" />
-    <category term="releases" label="Releases" />
-    <author>
-      <name>Stéphane Nicoll</name>
-    </author>
-    <id>tag:spring.io,2020-12-11:4299</id>
-    <updated>2020-12-11T08:26:35Z</updated>
-    <content type="html">&lt;p&gt;On behalf of the team and everyone who has contributed, I&amp;rsquo;m happy to announce that Spring Boot 2.4.1 has been released and is now available from Maven Central.&lt;/p&gt;
-&lt;p&gt;This release includes &lt;a href="https://github.com/spring-projects/spring-boot/releases/tag/v2.4.1"&gt;59 bug fixes, documentation improvements, and dependency upgrades&lt;/a&gt;. Thanks to all those who have contributed with issue reports and pull requests.&lt;/p&gt;&lt;h3&gt;&lt;a href="#how-can-you-help" class="anchor" name="how-can-you-help"&gt;&lt;/a&gt;How can you help?&lt;/h3&gt;
-&lt;p&gt;If you&amp;rsquo;re interested in helping out, check out the &lt;a href="https://github.com/spring-projects/spring-boot/labels/status%3A%20ideal-for-contribution"&gt;&amp;ldquo;ideal for contribution&amp;rdquo; tag&lt;/a&gt; in the issue repository. If you have general questions, please ask on &lt;a href="http://stackoverflow.com"&gt;stackoverflow.com&lt;/a&gt; using the &lt;a href="http://stackoverflow.com/tags/spring-boot"&gt;&lt;code&gt;spring-boot&lt;/code&gt; tag&lt;/a&gt; or chat with the community on &lt;a href="https://gitter.im/spring-projects/spring-boot"&gt;Gitter&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://spring.io/projects/spring-boot/"&gt;Project Page&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-boot"&gt;GitHub&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-boot/issues"&gt;Issues&lt;/a&gt; | &lt;a href="http://docs.spring.io/spring-boot/docs/2.4.1/reference/html"&gt;Documentation&lt;/a&gt; | &lt;a href="http://stackoverflow.com/questions/tagged/spring-boot"&gt;Stack Overflow&lt;/a&gt; | &lt;a href="https://gitter.im/spring-projects/spring-boot"&gt;Gitter&lt;/a&gt;&lt;/p&gt;
-&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
-  </entry>
-  <entry>
-    <title>Spring Boot 2.3.7 available now</title>
-    <link rel="alternate" href="https://spring.io/blog/2020/12/11/spring-boot-2-3-7-available-now" />
-    <category term="releases" label="Releases" />
-    <author>
-      <name>Stéphane Nicoll</name>
-    </author>
-    <id>tag:spring.io,2020-12-11:4298</id>
-    <updated>2020-12-11T07:05:56Z</updated>
-    <content type="html">&lt;p&gt;On behalf of the team and everyone who has contributed, I&amp;rsquo;m happy to announce that Spring Boot 2.3.7 has been released and is now available from Maven Central.&lt;/p&gt;
-&lt;p&gt;This release includes &lt;a href="https://github.com/spring-projects/spring-boot/releases/tag/v2.3.7.RELEASE"&gt;35 bug fixes, documentation improvements, and dependency upgrades&lt;/a&gt;. Thanks to all those who have contributed with issue reports and pull requests.&lt;/p&gt;&lt;h3&gt;&lt;a href="#how-can-you-help" class="anchor" name="how-can-you-help"&gt;&lt;/a&gt;How can you help?&lt;/h3&gt;
-&lt;p&gt;If you&amp;rsquo;re interested in helping out, check out the &lt;a href="https://github.com/spring-projects/spring-boot/labels/status%3A%20ideal-for-contribution"&gt;&amp;ldquo;ideal for contribution&amp;rdquo; tag&lt;/a&gt; in the issue repository. If you have general questions, please ask on &lt;a href="http://stackoverflow.com"&gt;stackoverflow.com&lt;/a&gt; using the &lt;a href="http://stackoverflow.com/tags/spring-boot"&gt;&lt;code&gt;spring-boot&lt;/code&gt; tag&lt;/a&gt; or chat with the community on &lt;a href="https://gitter.im/spring-projects/spring-boot"&gt;Gitter&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://spring.io/projects/spring-boot/"&gt;Project Page&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-boot"&gt;GitHub&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-boot/issues"&gt;Issues&lt;/a&gt; | &lt;a href="http://docs.spring.io/spring-boot/docs/2.3.7.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; | &lt;a href="http://stackoverflow.com/questions/tagged/spring-boot"&gt;Stack Overflow&lt;/a&gt; | &lt;a href="https://gitter.im/spring-projects/spring-boot"&gt;Gitter&lt;/a&gt;&lt;/p&gt;
 &lt;!-- rendered by Sagan Renderer Service --&gt;</content>
   </entry>
 </feed>

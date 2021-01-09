@@ -7,5 +7,6 @@
 <listEntry value="1"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.relations.losecoupling.Demo"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="Demo3 1 2 3"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="day-2"/>
 </launchConfiguration>
