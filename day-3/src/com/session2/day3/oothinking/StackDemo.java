@@ -2,13 +2,6 @@ package com.session2.day3.oothinking;
 
 //memory leak
 
-class Foo{
-	static int i=1;
-	public void foof() {
-		
-		
-	}
-}
 class Product {
 	private int id;
 	private double price;
