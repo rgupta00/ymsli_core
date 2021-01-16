@@ -1,8 +1,0 @@
-
-public class DemoAccount {
-
-	public static void main(String[] args) {
-		Account account=new Account(33, "raja", 5000);
-		account.printAccountDetails();
-	}
-}

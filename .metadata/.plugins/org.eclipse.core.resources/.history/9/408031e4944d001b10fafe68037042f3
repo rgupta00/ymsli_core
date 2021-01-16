@@ -1,8 +1,0 @@
-package a.b;
-
-public class A1 {
-	 int id=66;
-	 void fooPublic() {
-		System.out.println("fooPublic() of class A1");
-	}
-}

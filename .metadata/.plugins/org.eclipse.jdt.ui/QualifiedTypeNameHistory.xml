@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="java.util.Scanner"/>
-<fullyQualifiedTypeName name="java.sql.Date"/>
+<fullyQualifiedTypeName name="java.lang.Number"/>
+<fullyQualifiedTypeName name="com.day5.session1.Shirt"/>
+<fullyQualifiedTypeName name="com.day5.session1.ShirtShize"/>
+<fullyQualifiedTypeName name="com.day5.session1.Emp.Gender"/>
+<fullyQualifiedTypeName name="com.day5.session1.ShirtSize"/>
+<fullyQualifiedTypeName name="java.lang.Math"/>
+<fullyQualifiedTypeName name="com.mylib.MyUtil"/>
+<fullyQualifiedTypeName name="java.lang.Class"/>
+<fullyQualifiedTypeName name="java.lang.Object"/>
+<fullyQualifiedTypeName name="java.lang.Override"/>
+<fullyQualifiedTypeName name="java.lang.StringBuilder"/>
+<fullyQualifiedTypeName name="java.util.HashSet"/>
+<fullyQualifiedTypeName name="com.day5.session1.Student"/>
+<fullyQualifiedTypeName name="java.lang.Cloneable"/>
 <fullyQualifiedTypeName name="java.util.Date"/>
-<fullyQualifiedTypeName name="com.aif.face_rec_system.model.Face"/>
-<fullyQualifiedTypeName name="com.aif.face_rec_system.ui.Face"/>
-<fullyQualifiedTypeName name="com.day2.session2.callbyref.Data"/>
-<fullyQualifiedTypeName name="com.relations.usea.Marker"/>
-<fullyQualifiedTypeName name="com.relations.usea.Trainer"/>
-<fullyQualifiedTypeName name="com.relations.losecoupling.Metro"/>
-<fullyQualifiedTypeName name="com.relations.losecoupling.Passanger"/>
-<fullyQualifiedTypeName name="com.relations.losecoupling.Vehical"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="java.lang.Runtime"/>
 </qualifiedTypeNameHistroy>
