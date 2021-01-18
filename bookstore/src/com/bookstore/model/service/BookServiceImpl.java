@@ -4,7 +4,11 @@ import java.util.List;
 
 import com.bookstore.model.dao.Book;
 import com.bookstore.model.dao.BookDao;
-
+import com.bookstore.model.dao.BookDaoImplHib;
+import com.bookstore.model.dao.BookDaoImplJdbc;
+import com.bookstore.model.dao.DataAccessException;
+//SOLI "D": DIP
+//BookService has a composition of BookDaoImplJdbc
 public class BookServiceImpl implements BookService{
 
 	private BookDao bookDao;
@@ -26,9 +30,11 @@ public class BookServiceImpl implements BookService{
 	}
 
 	@Override
-	public void addBook(Book book) {
+	public void addBook(Book book) throws DataAccessException {
 		//tx sec logging cacheing...
-		bookDao.addBook(book);
+		
+			bookDao.addBook(book);
+		
 	}
 
 	@Override

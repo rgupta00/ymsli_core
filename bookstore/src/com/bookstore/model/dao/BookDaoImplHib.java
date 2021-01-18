@@ -1,19 +1,23 @@
 package com.bookstore.model.dao;
 
 import java.util.List;
-// hib
-public class BookDaoImplHib implements BookDao{
+
+public class BookDaoImplHib implements BookDao {
 
 	@Override
 	public List<Book> getAllBooks() {
-		System.out.println("getting all books using hibernate");
 		return null;
 	}
 
 	@Override
-	public void addBook(Book book) {
-		// TODO Auto-generated method stub
-		
+	public void addBook(Book book) throws DataAccessException {
+		try {
+			///
+			if(1==1)
+				throw new HibernateExcetion();
+		}catch(HibernateExcetion ex) {
+			throw new DataAccessException(ex);
+		}
 	}
 
 	@Override

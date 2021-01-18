@@ -1,0 +1,162 @@
+serialization
+--------------
+How to serialization?
+
+Serializable?
+
+static data?
+
+transient?
+
+transient static?
+
+Externalizable? 
+
+We have to maintain order while doing de-serialization?
+-------------------------------------------------------
+We can do serialization of any no of object to the file, but order in which we serilize in same order we have 
+to deserialize ( order is important)
+ Eg: 
+ 
+class Dog implements Serializable{}
+
+class Cat implements Serializable{}
+class Rat implements Serializable{}
+
+if we serialized object of dog then cat and rat same order we have to follow while deserialization
+	if dont know the order then use instanceOf operator
+	
+Object Grapth in serialization?
+------------------------------------
+Whenever we are serializing an object the set of all objects which 
+are reachable from the object will be serialized automatically, 
+this group of object is called "object graph"
+In object graph every object should be serializable. 
+
+If at least one object is not serializable we get RE NotSerializableException
+
+class Dog implements Serializable{
+	Cat cat=new Cat();
+}
+
+class Cat{
+	Rat rat=new Rat();
+}
+class Rat implements Serializable{
+	int i=5;
+	int j=10;
+}
+
+Customized Serialization:
+--------------------------
+Need of customized serialization:
+in default serialization there may be a loss of information
+because of transient key word
+
+class Account implements Serializable{
+	String name="raj";
+	transient String password="$##";
+}
+Customized Serialization:
+--------------------------
+private void writeObject(java.io.ObjectOutputStream stream)
+---------------------------------------------------
+ => This method will be executed automatically at the time of serialization
+ => While performing serialization if we want to do any extera work we have to write corrosponding
+    code in the method only.
+
+ private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException 
+ -----------------------------------------------------------------------------------------------------
+ => This method will be executed automatically at the time of de-serialization
+ => hence while performing de-serialization if we want to do any extra work we have to define
+    the corresponding code in this method only. 
+
+Note:
+ 	The above methods are callbacks methods as these methods are executed automatically by JVM
+
+
+
+ private void writeObject(java.io.ObjectOutputStream oos)
+	            throws IOException {
+	      oos.defaultWriteObject();
+	      String pw= "121"+password;
+	      oos.writeObject(pw);
+	    }
+
+	    private void readObject(ObjectInputStream ois)
+	            throws IOException, ClassNotFoundException {
+	        ois.defaultReadObject();
+	        String pw= (String) ois.readObject();
+	        password =pw.substring(3);
+	    }
+
+
+Serialization with inheritance:
+----------------------------------
+If parent is seralizable then by default every child is 
+Serializable. That is Seralizable is inheriting from Parent to Child.
+ Hence even though child doesnt implements serializable if 
+ parent class implements Serializable.
+
+
+class Animal implements Ser{
+	int i=10;
+}
+class Dog {
+     int j=20;
+}
+
+
+Case 2: base is not serilizable but derived class is serializable?
+-------------------------------------------------------------------
+class Animal {
+	int i=10;
+}
+class Dog implements Ser{
+     int j=20;
+}
+
+	=> Even though parent class do not implements serializable interface we 
+ can serialize child class object if child class implements serializable
+ interface ie. to Serialize child class object, Parent class need not to be serializable.
+ 
+ => At the time of serialization JVM will check is any instance variable is inheritated from 
+Non serializable parent Or not. If any variable inherited from 
+Non- serializable parent then JVM ignore original values and save default values to the file
+
+ => At the time of de-serialization JVM will check is any parent class is not
+  serializable or not. If any parent class is not- serializable 
+  then JVM will execute instance control flow in that non-serializable parent and share it instance variable to the current
+
+=> To execution instance control flow execution of non -serializable
+ parent JVM will always invoked no argument constructors. 
+ 
+ => Hence every non-serializable class should compulsory contain 
+ no-argument constructors. Otherwise we will get RE ie InvalidClassException
+
+
+Externalization 
+-----------------------
+	=> In serialization everything takes care by JVM and programmer 
+	dont need to control. In Serialization total object will be 
+	saved always to the file and it is not possible to save part of
+	 the object which creates performance problems. 
+	
+	=> To overcome thsee problems we should go for Externalization where 
+	everything taken care by programmer and JVM dont have any control.
+	
+	=> The main advantage of Externalization over Serialization is based on our
+	 requirment we can save either total object or part of the object so that 
+	 relatively performance is improved
+
+	=> To provide externalization ability for any java object compulsory the 
+	corrosponding class should implements Externalizable interface
+
+
+
+What if dont want to do de-serilization
+----------------------------------
+	protected Object readResolve() {
+   		 return getInstance();
+	}
+
