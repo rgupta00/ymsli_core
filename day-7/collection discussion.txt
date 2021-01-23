@@ -1,0 +1,686 @@
+Discussion on Java Collection:
+==============================
+=> introduction to <<Collection>>
+=> various type of collections
+=> IdentityHM vs HashMap vs WeakHashMap
+=> SortedMap
+=> TreeMap
+=> HashTable
+=> Array vs LinkList
+=> HashSet
+=> TreeSet
+=> Map archetcture , keySet() values() and entrySet()
+=> various type of cursor in collection
+=> interview questions
+
+
+
+
+introduction to <<Collection>>
+--------------------------------
+imp method in the collection interface:
+
+add(o)			: add an object to collection
+l.add(Collection c)	: add collection to existing collection
+l.remove(o)		: remove an object from collection
+removeAll(Collection c)	: remove elemennts that mentioned in specified collection
+clear()			: delete all elements from collection
+retainAll(Collection c)	: retain all except c
+boolean contains(o)	:if present
+boolean containAll(Collection c)
+boolean isEmpty()
+size()
+
+
+various type of collections
+------------------------
+refer dia
+
+
+
+IdentityHM vs HashMap vs WeakHashMap
+---------------------------------------
+ Algorith
+IdentityHM vs Normal HM?
+
+	eg: 
+	Integer it1=new Integer(10);
+	Integer it2=new Integer(10);
+
+	it1.equals(it2) gives true while it1==it2 gives fales
+
+	Now what happens in case of :
+	-------------------------
+	HM m=new HM();
+	m.put(it1,"raj");
+	m.put(it2,"ek");	//Compare key with equals
+
+	=> HM first put it1-> raj then 
+		replace with it1 with ek
+
+
+	NOW IF I WANT TO TELL JAVA TO COMPARE KEY AS PER IDENITY (ie hashcode)
+	
+	IdentityHM m=new ........();
+	m.put(it1,"raj");
+	m.put(it2,"ekta");
+
+	=> both will be existed in map!
+
+
+		Integer it1=new Integer(20);
+		Integer it2=new Integer(20);
+		IdentityHashMap<Integer, String> map=new IdentityHashMap<Integer, String>();
+		
+		System.out.println(map.put(it1,"ram" ));
+		System.out.println(	map.put(it2,"amit" ));
+		
+		for(Integer key: map.keySet()){
+			System.out.println(key+" : "+ map.get(key));
+		}
+
+
+
+
+
+WeakHM vs normal HM?
+------------------
+
+	=> What would be happens if key that is used in map become candidate of GC?
+
+	class Key{
+		.....
+		......
+		finilize(){}
+	}
+
+	Key k=new Key();
+	HM m=new HashMap();
+	m.put(k,"val");
+
+	now: if i assign k =null and invoke GC then 
+		When GC comes to claim k, Hashmap
+		inform that it is in use... so not deleted
+
+	k=null;
+	SYsout(m);// [k=val]
+
+	=> HM keep track of all key inserted in the map, now if GC tries to claim object key HM dont allow it
+
+	What happens in case of WeakHM?
+	---------------------------------
+		=> allowed hence the name!
+
+
+
+
+
+
+SortedMap:
+----------	<<Map>> -> <<SortedMap>?>
+
+	=> group key as per some sorting other then we used in sorted map
+	=> sorting is based on key not the value
+
+	Ex> consider
+	key	value
+	-------------
+	101	-> A
+	103	-> B
+	104	-> C
+	107	-> D
+	125	-> E
+	136	-> F
+
+		Map<Integer , String>map=new TreeMap<>();
+		map.put(101, "A");
+		map.put(103, "B");
+		map.put(104, "C");
+		map.put(107, "D");
+		map.put(125, "E");
+		map.put(136, "F");
+		
+		
+	Define following 6 specific methods
+	-----------------------------------
+	firstKey()	-> 101
+
+	lastKey()	-> 136
+
+	headMap(107)	-> {101=A, 103=B, 104=C}
+
+	tailMap(107)	-> {107=D, 125=E, 136=F}
+
+	subMap(103, 125)-> {103=B, 104=C,107=D}
+
+	Comparator comparable()	: 
+		this method retrun algo that is used by programmer for comparator
+		null if not used
+
+
+
+TreeMap
+------
+	=> Red black tree algo
+	=> insertion order is maintained
+	=> sorted order as per key
+	=> duplicate key 	X
+	=> duplicate value	Y
+	=> underlying DS is red-black tree
+	=> key should be homogenious and comparable : ClassCastExcetion CCE
+	=> Custom key : rule
+	=> null acceptance
+	------------------
+		- for non empty TreeMap we immediatly get NPE if we try to add m.put(null, "foo");
+
+		- for empty TreeMap we get NPE if we try to add second element
+
+		- this is applicable till java 1.6
+	
+		- after java 1.6 null is not allowed as key in any case
+
+
+
+Constructor with TreeMap
+-------------------------
+	=> TreeMap t=new TreeMap();
+
+	=>TreeMap t=new TreeMap(Comparator t);
+
+	=>TreeMap t=new TreeMap(Map m);
+
+	=>TreeMap t=new TreeMap(SoredMap m);
+
+HashTable
+-----------
+	
+	=> Insertion Order according to hashcode of the key
+
+	=> hectrogenous key and value is allowed
+
+	=> null as key  X null as value X	
+	
+	=> <<Serlizable>> , <<Clonnable>>
+
+	=> ThreadSafe (method is not sync)
+
+	=> Hashtable best choice if frequency operation is retrival operation (searching is fast)
+
+
+
+
+Array vs LinkList
+-----------------
+
+	ArrayList			 Vector
+	------------------	----------------------
+	1. not sync			syn
+	2. not thread safe	thread safe
+	3. Performance is OK	bad
+	4. 1.2 				1.0 (legacy)
+
+
+	Converting list to synch:
+	-------------------------
+	l=new ArrayList();
+	list l=Collections.syn...();
+
+	constructor
+	------------
+	LinkedList l=new LinkedList();
+	List l=new LinkedList(Collection c);
+
+	How to convert LinkedList to Stack and Queue
+	-----------------------------------------
+
+	=> java provide 6 methods 
+		addFirst(o);
+		addlast(o);
+		getFirst(o);
+		getLast(o);
+		removeFirst()
+		removeLast();
+
+public class StackL {
+
+  private LinkedList list = new LinkedList();
+
+  public void push(Object v) {
+    list.addFirst(v);
+  }
+
+  public Object top() {
+    return list.getFirst();
+  }
+
+  public Object pop() {
+    return list.removeFirst();
+  }
+
+  public static void main(String[] args) {
+    StackL stack = new StackL();
+    for (int i = 0; i < 10; i++)
+      stack.push(new Integer(i));
+    System.out.println(stack.top());
+    System.out.println(stack.top());
+    System.out.println(stack.pop());
+    System.out.println(stack.pop());
+    System.out.println(stack.pop());
+  }
+} ///:~
+
+
+	Converting array to ArrayList
+	-------------------------------
+	=> Setting conversion : collection -> Array
+	
+	Object [] toArray() 
+	eg: List l=new ArrayList();
+	init size=10
+
+	=> whenever arraylist get full java need to increase size of arraylist ( slow ) 
+	=> size do not increase in multiple of 2
+
+	=> new cap=current_cap + capacity/2 +1
+
+	let: 
+	s=10
+	s1=10+ 10/2+1=16
+	s1=16+ 162+1=25
+	s1=25+ 252+1=37 ......
+
+	Converting array to collection
+	------------------------------
+	String s[]={"a","b","c"};
+
+	List l=Arrays.asList(s);
+
+	=> If we change collection original array is also going to changed
+
+	1) s[0]="k"
+	  sop(l)// [k b c]
+	
+	2) l.add("m"); l.remove(1)	run time error: UnSupportedOperatoin
+
+	3) modifying existing content is allowed
+	l.set(1, new Integer(10)); ; ArrayStoreException
+
+
+
+
+HashSet
+-----------
+	=> Underlying Ds is HashMap
+
+	=> Insertion Order	 X
+	
+	=> Duplicate 		X
+
+	=> all object inserted based on hashcode
+
+	=> hectrogenous key and value is allowed (except TreeSet and TreeMap)
+	
+	=> <<Serlizable>> , <<Clonnable>>
+
+	=> RandomAccess is not allowed
+
+	=> ThreadSafe (method is not sync)
+
+	=> Hashtable best choice if frequency operation is retrival operation (searching is fast)
+    
+	=> While adding element in hashset
+	---------------------------------
+		HashSet s=new HashSet();
+		s.add("a");	//return true
+		s.add("a");	// return false
+
+	constructors:
+	-------------
+	1. HashSet s=new HashSet();
+		
+	=> default capacity initial =16
+	=> default fill ration =0.75 ie when 75% of hashset is filled, java copy it to big hashset
+
+	=> for arryList fill ration =1, so it is resized only if arrayList is filled
+
+
+	2.  HashSet s=new HashSet(int initialVal);
+
+	3.  HashSet s=new HashSet(int initialVal, double fillRatio);
+
+	4. HashSet s=new HashSet(Collection c);
+	
+		
+	Application area of LinkedHashSet: caching as done in hibernate
+	in caching : duplicate is not allowed, insertion order need to be preserved
+
+
+
+<<SortedSet>>
+-------------
+	=> <<Collection>> -> <<Set>> -> <<SortedSet>>
+	=> need of sortedSet
+
+
+Ex> consider
+	key	
+	-----
+	100
+	101		
+	104	
+	106
+	110	
+	115	
+	120	
+
+	Define following 6 specific methods
+	-----------------------------------
+	first()	-> 101
+
+	last()	-> 136
+
+	headSet(106)	-> {100, 101, 104}
+
+	tailSet(106)	-> {106, 110, 115, 120}
+
+	subSet(101, 115)	-> {101, 104, 106, 110}
+
+	Comparator comparable()	: 
+		this method retrun algo that is used by programmer for comparator null if not used
+
+
+
+
+TreeSet
+------
+	1. Tree t=new TreeSet(); default natural sorting is used
+
+	2. Tree t=new TreeSet(Comparator c); custom sorting is used
+
+	Note:
+	Tree t=new TreeSet();
+	t.add("a");
+	t.add("b");
+	t.add(new Integer(5));	// RE - classCastEx
+	t.add(null);	// RE- NPE
+
+	Ex: 
+	Tree t=new TreeSet();
+	t.add(new String("s")); // ok
+	t.add(new StringBuilder("ss")); // Error: ClassCastException, as string builder do not implements Comparable
+	t.add(new Integer(5)); // ok
+
+
+	What add() method return for TreeSet
+	------------------------------------
+	Tree t=new TreeSet();
+
+	t.add("k");
+	t.add("z");	=> "z".compareTO("k"); => positive
+	t.add("a");	=> "z".compareTO("a"); => negative etc....
+
+
+
+HashMap internal 
+------------------
+
+
+Some important discussion on Collection iterator
+=================================================
+3 cursors in java
+-------------------------
+	If we want to obtain object one by one from an collection then 
+	we should go for cursor
+
+	3 type of cursors
+	-----------------------	
+	1. Enumeration
+	2. Iterator
+	3. ListIterator
+
+
+Cursor : 
+
+	<<Enumeration>>
+	====================
+
+		=> Since java 1.0 (legacy)
+
+		=> We can use Enumeration to get Object one one one form old 	collections
+
+		=> We can create enumeration object by using elements()method on vector class
+
+
+	Vector v=new Vector();
+	Enumeration e=v.elements();
+
+
+	just two method:
+		 public boolean hasMoreElements();
+		 public Object nextElement();
+
+	Example:
+
+	Vector v=new Vector();
+	for(int i=0;i<=10;i++)
+		v.addElement(i);
+
+	Sysout(v);
+
+	Enumeration e=v.elements();
+	
+	while(e.hasMoreElements())
+	{
+		Sysout((Integer)e.nextElement());
+	}
+
+
+	Limitation with Enumeration:
+	--------------------------
+		1. Applicable for lagacy classes
+		2. We can only do read opeation
+
+
+
+
+
+	<<Iterator>>
+	====================
+
+	Iterators:
+
+		1. Universal cursor: can be applied to any collection 
+
+		2. Can do read and remove methods
+
+
+	
+	How to create Iterator?
+	-------------------------
+
+	public Iterator iterator();
+
+	Ex:
+	Iterator itr=c.iterator();
+	where c is any collection object
+
+	Methods:
+		1. public boolean hasNext()
+		2. public Object next()
+		3. public void remove()
+
+	Demo:Removing odd element of collections
+
+
+	Problems with Iterator:
+	----------------------
+		1.Enumeration and Iterator can move in one direction, forward
+
+		2. Repace operation is not there
+
+		3. Addition of new object is not threre
+
+
+
+	<<ListIterator>>
+	====================
+
+		==>  most powerful cursor
+
+
+		     Iterator
+	  		|
+		  ListIterator
+
+	public ListIterator listIterator();
+
+	ListIterator it=l.listIterator();
+	
+	l is any list object
+	
+	
+	Method of ListIterator
+	---------------------
+	for  forward:
+
+		1. public boolean hasNext()
+		2. public Object next()
+		
+
+	for backword:
+
+		4. public boolean hasPrevious();
+		5. public Object previous()
+		6. public int previousIndex()
+
+	extra capabilities:
+
+		7. public void remove();
+		8. public void set(Object new)//for replace
+		9. public void add(Object new)
+
+
+	Ex:
+
+	ListIterator itr=lsit.listIterator();
+
+	while(itr.hasNext())
+	{
+	  String s=(String)itr.next();
+
+	  if(s.equals("raj"))
+		itr.remove();
+	  else if(s.equals("foo"))
+		itr.add("foo new");
+	  else if(s.equals("bar"))
+		itr.set("bar new");
+	}
+
+
+
+
+Important classes in Java collection API (Fig 1)
+-------------------------------------------
+ArrayList 
+LinkedList 
+HashSet 
+TreeSet 
+HashMap 
+TreeMap
+PriorityQueue 
+
+NavigableMap Interface and TreeMap Class
+---------------------------------------
+	<<SortedMap>>
+		|
+	<<NavigableMap>> 1.6
+	    
+	=> NavigableMap allow to navigate map easily
+	=>We can get :
+		nearest value matching the given key all values
+		less than the given key
+		all values greater than the given key
+		........
+
+
+		eX:
+		NavigableMap<Integer, String> examScores = new TreeMap<Integer, String>();
+		examScores.put(90, "Sophia");
+		examScores.put(20, "Isabella");
+		examScores.put(10, "Emma");
+		examScores.put(50, "Olivea");
+
+		System.out.println("The data in the map is: " + examScores);
+		System.out.println("The data descending order is: " + examScores.descendingMap());//decending order of key
+		System.out.println("Details of those who passed the exam: " + examScores.tailMap(40));// those get more then 40
+		System.out.println("The lowest mark is: " + examScores.firstEntry());//lowest
+
+
+		More methods:
+		-------------------
+		headMap()//those fail the exam
+		higherEntry()//immdeiate below passing marks
+		lowerEntry() //..........above..........
+
+		firstEntry() :lowest key value
+		lastEntry()  : highest key value
+
+
+<<Deque>> and ArrayDeque class
+--------------------------
+Deque interface (Java 1.6): allow to insert/delete from both ends
+
+	<<Queue>>
+	   |
+	<<Deque>>
+	   |
+    ____________________________
+    |           |               |
+  ALinkedList  ArrayDeque	LinkedBlockingDeque
+
+
+Application of ArrayDeque
+--------------------------
+	Application to pay a utility bill
+	---------------------------------
+	where a customer can be added only at the end of the queue and 
+	can be removed either at the front of the queue 
+	(when the customer paid the bill) or from the end of the queue 
+	(when the customer gets frustrated from the long line and leaves the queueimself )
+
+class SplQueue {
+private Deque<String> splQ = new ArrayDeque<>();
+void addInQueue(String customer){
+splQ.addLast(customer);
+}
+void removeFront(){
+splQ.removeFirst();
+}
+void removeBack(){
+splQ.removeLast();
+}
+void printQueue(){
+System.out.println("Special queue contains: " + splQ);
+}
+}
+class SplQueueTest {
+public static void main(String []args) {
+SplQueue splQ = new SplQueue();
+splQ.addInQueue("Harrison");
+splQ.addInQueue("McCartney");
+splQ.addInQueue("Starr");
+splQ.addInQueue("Lennon");
+splQ.printQueue();
+splQ.removeFront();
+splQ.removeBack();
+splQ.printQueue();
+}
+}
+
+
+
+
+
+
+
+
