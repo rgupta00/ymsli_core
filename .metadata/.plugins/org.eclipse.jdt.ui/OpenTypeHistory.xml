@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <typeInfoHistroy>
-<typeInfo handle="=day-5/\/usr\/lib\/java\/jdk1.8.0_111\/jre\/lib\/rt.jar=/javadoc_location=/https:\/\/docs.oracle.com\/javase\/8\/docs\/api\/=/&lt;java.lang(Enum.class[Enum" modifiers="1057" timestamp="1474586639000"/>
-<typeInfo handle="=day-5/\/usr\/lib\/java\/jdk1.8.0_111\/jre\/lib\/rt.jar=/javadoc_location=/https:\/\/docs.oracle.com\/javase\/8\/docs\/api\/=/&lt;java.lang(Integer.class[Integer" modifiers="49" timestamp="1474586639000"/>
-<typeInfo handle="=day-5/\/usr\/lib\/java\/jdk1.8.0_111\/jre\/lib\/rt.jar=/javadoc_location=/https:\/\/docs.oracle.com\/javase\/8\/docs\/api\/=/&lt;java.lang(Object.class[Object" modifiers="33" timestamp="1474586639000"/>
+<typeInfo handle="=day-5/\/usr\/lib\/java\/jdk1.8.0_111\/jre\/lib\/rt.jar&lt;java.lang(Object.class[Object" modifiers="1" timestamp="-1"/>
 </typeInfoHistroy>

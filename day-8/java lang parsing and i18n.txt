@@ -1,0 +1,310 @@
+
+https://www.geeksforgeeks.org/java-lang-package-java/
+
+
+
+java.1ang Package
+===================
+	==> Provide classes that are fundamental for the creation of a Java program
+
+	==> java.lang package includes the root classes that form the class hierarchy, 
+		basic exceptions, types tied to the language definition, threading, 
+		math functions, security functions, and also, information on the 
+		underlying native system
+
+	==>  The most important classes are as follows:
+
+		=> Object 
+		=> Class
+		=> Enum
+		=> Throwable
+		=> Error, Exception, RunTimeException
+		=> Thread
+		=> String , StringBuilder, StringBuffer
+		=> Comparable ( not Comparator!)
+		=> Iterable
+		=> Process, ClassLoader, Runtime, System, and Securi tyManager
+		=> Math
+		=> Wrapper classes
+
+	System
+	=======
+		=> Cant apply new to System class to create object 
+
+		=> It provides several facilities such as standard input, 
+		standard output, and error output streams; a means of loading files and 
+		libraries
+
+		=>Provide access to externally defined properties and environment variables; 
+
+		=> Provide a utility method for quickly copying a part of an array
+
+
+		int arrl[] ={1,3,2,4};
+		int arr2 []= {6,7,8,O};
+
+		System.arraycopy(arrl, 0, arr2, 0,3);
+
+		System.currentTimeMillis();
+
+
+	Example:
+	
+/*
+ * public static void arraycopy(Object src, int srcPos,
+ *                  Object dest, int destPos, int length)
+ * 
+ * Parameters: 
+ * -----------
+ * 
+ * src - the source array. 
+ * srcPos - starting position in the source array. 
+ * dest - the destination array.
+ * destPos - starting position in the destination data.
+ * length - the number of array elements to be copied.
+ */
+
+public class ArrayCopyDemo
+{
+
+    public static void main(String[] args)
+    {
+        int srcArray[] =
+        { 30, 40, 50 };
+        int destArray[] =
+        { 1, 2, 3, 4 };
+
+        System.out.print("Before copy, destArray = ");
+        for (int i : destArray)
+        {
+            System.out.print(i + ",");
+        }
+
+        /*
+         * Copies an array from the specified source array,
+         * beginning at the specified position, to the
+         * specified position of the destination array.
+         */
+        System.arraycopy(srcArray, 0, destArray, 0, 3);
+        System.out.print("\nAfter copy, destArray = ");
+        for (int i : destArray)
+        {
+            System.out.print(i + ",");
+        }
+
+    }
+}
+
+
+
+
+	System.exit()
+	----------
+
+	How to get the system property indicated by the specified key?
+	-------------------------------------------------------------
+		String value =System.getProperty("os.name");
+		String value2 =System.getProperty("os.version");
+		
+		System.out.println(value);
+		System.out.println(value2);
+
+	Getting default value:
+	----------------------
+		String value2 =System.getProperty("s.b","hello");
+
+	How to modify the system property? | System class
+	--------------------------------------------------
+
+public class DemoDte {
+
+	public static void main(String[] args) throws ParseException, IOException {
+		
+		/*
+        * Set up new properties object from file
+        * "myProperties.txt"
+        */
+       FileInputStream fis = new FileInputStream("myProperties.txt");
+       /*
+        * This statement initializes the new properties
+        * object, p, with the current set of system
+        * properties
+        */
+       Properties p = new Properties(System.getProperties());
+       p.load(fis);
+
+       /*
+        * To modify the existing set of system properties,
+        * use System.setProperties. This method takes a
+        * Properties object that has been initialized to
+        * contain the properties to be set. This method
+        * replaces the entire set of system properties with
+        * the new set represented by the Properties object.         * 
+        */
+       System.setProperties(p);
+       // display new properties
+       System.getProperties().list(System.out);
+		
+		
+	}
+}
+
+
+
+
+
+	Object 
+	=======
+
+	Method:
+
+	protected Object clone() 
+
+	boolean equals (Object obj) 
+
+	protected void finalize() 
+
+	getClass()
+
+	int hashCode () 
+
+	void notify () 
+
+	void notifyAll () 
+
+	String toString() 
+
+	void wait ()  notify () notifyAll ()
+
+
+	String vs StringBuffer vs StringBuilder
+	=======================================
+
+		=> String immutability
+	
+		=> StringBuilder creates a thread-safe, mutable sequence of characters
+
+		=> StringBuffer is not thread safe
+
+
+
+
+	Parsing of text
+	===============
+
+	The various way of parsing text in java:
+
+	=> String split() method
+
+	=> StringTokenizer and StreamTokenizer class belongs to the java.util
+
+	=> Scanner class
+	
+	=> Pattern and Matcher classes, that implement regular expression
+
+
+
+		Some method of StringTokenizer
+		-----------------------------
+
+		=> int countTokens () 
+
+		=> boolean hasMoreElements() 
+
+		=> boolean hasMoreTokens() 
+
+		=> Object nextElement() 
+
+		=> String nextToken()
+
+
+
+
+
+
+i18n 
+============
+
+Advantage:
+
+
+	=> Easy Localization: 
+
+			The application can be easily and quickly localized
+
+	=> Same Executable File: 
+
+			The localized data needs to be incorporated in the application and the
+			same executable runs worldwide.
+
+
+	=> Dynamic Retrieval of Textual Elements:
+
+			 Textual elements such as the GUI component labels are
+			  stored outside the source code. 
+
+			They are not hardcoded in the program. Therefore, these
+			elements can be retrieved dynamically
+
+	=> Same Executable File:
+ 
+			The localized data needs to be incorporated in the application and the
+			same executable runs worldwide
+
+
+	=> No Recompilation of New Languages:
+
+		 New languages are supported without recompilation
+
+
+
+Hello World
+------------
+
+
+		String language="de";
+		String country="DE";
+		
+		Locale currentLocale;
+		ResourceBundle messages;
+		
+		currentLocale =new Locale (language, country) ;
+		
+		messages =ResourceBundle. getBundle ("info/MessagesBundle", currentLocale);
+						
+		
+		System.out.println(messages.getString("greetings")) ;
+		System.out.println (messages.getString("inquiry"));
+		System.out.println(messages.getString("farewell"));
+
+
+
+
+	MessagesBundle_de_DE.properties
+
+	greetings = Hallo
+	farewell = Tschufs
+	inquiry = Wiegeht's?
+
+
+	MessagesBundle_en_US.properties
+
+	greetings = Hello
+	farewell = Goodbye
+	inquiry = How are you?
+
+	MessagesBundle_fr_FR.properties
+
+	greetings = Bonjour.
+	farewell = Au revoir.
+	inquiry = Comment allez-vous?
+
+
+	MessagesBundle.properties
+	greetings = Hello
+	farewell = Goodbye
+	inquiry = How are you?
+
+
+
+
