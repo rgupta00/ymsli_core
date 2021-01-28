@@ -1,4 +1,4 @@
-package day8_design_pattern.creational;
+package day8_design_pattern.creational.singleton;
 
 import java.io.File;
 import java.io.FileInputStream;

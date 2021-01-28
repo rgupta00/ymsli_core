@@ -1,0 +1,11 @@
+core java
+--------
+oops concepts: overloadign , overriding, imm, sting class, java 5 : enum, anno, generics
+ex handing , ex wrapping and rethrowning, solid
+collection 
+and classical threads, p and c, deadlock, syn
+syn vs volatile
+
+basic of dp: singleton pattern
+
+sw: iterative sw dev, agile sw dev
