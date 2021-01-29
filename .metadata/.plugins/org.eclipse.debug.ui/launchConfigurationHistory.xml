@@ -2,12 +2,16 @@
 <launchHistory>
 <launchGroup id="org.eclipse.debug.ui.launchGroup.debug">
 <mruHistory>
+<launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;JdbcFetchSize2&quot;/&gt;&#10;"/>
+<launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;BatchProcesing&quot;/&gt;&#10;"/>
+<launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;DemoACID&quot;/&gt;&#10;"/>
+<launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;AddEmpGetAutoGenKey&quot;/&gt;&#10;"/>
+<launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;DemoGetConnDiffSy (3)&quot;/&gt;&#10;"/>
 <launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;BookAppTester&quot;/&gt;&#10;"/>
 <launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;DemoController&quot;/&gt;&#10;"/>
 <launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;ShowEmp&quot;/&gt;&#10;"/>
 <launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;DeleteEmp&quot;/&gt;&#10;"/>
 <launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;UpdateEmp&quot;/&gt;&#10;"/>
-<launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;AddEmp&quot;/&gt;&#10;"/>
 </mruHistory>
 <favorites/>
 </launchGroup>
@@ -21,12 +25,16 @@
 </launchGroup>
 <launchGroup id="org.eclipse.debug.ui.launchGroup.run">
 <mruHistory>
+<launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;JdbcFetchSize2&quot;/&gt;&#10;"/>
+<launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;BatchProcesing&quot;/&gt;&#10;"/>
+<launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;DemoACID&quot;/&gt;&#10;"/>
+<launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;AddEmpGetAutoGenKey&quot;/&gt;&#10;"/>
+<launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;DemoGetConnDiffSy (3)&quot;/&gt;&#10;"/>
 <launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;BookAppTester&quot;/&gt;&#10;"/>
 <launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;DemoController&quot;/&gt;&#10;"/>
 <launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;ShowEmp&quot;/&gt;&#10;"/>
 <launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;DeleteEmp&quot;/&gt;&#10;"/>
 <launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;UpdateEmp&quot;/&gt;&#10;"/>
-<launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;AddEmp&quot;/&gt;&#10;"/>
 </mruHistory>
 <favorites/>
 </launchGroup>
