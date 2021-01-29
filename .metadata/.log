@@ -11911,3 +11911,117 @@ java.lang.InterruptedException
 	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:130)
 	at org.eclipse.jdt.internal.ui.text.java.hover.JavaEditorTextHoverProxy.getHoverInfo2(JavaEditorTextHoverProxy.java:89)
 	at org.eclipse.jface.text.TextViewerHoverManager$1.run(TextViewerHoverManager.java:155)
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:17:07.834
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:17:07.836
+!MESSAGE classpath=17 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:17:07.837
+!MESSAGE buffering callback sts4.classpath.MRxvrOtj bookstorev2 false 17
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:17:07.837
+!MESSAGE executing callback sts4.classpath.MRxvrOtj 1 batched events
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:17:07.845
+!MESSAGE executing callback sts4.classpath.MRxvrOtj SUCCESS [done]
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:17:23.750
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:17:23.751
+!MESSAGE classpath=18 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:17:23.752
+!MESSAGE buffering callback sts4.classpath.MRxvrOtj bookstorev2 false 18
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:17:23.752
+!MESSAGE executing callback sts4.classpath.MRxvrOtj 1 batched events
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:17:23.755
+!MESSAGE executing callback sts4.classpath.MRxvrOtj SUCCESS [done]
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:17:54.986
+!MESSAGE exists = false open = true => deleted = true
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:17:54.987
+!MESSAGE buffering callback sts4.classpath.MRxvrOtj bookstorev2 true 0
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:17:54.990
+!MESSAGE executing callback sts4.classpath.MRxvrOtj 1 batched events
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:17:54.995
+!MESSAGE executing callback sts4.classpath.MRxvrOtj SUCCESS [done]
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:18:19.031
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:18:19.032
+!MESSAGE classpath=17 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:18:19.032
+!MESSAGE buffering callback sts4.classpath.MRxvrOtj booktoreapp false 17
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:18:19.032
+!MESSAGE executing callback sts4.classpath.MRxvrOtj 1 batched events
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:18:19.035
+!MESSAGE executing callback sts4.classpath.MRxvrOtj SUCCESS [done]
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:18:40.070
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:18:40.070
+!MESSAGE classpath=18 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:18:40.071
+!MESSAGE buffering callback sts4.classpath.MRxvrOtj booktoreapp false 18
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:18:40.071
+!MESSAGE executing callback sts4.classpath.MRxvrOtj 1 batched events
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:18:40.072
+!MESSAGE executing callback sts4.classpath.MRxvrOtj SUCCESS [done]
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:24:04.063
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:24:04.064
+!MESSAGE classpath=17 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:24:04.065
+!MESSAGE buffering callback sts4.classpath.MRxvrOtj booktoreapp false 17
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:24:04.065
+!MESSAGE executing callback sts4.classpath.MRxvrOtj 1 batched events
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:24:04.072
+!MESSAGE executing callback sts4.classpath.MRxvrOtj SUCCESS [done]
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:24:33.610
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:24:33.611
+!MESSAGE classpath=18 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:24:33.611
+!MESSAGE buffering callback sts4.classpath.MRxvrOtj booktoreapp false 18
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:24:33.611
+!MESSAGE executing callback sts4.classpath.MRxvrOtj 1 batched events
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2021-01-29 11:24:33.615
+!MESSAGE executing callback sts4.classpath.MRxvrOtj SUCCESS [done]
+
+!ENTRY org.eclipse.lsp4e 2 0 2021-01-29 12:16:15.534
+!MESSAGE Javadoc unavailable. Failed to obtain it.
+!STACK 0
+java.lang.InterruptedException
+	at java.util.concurrent.CompletableFuture.reportGet(CompletableFuture.java:347)
+	at java.util.concurrent.CompletableFuture.get(CompletableFuture.java:1915)
+	at org.eclipse.lsp4e.jdt.LSJavaHoverProvider.getHoverInfo2(LSJavaHoverProvider.java:70)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:163)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:130)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavaEditorTextHoverProxy.getHoverInfo2(JavaEditorTextHoverProxy.java:89)
+	at org.eclipse.jface.text.TextViewerHoverManager$1.run(TextViewerHoverManager.java:155)
