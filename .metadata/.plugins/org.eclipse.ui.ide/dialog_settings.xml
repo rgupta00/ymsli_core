@@ -45,6 +45,11 @@
 		<item value="org.eclipse.wst.xml_ui.feature:3.18.0.v202005192253"/>
 		<item value="org.jboss.tools.m2e.wro4j.feature:1.1.0.201406251020"/>
 		<item value="org.jboss.tools.maven.apt.feature:1.5.2.201812241535"/>
+		<item value="org.sf.feeling.decompiler.cfr:3.1.1.201811062102"/>
+		<item value="org.sf.feeling.decompiler.jad:3.1.1.201811062102"/>
+		<item value="org.sf.feeling.decompiler.jd:3.1.1.201811062102"/>
+		<item value="org.sf.feeling.decompiler.procyon:3.1.1.201811062102"/>
+		<item value="org.sf.feeling.decompiler:3.1.1.201811062102"/>
 		<item value="org.sonatype.m2e.buildhelper.feature:0.15.0.201207090124"/>
 		<item value="org.sonatype.m2e.egit.feature:0.15.1.201806191431"/>
 		<item value="org.sonatype.m2e.mavenarchiver.feature:0.17.5.202002191804"/>
