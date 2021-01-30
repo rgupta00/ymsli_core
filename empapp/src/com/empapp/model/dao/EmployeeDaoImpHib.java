@@ -46,4 +46,10 @@ public class EmployeeDaoImpHib implements EmployeeDao {
 		return null;
 	}
 
+	@Override
+	public int getNoOfEmployeeGettingLowSalary() {
+		// TODO Auto-generated method stub
+		return EmployeeDao.super.getNoOfEmployeeGettingLowSalary()+10;
+	}
+
 }
