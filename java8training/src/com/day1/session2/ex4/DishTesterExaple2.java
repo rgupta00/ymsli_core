@@ -1,6 +1,6 @@
 package com.day1.session2.ex4;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
 
 import java.nio.MappedByteBuffer;
 import java.util.Arrays;
@@ -26,11 +26,29 @@ public class DishTesterExaple2 {
 	public static void main(String[] args) {
 
 		List<Dish> allDishes = getAllDishes();
-		// Example: return the names of dishes that are low in calories (<400) sorted by number of calories
-
+		// Example: return the names of dishes that are low in 
+		//calories (<400) sorted by number of calories
+		
+		List<String> dishNames=allDishes.stream()
+				.filter(d->d.getCalories()< 400)
+				.sorted(Comparator.comparing(Dish::getCalories))
+				.map(d-> d.getName())
+				.collect(toList());
+	
 		// Getting all veg dishes
 	
+		List<Dish> allVegDishes=allDishes.stream()
+				.filter(Dish::isVegetarian)
+				.collect(toList());
+		allVegDishes.forEach(d-> System.out.println(d.getName()));
+		
 		// Get list of All Dishes only containing name and calValue
+		
+		
+		List<DishSelectedField>dishSelectedList=allDishes.stream()
+				.map(dish-> new DishSelectedField(dish.getName(), dish.getCalories()))
+				.collect(toList());
+		dishSelectedList.forEach(ds-> System.out.println(ds));
 		
 		// create a List by selecting the first three dishes that have more than 300 calories
 		
@@ -41,12 +59,29 @@ public class DishTesterExaple2 {
 
 		// find out whether the menu has a vegetarian option: anyMatch
 		
+		boolean anyMatch = allDishes.stream().anyMatch(Dish::isVegetarian);
+		if(anyMatch) {
+			System.out.println("some veg options are there");
+		}else
+			System.out.println("no :(");
+		
 		// find out whether the menu ishealthy :allMatch
 		// (ie. all dishes are below 1000 calories):
+		boolean allMatch = allDishes.stream().allMatch(dish-> dish.getCalories()<1000);
+		System.out.println("ishealthy?"+allMatch);
 		
 		// noneMatch: opposite of allMatch
 
+		boolean allMatchNot = allDishes.stream().noneMatch(dish-> dish.getCalories()>1000);
+		System.out.println("ishealthy Not?"+allMatchNot);
+		
 		// find if any food item is veg? findAny
+		Optional<Dish> opDish = allDishes.stream().filter(dish->dish.isVegetarian()).findAny();
+		
+		String name=opDish.map(dish-> dish.getName()).orElse("dish not found");
+		System.out.println("---------------");
+		System.out.println(name);
+		System.out.println("---------------");
 		
 		// Primitive stream specializations
 
@@ -96,15 +131,16 @@ public class DishTesterExaple2 {
 	
 
 	private static List<Dish> getAllDishes() {
-		List<Dish> disheds = Arrays.asList(new Dish("pork", false, 800,
-				Dish.Type.MEAT), new Dish("beef", false, 700, Dish.Type.MEAT),
-				new Dish("chicken", false, 400, Dish.Type.MEAT), new Dish(
-						"french fries", true, 530, Dish.Type.OTHER), new Dish(
-						"rice", true, 350, Dish.Type.OTHER), new Dish(
-						"season fruit", true, 120, Dish.Type.OTHER), new Dish(
-						"pizza", true, 550, Dish.Type.OTHER), new Dish(
-						"prawns", false, 300, Dish.Type.FISH), new Dish(
-						"salmon", false, 450, Dish.Type.FISH));
+		List<Dish> disheds = Arrays.asList
+				(new Dish("pork", false, 800,Dish.Type.MEAT), 
+				new Dish("beef", false, 700, Dish.Type.MEAT),
+				new Dish("chicken", false, 400, Dish.Type.MEAT), 
+				new Dish("french fries", false, 530, Dish.Type.OTHER), 
+				new Dish("rice", false, 350, Dish.Type.OTHER), 
+				new Dish("season fruit", false, 120, Dish.Type.OTHER), 
+				new Dish("pizza", false, 550, Dish.Type.OTHER), 
+				new Dish("prawns", false, 300, Dish.Type.MEAT), 
+				new Dish("salmon", false, 450, Dish.Type.MEAT));
 		return disheds;
 	}
 

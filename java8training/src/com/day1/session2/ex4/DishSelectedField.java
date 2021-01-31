@@ -20,6 +20,16 @@ public class DishSelectedField {
 		this.calories = calories;
 	}
 	public DishSelectedField() {}
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("DishSelectedField [name=");
+		builder.append(name);
+		builder.append(", calories=");
+		builder.append(calories);
+		builder.append("]");
+		return builder.toString();
+	}
 	
 	
 }

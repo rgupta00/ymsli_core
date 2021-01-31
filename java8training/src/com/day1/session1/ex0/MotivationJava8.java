@@ -1,7 +1,8 @@
 package com.day1.session1.ex0;
 
-//calculating prime no bw 1 to 1_000_000
+import java.util.stream.LongStream;
 
+//calculating prime no bw 1 to 1_000_000
 class Prime{
 	public static boolean isPrime(Long n){
 		boolean isPrimeNumber=true;
@@ -16,6 +17,37 @@ class Prime{
 public class MotivationJava8 {
 	
 	public static void main(String[] args) {
+		
+		long start= System.currentTimeMillis();
+		
+		long nos=LongStream.rangeClosed(0, 1_000_000)
+				//.parallel()
+				.filter(Prime::isPrime)
+				.count();
+		
+		
+		
+//		for(long i=0;i<1_000_00; i++ ) {
+//			if(Prime.isPrime(i)) {
+//				nos++;
+//			}
+//		}
+		
+		System.out.println(nos);
+		
+		
+		long end= System.currentTimeMillis();
+		
+		System.out.println("time taken: "+(end-start));
+		
+		
+//		System.out.println("no of cores");
+//		
+//		System.out.println(Runtime.getRuntime().availableProcessors());
+//		
+//		
+//		
+//		
 		
 		
 		/*

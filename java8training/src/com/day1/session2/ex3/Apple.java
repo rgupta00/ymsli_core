@@ -28,4 +28,15 @@ public class Apple {
 	public Apple() {
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Apple [color=");
+		builder.append(color);
+		builder.append(", weight=");
+		builder.append(weight);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }
