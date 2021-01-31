@@ -7,6 +7,7 @@ import java.util.Date;
 
 import com.bookapp.model.dao.Book;
 import com.bookapp.model.dao.ConnectionFactory;
+import com.bookapp.model.exceptions.DataAccessException;
 import com.bookapp.model.service.BookService;
 import com.bookapp.model.service.BookServiceImpl;
 public class BookAppTester {
@@ -22,9 +23,8 @@ public class BookAppTester {
 		try {
 			bookService.addBook(book);
 			System.out.println("book is added");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (DataAccessException e) {
+			System.out.println(e);
 		}
 //		try {
 //			List<Book>books=bookService.getAllBooks();
