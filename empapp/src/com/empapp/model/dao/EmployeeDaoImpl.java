@@ -90,7 +90,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	}
 
 	@Override
-	public Employee getEmployeeById(int eid) {
+	public Optional<Employee> getEmployeeById(int eid) {
 		PreparedStatement pstmt;
 		Employee employee=null;
 		try {
@@ -111,7 +111,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return employee;
+		return Optional.ofNullable(employee);
 	}
 
 }

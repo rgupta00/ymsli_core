@@ -6,6 +6,10 @@ public class Book implements Comparable<Book>{
 	private String author;
 	private double price;
 
+	// this (Book )-->T/F
+	public boolean pricyBook() {
+		return price>=700;
+	}
 	public int getId() {
 		return id;
 	}
@@ -14,6 +18,7 @@ public class Book implements Comparable<Book>{
 		this.id = id;
 	}
 
+	//This -->String
 	public String getTitle() {
 		return title;
 	}
@@ -30,7 +35,7 @@ public class Book implements Comparable<Book>{
 		this.author = author;
 	}
 
-	//funcation 		this---> double
+	//this is a implicit pointer ---> Double
 	public double getPrice() {
 		return price;
 	}

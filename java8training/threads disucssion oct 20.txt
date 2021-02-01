@@ -477,6 +477,12 @@ Intro to juc packate
 
 	Thread Pool Types:
 	-----------------
+		io bound process vs cpu bound process
+		
+			t1 t2 t3
+			
+		cpu bound : no of therads are less
+			no of threads= no of cors in ur machine
 	
 	newFixedThreadPool(int)           Creates a fixed size thread pool.
 

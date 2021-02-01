@@ -1,6 +1,9 @@
 package com.empapp.model.service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import com.empapp.model.dao.Employee;
 import com.empapp.model.dao.EmployeeDao;
@@ -16,8 +19,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 	
 	
 	public EmployeeServiceImpl() {
-		employeeDao=new EmployeeDaoImplMongodb();
+		employeeDao=new EmployeeDaoImpl();
 	}
+
+	
+	public EmployeeDao getEmployeeDao() {
+		return employeeDao;
+	}
+
+
+	public void setEmployeeDao(EmployeeDao employeeDao) {
+		this.employeeDao = employeeDao;
+	}
+
 
 	@Override
 	public List<Employee> getAllEmployees()throws DataAccessException {
@@ -42,16 +56,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public Employee getEmployeeById(int eid) {
-		Employee employee=employeeDao.getEmployeeById(eid);
-		if(employee==null)
-			throw new EmployeeNotFoundException("employee with id :"+eid+" is not found");
-		return employee;
+	public Optional<Employee> getEmployeeById(int eid) {
+		return employeeDao.getEmployeeById(eid);
 	}
 
 	@Override
 	public List<Employee> getHigherSalaryEmployees(int salary) {
 		return null;
+	}
+
+	@Override
+	public List<Employee> getEmployeeByPredicte(Predicate<Employee> predicate) {
+		return getAllEmployees()
+				.stream().filter(predicate).collect(Collectors.toList());
 	}
 
 }

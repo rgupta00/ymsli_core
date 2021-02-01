@@ -9,7 +9,8 @@ public interface EmployeeDao {
 	public void addEmployee(Employee employee);
 	public void updateEmployee(int eid,Employee employee);
 	public void deleteEmployee(int eid);
-	public Employee getEmployeeById(int eid);
+	public Optional<Employee> getEmployeeById(int eid);
+	
 	default public  int getNoOfEmployeeGettingLowSalary() {
 		return 7;
 	}

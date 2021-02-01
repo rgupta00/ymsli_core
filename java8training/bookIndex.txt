@@ -1,0 +1,3 @@
+As streams are lazy-loaded in the above cases 
+they generate elements upon request instead of storing them all in memory reading and processing files will 
+be efficient in terms of memory used

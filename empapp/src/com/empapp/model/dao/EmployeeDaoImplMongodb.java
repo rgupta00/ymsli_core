@@ -1,6 +1,7 @@
 package com.empapp.model.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.empapp.model.exceptions.DataAccessException;
 import com.empapp.model.exceptions.MongoDbException;
@@ -38,9 +39,9 @@ public class EmployeeDaoImplMongodb implements EmployeeDao {
 	}
 
 	@Override
-	public Employee getEmployeeById(int eid) {
+	public Optional<Employee> getEmployeeById(int eid) {
 		// TODO Auto-generated method stub
-		return null;
+		return Optional.ofNullable(null);
 	}
 
 }

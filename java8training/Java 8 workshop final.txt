@@ -172,15 +172,15 @@ Methods vs. Functions
 ----------------------
 
 
-			Method					Pure Function
+			Method									Pure Function
 Mutation
 		A method mutates , i.e., it modifies 		A pure function does not mutat
-		data and produces other changes 		it just inspects data and produces		
-		and side effects.				results in form of new data.
+		data and produces other changes 			it just inspects data and produces		
+		and side effects.							results in form of new data.
 
 
 How vs. What	Methods describe how  				Pure functions describe what  
-		things are done.				is done rather than how it is done
+		things are done.							is done rather than how it is done
 
 
 Invocation 	Methods are used imperatively			Pure functions are used declaratively
@@ -188,8 +188,8 @@ Order		order of invocation matters.
 		  
 
 Code vs. Data	Methods are code , i.e., 			Functions are code-as-data
-		they are invoked and executed			they are not only executable,
-								 but are also passed around like data.
+		they are invoked and executed				they are not only executable,
+								 					but are also passed around like data.
 
 
 

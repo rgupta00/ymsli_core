@@ -1,6 +1,7 @@
 package com.empapp.web.controller;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.function.Predicate;
 
 import com.empapp.model.dao.Employee;
 import com.empapp.model.exceptions.DataAccessException;
@@ -13,17 +14,43 @@ public class DemoController {
 	public static void main(String[] args) {
 		EmployeeService employeeService=new EmployeeServiceImpl();
 		
-		List<Employee> employees;
-		try {
-			employees = employeeService.getAllEmployees();
-//			for(Employee employee:employees) {
-//				System.out.println(employee);
-//			}
-		} catch (DataAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Optional<Employee> empOpt=employeeService.getEmployeeById(12);
+		
+		String empName=empOpt.map(emp->emp.getEname()).orElse("name not found");
+		System.out.println(empName);
+		
+		
+		
+//		
+//		List<Employee> employees;
+//		try {
+//			employees = employeeService.getAllEmployees();
+////			for(Employee employee:employees) {
+////				System.out.println(employee);
+////			}
+//		} catch (DataAccessException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+		
 	
+//		Predicate<Employee> higherSalaryPre= emp->  emp.getSalary()>=50;
+//		System.out.println("----------higher sal getter ------");
+//		List<Employee> employeesHigherSalaryGetter=
+//				employeeService.getEmployeeByPredicte(higherSalaryPre);
+//		employeesHigherSalaryGetter.forEach(e->System.out.println(e));
+//		
+//		
+//		System.out.println("--------bangloreEmp-------------");
+//		Predicate<Employee> bangloreEmpPredicate= emp-> emp.getCity().equalsIgnoreCase("banglore");
+//		
+//
+//		List<Employee> bangloreEmp=
+//				employeeService.getEmployeeByPredicte(bangloreEmpPredicate);
+//		bangloreEmp.forEach(e->System.out.println(e));
+		
+		
 		
 	//	System.out.println("printng by id");
 //		try {

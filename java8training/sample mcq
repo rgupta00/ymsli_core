@@ -4,6 +4,8 @@
 
 
 
+MCQ:
+-------
 
 public interface Foo
 	{
@@ -12,7 +14,7 @@ public interface Foo
       		return false;
    		}
 	}
-A) Code will not compile 
+A) Code will not compile (Ans)
 B) Code with compile
 C) Code compile but run time error
 D) none of these
@@ -32,9 +34,13 @@ D) none of these
 
  Which one of the following abstract methods does not take any argument but
 returns a value?
+
 A.The accept() method in java.util.function.Consumer<T> interface
+
 B.The get() method in java.util.function.Supplier<T> interface
+
 C.The test() method in java.util.function.Predicate<T> interface
+
 D.The apply() method in java.util.function.Function<T, R> interface
 
 
@@ -53,10 +59,10 @@ import java.util.*;
  
 class Sort {
 public static void main(String []args) {
-List<String> strings = Arrays.asList("eeny ", "meeny ", "miny ", "mo ");
-Collections.sort(strings, (str1, str2) -> str2.compareTo(str1));
-strings.forEach(string -> System.out.print(string));
-}
+	List<String> strings = Arrays.asList("eeny ", "meeny ", "miny ", "mo ");
+	Collections.sort(strings, (str1, str2) -> str2.compareTo(str1));
+	strings.forEach(string -> System.out.print(string));
+	}
 }
 A.	 Compiler error: improper lambda function definition
 B.	This program prints: eeny meeny miny mo
@@ -117,7 +123,7 @@ H) none of these
 
 
 
-Behavior parameterization is
+What is the perfered approach to achive Behavior parameterization in java:-
 1. passing code to methods  arguments
 2. passing object to method arguments
 3. passing both code and objects to method arguments
@@ -127,14 +133,11 @@ Behavior parameterization is
 
 
 
-
-
 Consider code snippet, what would be the output?
-
-List<String>list=Arrays.asList(“java”,”is”,”fun”);
-Stream<String> s=list.stream();
-Sysout(s.foreach(s->System.out::println());
-Sysout(s.foreach(s->System.out::println());
+	List<String>list=Arrays.asList("java","is","fun");
+		Stream<String> s=list.stream();
+		s.forEach(System.out::println);
+		s.forEach(System.out::println);
 
 A. Code will not compile 
 B. java is fun statement is printed twice
@@ -147,6 +150,8 @@ A. short-circuiting
 B. loop fusion
 C. lazy Evaluation
 D. All of these
+
+
 
 
 
