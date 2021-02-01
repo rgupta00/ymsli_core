@@ -1,0 +1,2054 @@
+Java Threads workshop
+======================
+
+	=> Understanding difference bw Concurrency and Parallelism
+
+	=> Classical threads
+		-> Thread and Runnable
+		-> Thread life cycle
+		-> Synchronization issue
+		-> Producer and consumer problem
+		-> deadlock and avoidance
+
+	=> java.util.concurrent packate ( Java 5 stuff)
+		-> Introduction to juc 
+		-> synchronizers provided in juc
+			Semaphore 				
+			CountDownLatch	
+			CyclicBarrier 		
+			Exchanger 	
+			Phaser 	
+		-> Concurrent Collections
+			Need of concurrent collections
+				ConcurrentHashMap
+				CopyOnWriteArrayList
+				CopyOnWriteArraySet
+
+		-> Apply Atomic Variables 
+		-> Applying Locks
+			 ReentrantLock
+			 ReentrantReadWriteLock  
+			 Conditions
+
+		-> Use Executors and ools
+			What is the advantage of ThreadPool?
+			ExecutorService , creating thread pool, submitting jobs
+			Callable vs Runnable
+
+
+	=> Fork-Join Framework (Java 7 Stuff)
+	
+	=> ParallelStreams: Concurrent data processing in Java 8
+
+	=> CompletableFuture: composable asynchronous programming
+
+=================================================================
+	Understanding difference bw Concurrency and Parallelism
+=================================================================
+
+ Problem statement:
+ -------------------
+	=> No more increase in clock speed in hardware but increasing number of cores
+	=> Java classical thread programming is not designed for multicore systems
+	=> We Need to build applications that can efficiently utilize hardware resources (multiple 	cores)
+
+	Note:
+	----
+	Concurrency IS NOT SAME AS Parallelism
+	
+	Multithreading IS NOT SAME AS  Parallelism
+
+
+	Concurrency: A condition that exists when at least two threads are making progress
+
+	Parallelism: A condition that arises when at least two threads are executing simultaneously
+
+	Multithreading: Allows access to two or more threads. Execution occurs in more than one thread of control, using parallel or concurrent processing
+
+	
+	MOST IMP QUESTION
+	How does this help us in achieving fine grained parallelism?
+	
+	PROGRAMATIC WAY:  Fork-Join Framework ( JAVA 7)
+	DECLERATIVE WAY:  Paralled Streams ( JAVA 8)
+
+
+
+
+
+
+
+=================================================================
+	Classical threads
+=================================================================
+
+Classical threads
+		-> Thread and Runnable
+		-> Thread life cycle
+		-> Thread group
+		-> Synchronization issue
+		-> Producer and consumer problem
+		-> deadlock and avoidance
+
+
+
+
+
+Thread and Runnable
+=================
+
+Methods of Thread class:
+-------------------------
+	Thread currentThread()
+	String getName() 
+	int getPriority() 
+	void join()
+	void join(long)
+	void join(long, int)
+	void run() 
+	void setName(String) 
+	void setPriority(int) 
+	void sleep(long)
+	void sleep(long, int)
+	String toString()
+
+
+
+
+Thread life cycle
+=================
+
+		  	Blocked
+
+
+	Not exist----> Runnable--------> Running
+
+
+			Dead
+
+
+thread group
+================
+	concept of thead group?
+	----------------------
+	=> We can divide threads as per groups such as all producer threads, 
+		all consumer threas so on....
+
+
+	To get name of main thread group:
+	---------------------------------
+	Sop(Thread.currentThread().getThreadGroup().getName();
+
+		main methods, main thread belong to main thread group.
+		Main thread is child group of system thread group!
+
+	Sop(Thread.currentThread().getThreadGroup().getParent()getName();
+
+		it prints : system
+
+	System thread group
+	-------------------
+	=> System group access root of all threads group in java
+
+	=> System group contain system level thread, GC, reference handler,
+	 signal dispacher..so many..
+
+
+	ThreadGroup g=new ThreadGroup(String name);
+		it become of child group of main( if this code execute in main)
+
+	ThreadGroup gr=new ThreadGroup("first group");
+		it become of child group of xyz grouop ( if this code execute in xyz thread group)
+
+
+
+
+
+
+ Synchronization issue
+ =====================
+
+	=> race condition
+
+	=> Need of Synch?
+
+
+Need of Synch
+-----------
+class Counter{
+	public static int counter=0;
+}
+
+class MyThread extends Thread{
+	@Override
+	public void run() {
+		
+		Counter.counter++;
+		System.out.print(Counter.counter +" ");
+	}
+	
+}
+
+
+main
+-------
+for(int i=0;i<25;i++){
+	MyThread t=new MyThread();
+	t.start();
+}
+
+
+
+
+Solution:
+------------
+
+class MyThread extends Thread{
+	@Override
+	public void run() {
+		synchronized (Counter.class) {
+			Counter.counter++;
+			System.out.print(Counter.counter +" ");
+		}
+		
+	}
+	
+}
+
+
+
+
+
+Producer and Consumer problem
+===========================
+
+
+class Q 
+{
+	int n;
+	synchronized int get()
+	{
+		System.out.println("Got: " + n);
+		return n;
+	}
+	
+	synchronized void put(int n) 
+	{
+		this.n = n;
+		System.out.println("Put: " + n);
+	}
+}
+
+
+class Producer implements Runnable 
+{
+	Q q;
+	Producer(Q q) 
+	{
+	
+		this.q = q;
+		new Thread(this, "Producer").start();
+	}
+	
+	public void run() 
+	{
+		int i = 0;
+		
+		while(true) 
+		{
+		q.put(i++);
+		}
+	}
+}
+
+class Consumer implements Runnable 
+{
+	Q q;
+	Consumer(Q q) 
+	{
+		this.q = q;
+		new Thread(this, "Consumer").start();
+	}
+	
+	public void run() 
+	{
+		while(true) 
+		{
+		q.get();
+		}
+	}
+}
+
+public class WrongInplementationOfPandC {
+
+	public static void main(String args[])
+	{
+		Q q = new Q();
+		new Producer(q);
+		new Consumer(q);
+		
+		System.out.println("Press Control-C to stop.");
+	}
+}
+
+
+
+
+Correct implemenation of P and C
+----------------------------------
+
+//A correct implementation of a producer and consumer.
+class Q
+{
+	int n;
+	boolean valueSet = false;
+	
+	synchronized int get()
+	{
+			if(!valueSet)
+			try 
+			{
+				wait();
+			} 
+			catch(InterruptedException e) 
+			{
+				System.out.println("InterruptedException caught");
+			}
+			
+			System.out.println("Got: " + n);
+			valueSet = false;
+			notify();
+			return n;
+	}
+	
+	synchronized void put(int n) 
+	{
+		if(valueSet)
+		try
+		{
+			wait();
+		} 
+	
+		catch(InterruptedException e)
+		{
+			System.out.println("InterruptedException caught");
+		}
+		
+		this.n = n;
+		valueSet = true;
+		System.out.println("Put: " + n);
+		notify();
+	}
+}
+
+
+
+
+
+
+
+deadlock and avoidance
+========================
+
+
+		final Object resource1 = "resource1";
+
+		final Object resource2 = "resource2";
+
+		Thread t1 = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				synchronized (resource1) {
+					System.out.println("thread1 locked resource 1");
+					try {
+						Thread.sleep(50);
+					} catch (InterruptedException e) {
+					}
+					synchronized (resource2) {
+						System.out.println("thread1 locked resource 2");
+					}
+				}
+			}
+		});
+
+		Thread t2 = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				synchronized (resource2) {
+					System.out.println("thread2 locked resource 2");
+					try {
+						Thread.sleep(50);
+					} catch (InterruptedException e) {
+					}
+					synchronized (resource1) {
+						System.out.println("thread2 locked resource 1");
+					}
+				}
+			}
+		});
+
+		
+		t1.start();
+		t2.start();
+
+
+
+testing thread dump analysis:
+
+jps -l
+
+
+jstack 7346 > demo.txt
+
+
+
+
+
+volatile:
+----------------
+class Test extends Thread {
+
+    boolean keepRunning = true;
+
+    public void run() {
+        while (keepRunning) {
+        }
+
+        System.out.println("Thread terminated.");
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        Test t = new Test();
+        t.start();
+        Thread.sleep(1000);
+        t.keepRunning = false;
+        System.out.println("keepRunning set to false.");
+    }
+}
+
+
+
+=================================================================
+	java.util.concurrent packate ( Java 5 stuff)
+=================================================================
+
+
+Intro to juc packate
+====================
+
+	=> j.u.c provide high-level APIs for concurrent programming.
+
+	=> Using synchronized keyword, wait/notifyAll() are low levels stuff
+
+	=> Juc provide high level abstraction for synchronizing activities
+	 of two or more threads are known as synchronizers.
+
+	=> synchronizer classes provided in this juc 
+
+	=> JUC provide Thread pool and Callable concpet
+
+	=> JUC provide concurrent data structure such as ConcurrentHashMap, CopyOnWriteArrayList
+		Blocking Queue
+
+
+	Discussion points:
+	=================
+	1. Thread pool concept and practice
+	2. Concurrent data structure CHM, COWAL, BlockingQueues
+	3. Lock concept ie better replacement of synch keyword
+	3. synchronizer classes provided by juc
+	
+
+
+
+
+
+
+	1. Concept of thread Pool:
+	========================
+
+	A thread pool reuses previously created threads to execute 
+	current tasks and offers a solution to the problem of thread
+	 cycle overhead and resource thrashing
+
+
+
+	Thread Pool Types:
+	-----------------
+	
+	newFixedThreadPool(int)           Creates a fixed size thread pool.
+
+	newCachedThreadPool()             Creates a thread pool that creates new 
+                                 	  threads as needed, but will reuse previously 
+                                 	 constructed threads when they are available
+
+	newSingleThreadExecutor()         Creates a single thread
+
+	scheduledThreadExecutor()	  execute thread after schedule time period
+
+
+
+
+	Steps to be followed
+	------------------
+
+	1. Create a task(Runnable Object) to execute
+
+	2. Create Executor Pool using Executors
+
+	3. Pass tasks to Executor Pool
+
+	4. Shutdown the Executor Pool
+
+
+	Use Executors and ThreadPools
+	===============================
+
+	What is the advantage of ThreadPool?
+	-----------------------------------
+	=> Without thread pool we have to manually create thread per job, not efficient programming!
+
+	==> Creating and managing thread manually is painful, not efficient and error prone
+
+	=> Java 5 allowed us to create thread pool, that is managed internally by Java
+
+	=> multiple jobs can be done by the same thread, performance. Same thread can be reused
+
+
+	How to create thread pool and supply Job to that thread pool?
+	-------------------------------------------------------------
+
+	=> We just need to define Job what we want to do, other details handles by Executor framework
+
+	=> Thread pool is also called Executor framework
+
+	=> Executor abstract away the low-level details of multi-threaded programming
+
+	=> Executor is an interface that declares only one method: void execute(Runnable). 
+
+
+		<<Executor>>
+			|
+		__________________________________
+		|		|		  |
+	 ExecutorService ThreadPoolExecutor   ForkJoinPool
+
+
+
+	Hello world Thread pool:
+	-------------------------
+	
+	Step 1: Creating thead pool:
+			ExecutorService s=Executors.newFixedThreadPool(3);
+	Step 2: Submit the Runable/ Callable Job by submit method
+			s.submit(job);
+
+	Step 3:Shut down executor service, no job can be further submitted
+			s.shutdown()
+
+
+	==> Both Runnable and Executor are almost same, the main difference between Runnable
+	  and Exectutor is that Executor is meant to abstract how the thread is executed
+
+	==> For example, depending on the implementation of Executor, Exectutor may 
+		schedule a thread to run at a certain time, or execute the thread after a certain 			delay period
+
+
+
+
+	 Hello World
+	-----------
+
+	class MyJob implements Runnable{
+	
+		@Override
+		public void run() {
+			System.out.println("job of thread...."+ Thread.currentThread().getName());
+		}
+		
+	}
+	public class DemoTh {
+	
+		public static void main(String[] args) {
+				ExecutorService es=Executors.newFixedThreadPool(4);
+				for(int i=0;i<100;i++) {
+					es.execute(new MyJob());
+				}
+				es.shutdown();
+				
+		}
+	}
+
+
+
+
+
+Callable and Future
+---------------------
+
+	<<Callable>> vs <<Runnable>>
+	===========================
+	problem with runnable?
+	-----------------------
+		=> not possible to return processing result
+		=> run() method can not throw exception, no way to know what happens wrong?
+
+
+	Java 5 introduce <<Callable>>
+	-----------------------------
+	
+		public interface Callable<V> {
+  			  V call() throws Exception;
+		}
+
+	
+		==> To execute a task using the Callable you must create a thread pool
+
+		==> Some business processing takes long time to complete, we can ask thread pool
+			to provide result in Future object, and we can do something else
+
+		==> Future represents objects that contain a value that is returned by a
+		 thread in the future
+
+		==> You can use the isDone() method in the Future class to check if the task is
+			complete and then use the get() method to fetch the task result
+
+		==> If you call the get() method directly while the task is
+		   not complete, the method blocks until it completes and returns the value once 				available
+
+
+
+
+
+
+class Factorial implements Callable<Long> {
+	long n;
+
+	public Factorial(long n) {
+		this.n = n;
+	}
+
+	public Long call() throws Exception {
+		if (n <= 0) {
+			throw new Exception("for finding factorial, N should be > 0");
+		}
+		long fact = 1;
+		for (long longVal = 1; longVal <= n; longVal++) {
+			fact *= longVal;
+		}
+		return fact;
+	}
+}
+
+public class CallableTest {
+
+	public static void main(String[] args) throws Exception {
+		
+		Callable<Long> task = new Factorial(20);
+		
+		ExecutorService es = Executors.newSingleThreadExecutor();
+		
+
+		Future<Long> future = es.submit(task);
+		
+		// wait for the get() method that blocks until the computation is complete.
+
+		System.out.println(future.get());
+
+		es.shutdown();
+	}
+}
+
+
+
+
+Example in case We have to find Factorial of many numbers?
+--------------------------------------------------------
+
+		
+		Factorial[] jobs={new Factorial(20), new Factorial(11), new Factorial(15)};
+	
+		ExecutorService es = Executors.newSingleThreadExecutor();
+
+		for(Factorial f: jobs){
+		Future<Long> future=es.submit(f);
+			System.out.println(future.get());
+		}
+	
+		es.shutdown();
+
+
+
+
+2. concurrent data structure java 5
+=====================================
+
+Need of concurrent collections
+================================
+
+	1. traditional collection objects like arraylist, hashmap can be accessed by multiple 
+	threads simultanoeously and hance may be a chance of data inconsistancy problem
+	 and hence are not thread salfe
+
+	2. already existing thread safe collections 
+	( vector, hashtable, synchronizedlist(), synchronizedSet(), synchronizedMap()) 
+	perfromance is not up to the mark
+
+	3. as for every operation even for read, total collection is locked by only 
+	one thread at a time and increase waiting time of threads
+
+	4. Most important problem if one thread is iterating collection and other tries to modify it 
+		immediatly we get ConcurrentModifictionException ( fail fast)
+
+
+	public class MyThread extends Thread{
+		
+			static Vector<String>list=new Vector<String>();
+			
+			public void run(){
+				try{
+					Thread.sleep(2000);
+				}catch(InterruptedException ex){}
+				
+				list.add("D");
+			}
+			public static void main(String[] args) throws InterruptedException {
+				
+				list.add("A");
+				list.add("B");
+				list.add("C");
+				
+				MyThread myThread=new MyThread();
+				myThread.start();
+				
+				Iterator<String> itr=list.iterator();
+				
+				while(itr.hasNext()){
+					System.out.println("main thread iterating...."+ itr.next());
+					Thread.sleep(3000);
+				}
+				
+				
+			}
+		}
+
+
+
+	Difference bw concurrent and Traditional collection
+	---------------------------------------------------
+
+	1. concurrent collection is always thread safe
+	
+	2. when compared with traditional threads safe collection performate is better
+	 because differnt locking mechnism
+	3. while one thread interacting other thread allowed to alter collection in safe manner
+
+
+	Hence concurrent collection never throws ConcurrentModifictionException 
+
+	The important concurrent classes are:
+	-----------------------------------
+
+	1. ConcurrentHashMap
+	2. CopyOnWriteArrayList
+	3. CopyOnWriteArraySet
+
+
+	putIfAbsent(), remove() (redefined), replace() + other method of Maps
+
+	ConcurrentHashMap
+	------------------
+
+	<<Map>>
+	  |
+	<<ConcurrentMap>>	
+	 |
+       	ConcurrentHashMap
+
+
+
+	1. Object putIfAbsent(Object key , Object val)
+		only if key is not present then only put key, val
+
+
+	2. boolean remove(Object key, Object val) 
+		only if combination of key, value present then remove it
+
+	3. boolean replace(Object key, Object oldVal, Object newVal)
+		only if combination of key, value present then replace with newValue
+
+
+
+	ConcurrentHashMap vs HashMap
+	----------------------------
+	only one lock with HashMap, even if one thread is reading all map is locked!
+
+	for ConcurrentHashMap we have 16 bucket level lock, concurrency level=16
+
+	if concurrency level=8 then 1 lock per 2 bucket level
+
+	if concurrency level=32 then 2 lock per 1 bucket level
+
+
+	Imp points
+	----------
+
+	-> Underlying ds is HashMap
+
+	-> CHM allows concurrent any no of read operation and thread safe update operation
+
+	-> to perform read operation thread dont require lock, for update it require lock, a part of map is locked
+
+	-> concurrent update is achived by dividing map into smaller portion
+
+	-> default many read , 16 write operation
+
+	-> null is not allowed for both key and value
+
+	-> CHM do not throw ConucrrentModifitionEx
+
+	
+
+	constructor of CHM
+	------------------
+
+	1. CHM m=new CHM();//default inital cap=16, default fill ration=.75, default concurrency level=16
+
+	1. CHM m=new CHM(int initalCap);
+
+	1. CHM m=new CHM(int initalCap,float fillRation);
+
+	1. CHM m=new CHM(int initalCap,float fillRation, int concurrencyLevel);
+
+	1. CHM m=new CHM(map m);
+	// converting normal map to CHM
+	
+
+
+	Example:
+	----------
+
+		ConcurrentHashMap<Integer, String>map=new ConcurrentHashMap<>();
+		
+		map.put(101,"A");
+		map.put(102,"B");
+		map.putIfAbsent(103,"C");
+		
+		map.remove(101,"D");
+		map.replace(102,"B","X");
+		
+		System.out.println(map);
+
+
+
+	Example: CHM do not throws ConcurrentModifictionException ...
+
+	While main thread iterating map another thread updated map
+
+	is the updatation is available to main thread ? No Gurantee..
+
+
+
+
+	---------------------------------------------------
+	HashMap					CHM
+	---------------------------------------------------
+
+	not thread safe				thread safe
+
+	High performance as threds		little low
+	are not required to wait to
+	 operate
+	on hashmap
+
+	while one thread iterating		allowed 
+	other thread do not allowed 
+	to update (CMEx)
+
+	Iterator of HashMap is fail-fast	fail safe
+	and it throws CMEx
+
+	null is allowed for both k, v		not allowed else we get NPEx
+
+	java 1.2				java 1.5
+
+
+
+	CopyOnWriteArrayList
+	----------------------
+	
+		<<Collection>>
+			|
+		    <<List>>
+			|
+		CopyOnWriteArrayList	juc
+
+	-> it is thread safe version of arrayList 
+	-> CopyOnWriteArrayList create a clonned copy of underlying arrayList for every update operation
+		at certain point, both will be synch automatically which is taken care by JVM internally
+
+	-> As update operation will be performed on cloned copy there is not effect for the thread which
+		performed read operations
+	-> it is costly to use becasue for every update opeation a cloned copy will be created
+		hence CopyOnWriteArrayList  is best choice if several read operation and less number of
+		write operation are required to performed
+
+	-> insertion order is presereved
+
+	-> Duplicate object are alloed
+
+	-> heterogenous object are allowed
+
+	-> null insertion is possible
+
+	-> it implements Serilizable, Clonable and RandomAccess interface
+
+	-> while one thread iterating CopyOnWriteArrayList, the other thread are 
+		allowed to modify and we will not get CMEx. ie iterator is Fail Safe
+
+	-> iterator of ArrayList can perform remove operation but iterator of CopyOnWriteArrayList 
+		can not perform remove operation. otherwise we will get Runtime exception UnsupportedOperationException
+
+	Constructors:
+	
+	CopyOnWriteArrayList l1=new CopyOnWriteArrayList();
+	
+	CopyOnWriteArrayList l2=new CopyOnWriteArrayList(Collection c);
+
+	CopyOnWriteArrayList l3=new CopyOnWriteArrayList(Object []a);
+
+
+	methods:
+	 boolean addIfAbsent(Object o)
+		the element will be added iff list do not contain that element
+
+	itn addAllAbsent(Collection c)
+		the elements of collection will be added to the list if the elements are absent
+		and return number of element added
+
+
+	-------------------------------------------------------------------------
+	ArrayList						CopyOnWriteArrayList
+	-------------------------------------------------------------------------
+	not thread safe						thread safe
+
+	while one thread iterating list object			allowed
+	other thread are not allowed to modify list
+	CMEx
+
+	iterator is fail fast					fail safe
+
+	iterator of arraylist can perform			UnsupportedOperationException
+	remove opeation
+
+	java 1.2						java 1.5
+	
+	
+
+	CopyOnWriteArraySet
+	----------------------
+	
+		<<Collection>>
+			|
+		    <<Set>>
+			|
+		CopyOnWriteArraySet	juc
+
+	-> it is thread safe version of Set
+
+	-> CopyOnWriteArraySet create a clonned copy of underlying arrayList for every update operation
+		at certain point, both will be synch automatically which is taken care by JVM internally
+
+	-> As update operation will be performed on cloned copy there is not effect for the thread which
+		performed read operations
+	-> it is costly to use becasue for every update opeation a cloned copy will be created
+		hence CopyOnWriteArrayList  is best choice if several read operation and less number of
+		write operation are required to performed
+
+	-> insertion order is presereved
+
+	-> Duplicate object are alloed
+
+	-> heterogenous object are allowed
+
+	-> null insertion is possible
+
+	-> it implements Serilizable, Clonable and RandomAccess interface
+
+	-> while one thread iterating CopyOnWriteArrayList, the other thread are 
+		allowed to modify and we will not get CMEx. ie iterator is Fail Safe
+
+	-> iterator of ArrayList can perform remove operation but iterator of CopyOnWriteArrayList 
+		can not perform remove operation. otherwise we will get Runtime exception UnsupportedOperationException
+
+	Constructors:
+	
+	CopyOnWriteArrayList l1=new CopyOnWriteArrayList();
+	
+	CopyOnWriteArrayList l2=new CopyOnWriteArrayList(Collection c);
+
+	CopyOnWriteArrayList l3=new CopyOnWriteArrayList(Object []a);
+
+
+	methods:
+	 boolean addIfAbsent(Object o)
+		the element will be added iff list do not contain that element
+
+	itn addAllAbsent(Collection c)
+		the elements of collection will be added to the list if the elements are absent
+		and return number of element added
+
+
+	-------------------------------------------------------------------------
+	ArrayList						CopyOnWriteArrayList
+	-------------------------------------------------------------------------
+	not thread safe						thread safe
+
+	while one thread iterating list object			allowed
+	other thread are not allowed to modify list
+	CMEx
+
+	iterator is fail fast					fail safe
+
+	iterator of arraylist can perform			UnsupportedOperationException
+	remove opeation
+
+	java 1.2						java 1.5
+	
+	
+
+
+
+
+
+P and C using blocking Queue
+============================
+public class PandCWithBlockingQueue {
+
+	private static BlockingQueue<Integer> queue = new ArrayBlockingQueue<Integer>(10);
+	 
+    public static void main(String[] args) throws InterruptedException {
+        Thread t1 = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    producer();
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        });
+ 
+        Thread t2 = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    consumer();
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        });
+ 
+        t1.start();
+        t2.start();
+ 
+        t1.join();
+        t2.join();
+    }
+ 
+    private static void producer() throws InterruptedException {
+        Random random = new Random();
+ 
+        while(true) {
+            queue.put(random.nextInt(100));
+        }
+    }
+ 
+    private static void consumer() throws InterruptedException {
+      
+        while(true) {
+            Thread.sleep(100);
+                Integer value = queue.take();
+ 
+                System.out.println("Taken value: " + value + "; Queue size is: " + queue.size());
+            
+        }
+    }
+}
+
+
+
+
+
+
+
+
+3. Lock concept ie better replacement of synch keyword
+================================================
+
+
+What is Lock?
+=============
+
+	==> The juc locks package provides facilities that are more sophisticated then providing
+		lock using synch block/method
+
+	==> implicit locks vs explicit lock
+
+	==> Dont forget to release locks!
+
+	==> Powerful, more extensive opeation possible then traditional implicit lock (sych keyword)
+
+	==> imp methods of Lock interface:
+	----------------------------------
+		lock()		:get lock if lock is not available then wait until getting the lock
+				 Same as Synch keyword
+
+		boolean tryLock():try to get lock, if lock is not available,return true else return false
+				 rather then wait do something else...
+
+
+			if(l.tryLock()){
+				Do safe opeation
+			}else{
+				Do alternative opeation
+			}finally{
+			  l.unlock();
+			}
+
+		boolean tryLock(1, TimeUnit.MINUTE)// time in long
+
+
+			if(l.tryLock(2,imeUnit.MINUTE )){
+				Do safe opeation
+			}else{
+				Do alternative opeation
+			}finally{
+			  l.unlock();
+			}
+
+
+		void lockInterruptly(): if the thread is not interrupted, then only thread will get the lock
+					else not....
+
+
+
+
+		Note: l.unlock(); throws RE:IllegalMonitorStateException if no lock is attached with current thread
+
+
+	lock pattern in use
+	=================
+
+	Lock lock = /* get Lock type instance */;
+	lock.lock();
+
+	try {
+		// critical section
+	}
+	finally {
+		lock.unlock();
+	}
+
+
+
+
+
+	First problem with Synch keyword?
+	=================================
+
+	If thread try for lock in syn block if it can not got lock it is going to be blocked.
+
+	What i want ?
+	------------
+	If lock is not available i want to do something else rather then wait
+	But no such solution is provided in sychz keyword
+
+	
+	
+	java.util.concurrent.lock package introduced in Java 5
+	provide an method 
+
+	Lock.tryLock() that can solve our requirment  \93non-blocking attempt" 
+	-----------------
+
+	Lock lock = /* get Lock type instance */;
+	if(tryLock()) {
+	  try {
+		// critical section
+	   }
+	 finally {
+           lock.unlock();
+	}
+	
+	else {
+	}
+
+
+
+	Second problem with Synch keyword?
+	=================================
+
+	=> When many competitive thread looking for lock.. which thread will get the lock?
+	    We can not control it   :(
+
+
+	=> juc lock provide provision for "fairness policy", Thread waiting for max will first get the lock
+
+	=> ReentrantLock  l=new ReentrantLock(true);
+
+	How to get information about no of waiting threads?
+	=================================================
+	No solution in Synch keyword
+
+
+
+	Synch can not help to lock accross multiple method
+	=================================================
+
+	Synch keyword lock whole method or an part of method:
+
+	//lock of whole method
+
+	sync m1(){
+	 	.......
+	 	.......
+
+	}
+
+
+	//lock of a part of method
+
+	m1(){
+	 .......
+	 synch(this){
+		....
+		....
+	 }
+
+	}
+
+
+	What about requirment such as:
+	---------------------------
+
+	m1(){
+	 .......// allow race condiation
+	 ......
+	    m2();//synch required onward
+
+	}
+	m2(){
+	
+	//Synch required upto this point
+
+	...allow race condiation
+	....
+	}
+
+	Synch keyword can not help here.....Accross multiple method it dont work
+
+
+	Can be achived easily with Lock
+	--------------------------------
+	m1(){
+	 .......// allow race condiation
+	 ......
+	    l.lock();
+	    m2();//synch required onward
+
+	}
+	m2(){
+	
+	//Synch required upto this point
+	l.unlock();
+
+
+	...allow race condiation
+	....
+	}
+
+
+
+	What is the meaning of ReentrantLock?
+	====================================
+	class ReentrantLock implements Lock extends Object{
+	}
+
+	Reentrant?	Again and again!
+	=========
+
+	Consider main():
+
+	ReentrantLock  l=new ReentrantLock();
+
+	l.lock();
+
+	=>  Reentrant means after getting lock by main thread, main thread can try for another lock
+	    JVM maintain holdcount for that lock, for example it become =1
+
+	l.lock();// OK, another hold, holdCount=2
+
+	l.lock();// OK, another hold, holdCount=3
+
+	Now:
+	l.unlock();// still locked as still holdCount=2, lock still not released!
+
+	When holdCount=0 then only then lock is released
+
+
+	=> Same thread can acquire lock angain and angain that why called reentrant....
+
+
+	
+
+	
+	Imp method of <<Lock>>
+	----------------------
+	void lock();
+	boolean tryLock();
+	boolean tryLock(1, TimeUnit.SECOND);
+	void lockInterruptibly();
+	void unLock();
+
+	
+	Imp method of ReentrantLock class
+	--------------------------------
+	int holdCount();
+	int getQueueLength();
+	boolean isHeldByCurrentThread();
+	Collection getQueuedThread();
+	boolean hasQueuedThread();
+	boolean isLocked()
+	boolean isFair()
+	Thread getOwner()
+
+	Example:
+	---------
+		ReentrantLock l=new ReentrantLock();
+		l.lock();
+		l.lock();
+		System.out.println("is fair:"+l.isFair());
+		System.out.println("is locked :"+l.isLocked());
+		System.out.println("hold count:"+ l.getHoldCount());
+		System.out.println("is held by current thread:"+ l.isHeldByCurrentThread());
+		System.out.println("get queue length:"+ l.getQueueLength());
+		
+		l.unlock();
+	
+		System.out.println("is locked :"+l.isLocked());
+		System.out.println("hold count:"+ l.getHoldCount());
+	
+		l.unlock();
+		
+		System.out.println("is locked :"+l.isLocked());
+		System.out.println("hold count:"+ l.getHoldCount());
+
+
+
+
+Apply Atomic Variables 
+======================
+
+
+	==> Acquiring lock ( ie put synch on method) just to increment/decrement and int is wastage
+
+	==> juc provide alernative for thread safe atomic variables
+
+	==> Ex:
+		AtomicInteger: Atomically updatable int value; inherits from the Number class
+		AtomicLong: Atomically updatable long value; inherits from Number class
+
+
+
+
+	==> inefficient code:
+
+	public void run() {
+			synchronized(SharedCounter.class) {
+				SharedCounter.count++;
+			}
+		}
+
+
+	==> inefficient since it acquires and releases the lock every time
+	   just to increment the value of count
+
+	==> if you declare count as AtomicInteger or AtomicLong (whichever is suitable), 
+		then there is no need to use a lock with synchronized keyword
+
+
+	With atomic
+	=============
+
+	Better solution :using juc Atomic package:(performance)
+	-------------------------------------------
+	class Counter{
+			public static AtomicInteger counter=new AtomicInteger(0);
+		}
+		
+		class MyThread extends Thread{
+			public void run() {
+				
+					System.out.print(Counter.counter.incrementAndGet() +" ");
+		
+			}
+			
+		}
+		public class Demo {
+		
+			public static void main(String[] args) {
+				
+				for(int i=0;i<25;i++){
+					MyThread t=new MyThread();
+					t.start();
+				}
+			}
+		}
+
+
+
+Conditions
+===========
+
+	==> A Condition object offers three methods to support wait/notify pattern:
+	  await(), signal(), and signalAll().
+
+	==>  These three methods are analogous to the wait(), notify(), and notifyAll()
+		 methods supported by the Object class
+
+
+
+	Example:
+
+	==> Assume that you\92re waiting for a person named Joe to come on train IC1122, 
+	which is from Madrid to Paris. When Joe\92s train arrives at the station, he informs
+	you; you pick him up and go home
+
+
+	==> Once the train arrives that you\92re interested in, 
+		you get a \93notification\94 or \93signal\94 from that train
+
+
+	==> wait/notify pattern.
+
+
+
+//This class simulates arrival of trains in a railway station.
+
+class RailwayStation {
+
+
+	// A common lock for synchronization
+	private static Lock station = new ReentrantLock();
+
+
+	// Condition to wait or notify the arrival of Joe in the station
+	private static Condition joeArrival = station.newCondition();
+
+
+
+	// Train class simulates arrival of trains independently
+
+	static class Train extends Thread {
+		public Train(String name) {
+			this.setName(name);
+		}
+
+		public void run() {
+			station.lock();
+			try {
+				System.out.println(getName() + ": I've arrived in station ");
+				if (getName().startsWith("IC1122")) {
+					// Joe is coming in train IC1122 - he announces it to us
+					joeArrival.signalAll();
+				}
+			} finally {
+				station.unlock();
+			}
+		}
+	}
+
+	// Our wait in the railway station for Joe is simulated by this thread. Once
+	// we get notification from Joe
+	// that he has arrived, we pick-him up and go home
+	static class WaitForJoe extends Thread {
+		public void run() {
+			System.out.println("Waiting in the station for IC1122 in which Joe is coming");
+			station.lock();
+			try {
+				// await Joe's train arrival
+				joeArrival.await();
+				// if this statement executes, it means we got a train arrival
+				// signal
+				System.out.println("Pick up Joe and go home");
+			} catch (InterruptedException ie) {
+				ie.printStackTrace();
+			} finally {
+				station.unlock();
+			}
+		}
+	}
+
+	// first create a thread that waits for Joe to arrive and then create new
+	// Train threads
+	public static void main(String[] args) throws InterruptedException {
+		// we are waiting before the trains start coming
+		new WaitForJoe().start();
+		// Trains are separate threads - they can arrive in any order
+		new Train("IC1234 - Paris to Munich").start();
+		new Train("IC2211 - Paris to Madrid").start();
+		new Train("IC1122 - Madrid to Paris").start();
+		new Train("IC4321 - Munich to Paris").start();
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+4. synchronizers provided in juc:
+=================================
+
+	Semaphore 	:controls access to one or more shared resources
+			
+	CountDownLatch	: allows threads to wait for a countdown to complete
+
+	CyclicBarrier 	:enables threads to wait at a predefined execution point
+			
+	Exchanger 	:supports exchanging data between two threads
+
+	Phaser 		:is used to support a synchronization barrier		
+
+
+
+
+	Semaphore
+	--------
+		==> A semaphore controls access to shared resources
+
+		==> A semaphore maintains a counter to specify the number of
+			resources that the semaphore controls. 
+
+
+		==> If counter > 0 then access to resource is allowed 
+		    If counter == 0 indicate no resource is available, access is denied
+
+
+		==>  Method acquire() and release() are for acquiring and 
+		  releasing resources from a semaphore
+
+		==> If a thread calls acquire() and the counter is zero 
+			(i.e., resources are unavailable), the thread waits
+			 until the counter is non-zero and then gets the resource for use.
+
+		==> Once the thread is done using the resource, it calls release() to 
+			increment the resource availability counter
+
+	Example:
+	
+		Q. Let\92s assume that there are two ATM machines available in a
+		 ATM machine room. Therefore, only two people are allowed at a time in the room.
+		 There are five people waiting outside to use the ATM machines
+
+
+
+
+	// Each Person is an independent thread; but their access to the common resource
+
+	// (two ATM machines in the ATM machine room in this case) needs to be synchronized.
+
+
+	class Person extends Thread {
+
+		private Semaphore machines;
+
+		public Person(Semaphore machines, String name) {
+			this.machines = machines;
+			this.setName(name);
+			this.start();
+			}
+
+		public void run() {
+			try {
+				System.out.println(getName() + " waiting to access an ATM machine");
+
+				machines.acquire();
+
+				System.out.println(getName() + " is accessing an ATM machine");
+
+				Thread.sleep(1000); // simulate the time required for withdrawing amount
+
+				System.out.println(getName() + " is done using the ATM machine");
+
+				machines.release();
+			} catch(InterruptedException ie) {
+					System.err.println(ie);
+				}
+			}
+		}
+	 }
+	}
+
+
+
+	// This class simulates a situation where an ATM room has only two ATM machines
+	// and five people are waiting to access the machine. Since only one person can access
+	// an ATM machine at a given time, others wait for their turn
+
+	class ATMRoom {
+		public static void main(String []args) {
+		// assume that only two ATM machines are available in the ATM room
+
+		Semaphore machines = new Semaphore(2);
+
+		// list of people waiting to access the machine
+
+		new Person(machines, "Mickey");
+		new Person(machines, "Donald");
+		new Person(machines, "Tom");
+		new Person(machines, "Jerry");
+		new Person(machines, "Casper");
+		}
+	}
+
+
+
+
+	CountDownLatch
+	---------------
+
+		==> This synchronizer allows one or more threads to wait 
+		   for a countdown to complete
+
+		==> This countdown could be for a set of events to happen or 
+			until a set of operations being performed in other threads completes
+
+		Ex:
+		this class simulates the start of a running race by counting down from 5. 
+		It holds three runner threads to be ready to start in the start line of the race 
+		and once the count down reaches zero, all the three runners start running...
+
+
+	class Runner extends Thread {
+	private CountDownLatch timer;
+
+	public Runner(CountDownLatch cdl, String name) {
+		timer = cdl;
+		this.setName(name);
+		System.out.println(this.getName()+ " ready and waiting for the count down to start");
+		start();
+	}
+
+	public void run() {
+		try {
+			// wait for the timer count down to reach 0
+			timer.await();
+		} catch (InterruptedException ie) {
+			System.err.println("interrupted -- can't start running the race");
+		}
+		System.out.println(this.getName() + " started running");
+	}
+}
+
+public class RunningRaceStarter {
+	public static void main(String[] args) throws InterruptedException {
+
+		CountDownLatch counter = new CountDownLatch(5);
+
+		// count from 5 to 0 and then start the race
+
+		// instantiate three runner threads
+
+		new Runner(counter, "Carl");
+		new Runner(counter, "Joe");
+		new Runner(counter, "Jack");
+
+		System.out.println("Starting the countdown ");
+
+		long countVal = counter.getCount();
+
+		while (countVal > 0) {
+			Thread.sleep(1000); // 1000 milliseconds = 1 second
+
+			System.out.println(countVal);
+
+			if (countVal == 1) {
+				// once counter.countDown(); in the next statement is called,
+				// Count down will reach zero; so shout "Start"
+				System.out.println("Start");
+			}
+			counter.countDown(); // count down by 1 for each second
+			countVal = counter.getCount();
+		}
+	}
+}
+
+
+
+
+
+CyclicBarrier 
+============
+	=> enables threads to wait at a predefined execution point
+
+	=> Let say we have to process huge database records and records are 
+		divided in years.. 2011. we need to aggrigate one all year records are processed
+
+	=> We spawn 4 threads once all done control is transfered to another thread
+
+
+
+		
+		class Aggrigator extends Thread {
+			public void run() {
+				System.out.println("control is transfered to aggrigator....");
+			}
+		
+		}
+		
+		class DataBaseProcesserThread extends Thread {
+			private CyclicBarrier synchPoint;
+		
+			public DataBaseProcesserThread(CyclicBarrier synchPoint, String name) {
+				this.setName(name);
+				this.synchPoint = synchPoint;
+				this.start();
+		
+			}
+		
+			public void run() {
+				System.out.println("databse processing is done by:" + this.getName());
+		
+				try {
+					synchPoint.await();
+				} catch (InterruptedException | BrokenBarrierException e) {
+					e.printStackTrace();
+				}
+		
+			}
+		
+		}
+		
+
+
+		inside main
+		=============
+		//once all thread done start aggrigator job
+		CyclicBarrier barrier=new CyclicBarrier(4, new Aggrigator());
+					
+		new DataBaseProcesserThread(barrier, "A");
+		new DataBaseProcesserThread(barrier, "B");
+		new DataBaseProcesserThread(barrier, "C");
+		new DataBaseProcesserThread(barrier, "D");
+					
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+========================================================================
+	ParallelStreams: Concurrent data processing in Java 8
+========================================================================
+
+
+
+Fork-Join Framework (Java 7 Stuff)
+===================================
+
+What is fork join?
+------------------
+	=> The framework is an implementation of the ExecutorService interface and
+	 provides an easy-to-use concurrent platform in order to exploit multiple processors. 
+
+	=> useful for modeling divide-and-conquer problems.
+
+	=> Recursively break down the problem into sub problems
+
+	=> Solve the sub problems in parallel
+
+	=> Combine the solutions to sub-problems to arrive at final result
+
+
+Java library for Fork\Join framework
+---------------------------------
+
+	Key classes  in the Fork/Join framework:
+	----------------------------------------
+	 ForkJoinPool: 
+		=>Most important class in fork join framework
+
+		=> It is a thread pool for running fork/join tasks and it executes
+		 an instance of ForkJoinTask
+
+	ForkJoinTask:
+		=> lightweight thread-like entity representing a task that defines
+		methods such as fork() and join().
+
+	RecursiveTask 
+		=>  task that can run in a ForkJoinPool
+		=> its compute() do computation with returning an result of type V
+
+	 RecursiveAction 
+		=> is a task that can run in a ForkJoinPool
+		=>  its compute() do computation without returning an result 
+
+
+	ForkJoinTask
+		|
+	________________
+	|		|
+	RecursiveTask  RecursiveAction 
+
+
+
+	Algo:
+	====
+
+	doRecursiveTask(input) {
+
+		if (the task is small enough to be handled by a thread) {
+			compute the small task;
+			if there is a result to return, do so
+		}
+
+		else {
+			divide (i.e., fork) the task into two parts
+			call compute() on first task, join() on second task, return combined results
+		}
+	}
+
+
+
+When to go for FJ framework?
+----------------------------
+	=> FJ framework is suitable if problem fits this description:
+
+		1. The problem can be designed as a recursive task where the task 
+		 can be subdivided into smaller units and the results can be combined together
+
+		2. The subdivided tasks are independent and can be computed separately without
+		the need for communication between the tasks when computation is in process
+		(Of course, after the computation is over, you will need to join them together)
+
+
+
+How to code?
+-------------
+Steps:
+
+	1. Define a task class that extends either RecursiveTask or RecursiveAction
+
+		If (a task returns a result )
+			extend from RecursiveTask
+		 otherwise 
+			extend from RecursiveAction
+
+	2. Override the compute() method in the newly defined task class. 
+
+	3. The compute() method actually performs the task if the task is small enough to be executed; or
+	splits the task into subtasks and invoke them. 
+
+	4. The subtasks can be invoked either by invokeAll() or fork() method 
+		if (subtask returns a value)
+			use fork() 
+		else
+			use join() 
+
+		method to get the computed results 
+
+
+	5. Merge the results, if computed from the subtasks.
+
+	6. Then instantiate ForkJoinPool, create an instance of the task class, 
+	and start the execution of the task using the invoke() method on the 
+	ForkJoinPool instance.
+
+
+
+Hello world ?
+-------------
+	Now let\92s try solving the problem of how to sum 1..N where N is a large number
+
+
+class SearchTask extends RecursiveTask<Integer> {
+	private static final long serialVersionUID = 1L;
+
+	int arr[];
+	int start, end;
+	int searchEl;
+
+	public SearchTask(int[] arr, int start, int end, int searchEl) {
+		this.arr = arr;
+		this.start = start;
+		this.end = end;
+		this.searchEl = searchEl;
+	}
+
+	@Override
+	protected Integer compute() {
+		
+		int size=end-start+1;
+		if(size>3) {
+			int mid= (start + end)/2;
+			SearchTask task1=new SearchTask(arr, start, mid, searchEl);
+			SearchTask task2=new SearchTask(arr, mid+1, end, searchEl);
+			task1.fork();
+			task2.fork();
+			int result =task1.join()+ task2.join();
+			return result;
+			
+		}else {
+		return processSearch();
+		}
+	}
+
+	private Integer processSearch() {
+		int count = 0;
+		for (int i = start; i <= end; i++) {
+			if (arr[i] == searchEl) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+}
+
+public class DemoFJSol {
+
+	public static void main(String[] args) {
+
+		int arr[] = { 1, 2, 3, 4, 6, 6, 7, 8, 9, 10, 11, 12 };
+		int serachEl = 6;
+		int start = 0;
+		int end = arr.length - 1;
+		ForkJoinPool forkJoinPool = ForkJoinPool.commonPool();
+		SearchTask searchTask = new SearchTask(arr, start, end, serachEl);
+		int result = forkJoinPool.invoke(searchTask);
+		System.out.println(result);
+	}
+}
+
+
+
+
+
+
+
+Note: programmatically getting the number of available processors?
+System.out.println("processor: "+Runtime.getRuntime().availableProcessors());
+
+
+
+
+	What is a stream?
+	-----------------
+	=> A Stream is An convenience method to iterate over collections in a declarative way
+
+	Old way: External iteration
+	----------------------------
+		List<Integer> numbers = new ArrayList<Integer>();
+
+		for (int i= 0; i < 100 ; i++) {
+				numbers.add(i);
+		}
+	New way: Internal iteration
+	----------------------------
+	List<Integer> evenNumbers = numbers.stream()
+					.filter(n -> n % 2 == 0)
+						.collect(toList());
+
+
+
+	Advantage:
+	---------
+		=> No manual Iterators handling
+		=> optimization is possible without touching code
+		=> Concise
+		=> Fluent API: chain sequence processing
+		=> Elements computed only when needed
+
+
+
+	Parallel Streams
+	===================
+		=> Easily Parallelism
+		=> Concurrency is hard to be done right!
+		=> Uses ForkJoin
+
+	Conditions to apply parallel streams
+	===================================
+			Process steps should be-stateless and independent
+
+
+
+	Example:
+
+		List<Integer> numbers = new ArrayList<>();
+		for (int i= 0; i < 10_000_000 ; i++) {
+			numbers.add((int)Math.round(Math.random()*100));
+		}
+
+	Normal stream
+	-------------
+	//This will use just a single thread
+		Stream<Integer> evenNumbers = numbers.stream();
+
+	parallel streams
+	------------------
+	
+	//Automatically select the optimum number of threads
+
+	Stream<Integer> evenNumbers = numbers.parallelStream();
+
+
+	Example:
+
+		List<Integer> numbers = new ArrayList<>();
+		for (int i = 0; i < 10_000_000; i++) {
+			numbers.add((int) Math.round(Math.random() * 100));
+		}
+
+		
+		long start = System.currentTimeMillis();
+		List<Integer> even = numbers.parallelStream()
+		.filter(n -> n % 2 == 0)
+		.sorted()
+		.collect(Collectors.toList());
+		System.out.printf("%d elements computed in %5d msecs with %d threads\n",even.size(), System.currentTimeMillis() - start,
+		Thread.activeCount());
+
+
+https://dzone.com/articles/how-to-handle-the-interruptedexception
+https://daniel.mitterdorfer.name/articles/2015/handling-interruptedexception/
+
+
+
+
+
+
+
+
+
